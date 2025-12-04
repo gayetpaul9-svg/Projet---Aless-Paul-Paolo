@@ -5,3 +5,4 @@
 ## Pour ne plus être en retard en cours 
 ![Image CIV](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuND2-FKN7CX-FM7TQSv8vf00hZX9XHOuaig&s)
 
+### Nous utiliseron la bibliothèque pygame et (ursina(3d)peut etre) ainsi que l'algorithme A*
