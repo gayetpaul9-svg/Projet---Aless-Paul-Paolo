@@ -12,10 +12,16 @@
     - [ ] étages 
 - - [ ] Une interface utilisateur qui permet de choisir la salle de départ et celle d'arrivée
 - - [ ] Une ligne indiquant le chemin à suivre
+- - [ ] des messages qui indiquent chaque action (tourner a droite/gauche, monter d'un étage,avancer etc)
+- - [ ] calcule du temps de trajet estimée
 - - [ ] Des choix de types de trajet
     - [ ] Plus court ou plus long
     - [ ] Energie minimum
+    - [ ] calcul des calories
 - - [ ] Aspect graphique
     - [ ] Graphisme simple, épuré et moderne
     - [ ] Utilisable avec le clavier
     - [ ] Couleur principale de l'interface personnalisable
+    - [ ] format pc
+    - [ ] clavié et souris
+    
