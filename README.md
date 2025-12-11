@@ -11,7 +11,7 @@ Notre projet consiste à créer une carte en 2D du CIV, permettant aux utilisate
 
 ---
 
-## Cahier des charges
+# Cahier des charges
 
 ### 1. Plan du lycée en 2D
 - **Cartographie du bâtiment** : Représenter le plan du lycée avec plusieurs étages, principalement le bâtiment A (et potentiellement le bâtiment B).
@@ -49,16 +49,11 @@ Notre projet consiste à créer une carte en 2D du CIV, permettant aux utilisate
 
 - **Trajet vers les toilettes les plus proches** : Ajouter une fonctionnalité permettant de trouver et de guider l’utilisateur vers les toilettes les plus proches.
 
----
-
-### 5. Messages et feedback en temps réel
-- **Indications en temps réel** : Affichage d’instructions pendant le trajet (ex. : "Tourner à droite après 20 mètres", "Montez au 2ème étage").
-  
-- **Mise à jour dynamique** : Les instructions et le trajet seront mis à jour en temps réel à mesure que l'utilisateur progresse dans le plan.
+- **Calcul du taux d'ennui en fonction de la salle et du cours** : Permettre à l'utilisateur de savoir en avance à quoi s'attendre
 
 ---
 
-### 6. Aspect graphique et ergonomie
+### 5. Aspect graphique et ergonomie
 - **Graphisme** : Design simple, épuré et moderne. Utilisation de couleurs claires et d'icônes visibles pour une bonne lisibilité.
 
 - **Personnalisation de l'interface** : Permettre à l'utilisateur de personnaliser la couleur principale de l'interface (par exemple, thème clair ou sombre).
@@ -67,17 +62,12 @@ Notre projet consiste à créer une carte en 2D du CIV, permettant aux utilisate
 
 ---
 
-### 7. Technologies utilisées
+### 6. Technologies utilisées
 - **Pygame** : Utilisation de la bibliothèque Pygame pour créer l’interface graphique 2D et gérer l'interaction avec l’utilisateur.
-- **Ursina (optionnel)** : Pour une version 3D future si le projet évolue dans cette direction.
-
+  
 ---
 
-## Conclusion
-Ce projet vise à faciliter la navigation au sein du CIV en offrant une carte interactive, des trajets optimisés et des informations en temps réel. L’utilisation de Pygame pour l’interface graphique et d’un algorithme de Dijkstra pour le calcul des chemins permettra de répondre efficacement aux besoins des utilisateurs.
-
-
-# Cahier des charges:
+# Liste des tâches:
 ##### Nous utiliserons la bibliothèque pygame et (ursina(3d)peut etre) ainsi que l'algorithme dijkstra
 - - [ ] Une interface avec un plan du lycée (batiments A(étage par étage) sûr et peut etre batiment B)
     - [ ] étages 
