@@ -8,12 +8,14 @@
 
 # Cahier des charges:
 ##### Nous utiliserons la bibliothèque pygame et (ursina(3d)peut etre) ainsi que l'algorithme dijkstra
-- [ ] Une interface avec un plan du lycée (batiments A(étage par étage) sûr et peut etre batiment B)
-  - [ ] étages 
-- [ ] Une interface utilisateur qui permet de choisir la salle de départ et celle d'arrivée
-- [x] Une ligne indiquant le chemin à suivre
-- [ ] Des choix de types de trajet
-  - [ ] Plus court ou plus long
-  - [ ] énergie minimum
-- [ ] un aspect grafique moderne
-  - [ ] grafisme simple et épurée 
+- - [ ] Une interface avec un plan du lycée (batiments A(étage par étage) sûr et peut etre batiment B)
+    - [ ] étages 
+- - [ ] Une interface utilisateur qui permet de choisir la salle de départ et celle d'arrivée
+- - [ ] Une ligne indiquant le chemin à suivre
+- - [ ] Des choix de types de trajet
+    - [ ] Plus court ou plus long
+    - [ ] Energie minimum
+- - [ ] Aspect graphique
+    - [ ] Graphisme simple, épuré et moderne
+    - [ ] Utilisable avec le clavier
+    - [ ] Couleur principale de l'interface personnalisable
