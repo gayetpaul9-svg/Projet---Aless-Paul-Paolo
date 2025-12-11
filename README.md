@@ -22,18 +22,18 @@ Notre projet consiste à créer une carte en 2D du CIV, permettant aux utilisate
 ---
 
 ### 2. Interface utilisateur (UI)
-- **Choix des salles** : L’utilisateur pourra sélectionner la salle de départ et la salle d’arrivée à partir d’une liste de salles disponibles.
+- **Choix des salles** : L’utilisateur pourra sélectionner dans un menu déroulant la salle de départ et la salle d’arrivée à partir d’une liste de salles disponibles/en sélectionnant sur la carte/en écrivant le nom de la salle.
   
 - **Affichage du chemin** : Une fois le chemin calculé, le trajet à suivre sera tracé sur la carte en 2D.
 
-- **Instructions textuelles** : Des messages afficheront les étapes du trajet à suivre, comme "Tourner à gauche" ou "Monter au 2ème étage".
+- **Instructions textuelles** : Des messages (affichés dans un bandeau lattéral) afficheront les étapes du trajet à suivre, comme "Tourner à gauche" ou "Monter au 2ème étage".
 
 ---
 
 ### 3. Calcul du chemin le plus court avec Dijkstra
 - **Algorithme de Dijkstra** : Le plan sera modélisé sous forme de graphe, chaque salle étant un noeud et chaque couloir une arête. L’algorithme de Dijkstra sera utilisé pour déterminer le chemin le plus court.
   
-- **Estimation du temps de trajet** : Le temps de trajet estimé sera calculé en fonction de la distance et de la vitesse de marche (1 mètre = 1 seconde de marche).
+- **Estimation du temps de trajet** : Le temps de trajet estimé sera calculé en fonction de la distance et de la vitesse de marche.
 
 ---
 
@@ -74,8 +74,8 @@ Notre projet consiste à créer une carte en 2D du CIV, permettant aux utilisate
 - - [ ] Une interface utilisateur qui permet de choisir la salle de départ et celle d'arrivée
 - - [ ] Une ligne indiquant le chemin à suivre
 - - [ ] des messages qui indiquent chaque action (tourner a droite/gauche, monter d'un étage,avancer etc)
-- - [ ] calcule du temps de trajet estimée
-- - [ ] messages personnalisés en fonction des cours et des salles ainsi qu'un calcul du taux d'ennuie en fonction du cour du cours.
+- - [ ] calcul du temps de trajet estimée
+- - [ ] messages personnalisés en fonction des cours et des salles ainsi qu'un calcul du taux d'ennuie en fonction du cours.
 - - [ ] Des choix de types de trajet
     - [ ] Plus court ou plus long
     - [ ] Energie minimum
