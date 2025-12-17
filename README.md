@@ -89,3 +89,4 @@ Notre projet consiste à créer une carte en 2D du CIV, permettant aux utilisate
     - [ ] format pc
     - [ ] clavié et souris
     
+### Pour avoir accès à notre roadmap, nous permettant de nous organiser, veuille cliquer ici :[https://github.com/users/gayetpaul9-svg/projects/2/views/8]
