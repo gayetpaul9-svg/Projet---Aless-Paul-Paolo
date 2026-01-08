@@ -25,6 +25,7 @@ class Button:
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.color = (240, 240, 240)
+        self.is_clickedv=False
 
     def draw(self, screen, top_left, top_right, bottom_right, bottom_left):
         pygame.draw.rect(
@@ -42,6 +43,7 @@ class Button:
     
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
+
 
 
 class Dropdown:
@@ -64,6 +66,20 @@ class Dropdown:
                     option.draw(screen, top_left=0, top_right=0, bottom_right=10, bottom_left=10)
                 else:
                     option.draw(screen, top_left=0, top_right=0, bottom_right=0, bottom_left=0)
+    def survol(self, pos):
+        if self.main.is_clicked(pos):
+            self.main.color = (200, 200, 200)
+            #return True
+        elif self.open:
+            for opt in self.options:
+                if opt.is_clicked(pos) and not opt.is_clickedv:
+                    opt.color = (200, 200, 200)
+                elif not opt.is_clickedv:
+                    opt.color = (240, 240, 240)
+        else:
+            self.main.color = (240, 240, 240)
+        
+        #return False
 
     def handle_click(self, pos):
         global coloree
@@ -76,13 +92,16 @@ class Dropdown:
                     if self.type == "start":
                         opt.color = (150, 255, 150)
                         self.type = "stop"
+                        opt.is_clickedv = not opt.is_clickedv
                     elif self.type == "stop":
                         opt.color = (255, 150, 150)
                         self.type = "None"
+                        opt.is_clickedv = not opt.is_clickedv
                     elif self.type == "None":
                         self.type = None
                 if self.type == None:
                     for opt in self.options:
+                        opt.is_clickedv = False
                         opt.color = (240, 240, 240)
                     self.type = "start"
 
@@ -104,7 +123,7 @@ while running:
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             menu_deroulant.handle_click(e.pos)
 
-
+    menu_deroulant.survol(pygame.mouse.get_pos())
     if coloree == True:
         colore=(255, 255, 255)
     else:
