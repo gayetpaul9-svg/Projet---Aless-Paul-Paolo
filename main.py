@@ -3,7 +3,7 @@ import pygame
 running = True
 pygame.init()
 
-# Crée une fenêtre en plein écran
+# Créer une fenêtres en pleine écran
 screen = pygame.display.set_mode()
 clock = pygame.time.Clock()
 # Définir la police et le texte à afficher
@@ -74,7 +74,7 @@ while running:
     screen.fill((255, 255, 255))
     menu_deroulant.draw(screen, font)
         
-    # Gérer les événements
+    # Géres les événement
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             running = False
