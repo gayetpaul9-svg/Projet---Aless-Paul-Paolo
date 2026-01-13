@@ -1,3 +1,4 @@
+
 """
 Représente le lycée.
 Chaque sommet correspond à une salle, un couloir ou un escalier.

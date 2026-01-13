@@ -1,4 +1,5 @@
-from pydoc import text
+#
+# from pydoc import text
 import pygame 
 running = True
 pygame.init()
@@ -56,7 +57,8 @@ class Dropdown:
         for i, opt in enumerate(options):
             self.options.append(
                 Button(x, y + (i + 1) * height, width, height, opt)
-                )
+            )
+            
     def draw(self, screen, font):
         self.main.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         if self.open:
@@ -66,6 +68,7 @@ class Dropdown:
                     option.draw(screen, top_left=0, top_right=0, bottom_right=10, bottom_left=10)
                 else:
                     option.draw(screen, top_left=0, top_right=0, bottom_right=0, bottom_left=0)
+
     def survol(self, pos):
         if self.main.is_clicked(pos):
             self.main.color = (200, 200, 200)
