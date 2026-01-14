@@ -6,53 +6,93 @@ graphe = {
     "A301": {"COULOIR_A": 1},
     "A302": {"COULOIR_A": 1},
     "A303": {"COULOIR_A": 1},
-    "A304": {"COULOIR_A": 1},
-    "A305": {"COULOIR_A": 1},
-    "A306": {"COULOIR_A": 1},
-    "A307": {"COULOIR_A": 1},
-    "A308": {"COULOIR_A": 1},
-
+    
+    "A304": {"COULOIR_B": 1},
+    "A305": {"COULOIR_B": 1},
+    "A306": {"COULOIR_B": 1},
+    "A307": {"COULOIR_B": 1},
+    "A308": {"COULOIR_B": 1},
     "B311": {"COULOIR_B": 1},
-    "B312": {"COULOIR_B": 1},
-    "B313": {"COULOIR_B": 1},
-    "B314": {"COULOIR_B": 1},
-    "B315": {"COULOIR_B": 1},
-    "B316": {"COULOIR_B": 1},
-    "B317": {"COULOIR_B": 1},
-    "B318": {"COULOIR_B": 1},
+    
+    "B312": {"COULOIR_C": 1},
+    "B313": {"COULOIR_C": 1},
+    "B314": {"COULOIR_C": 1},
+    
+    "B315": {"COULOIR_D": 1},
+    "B316": {"COULOIR_D": 1},
+    "B317": {"COULOIR_D": 1},
+    "B318": {"COULOIR_D": 1},
+
+    "B319": {"COULOIR_E": 1},
+    "B320": {"COULOIR_E": 1},
+    "B321": {"COULOIR_E": 1},
+    "B322": {"COULOIR_E": 1},
+    "B323": {"COULOIR_E": 1},
+    "B324": {"COULOIR_E": 1},
+    "B325": {"COULOIR_E": 1},
 
     "COULOIR_A": {
         "A301": 1,
         "A302": 1,
         "A303": 1,
+        "COULOIR_B": 2,
+        "ESCALIER_1": 3
+    },
+
+    "COULOIR_B": {
         "A304": 1,
         "A305": 1,
         "A306": 1,
         "A307": 1,
         "A308": 1,
-        "COULOIR_B": 2,
-        "ESCALIER": 3
+        "B311": 1,
+        "COULOIR_A": 2,
+        "COULOIR_C": 2,
+        "COULOIR_D": 2
     },
 
-    "COULOIR_B": {
-        "B311": 1,
+    "COULOIR_C": {
         "B312": 1,
         "B313": 1,
         "B314": 1,
+        "COULOIR_D": 2,
+        "COULOIR_B": 2,
+        "ESCALIER_2": 3
+    },
+    "COULOIR_D": {
         "B315": 1,
         "B316": 1,
         "B317": 1,
         "B318": 1,
-        "COULOIR_A": 2,
-        "ESCALIER": 3
+        "COULOIR_E": 2,
+        "COULOIR_C": 2,
+        "COULOIR_B": 2,
     },
 
-    "ESCALIER": {
-        "COULOIR_A": 3,
-        "COULOIR_B": 3
-    }
-}
+    "COULOIR_E": {
+        "B319": 1,
+        "B320": 1,
+        "B321": 1,
+        "B322": 1,
+        "B323": 1,
+        "B324": 1,
+        "B325": 1,
+        "COULOIR_D": 2,
+        "ESCALIER_3": 3
+    },
 
+    "ESCALIER_1": {
+        "COULOIR_A": 3
+    },
+
+    "ESCALIER_2": {
+        "COULOIR_C": 3
+    } ,# type: ignore
+
+    "ESCALIER_3": {
+        "COULOIR_E": 3
+    },# type: ignore
+} 
 def dijkstra(graphe, depart, arrivee):
     """
     Algorithme de Dijkstra.

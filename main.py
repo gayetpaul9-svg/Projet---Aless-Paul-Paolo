@@ -1,5 +1,6 @@
 #
 # from pydoc import text
+#import algo.py
 import pygame 
 running = True
 pygame.init()
@@ -16,10 +17,14 @@ menu_ouvert = False
 menu_deroulant = pygame.Rect(50, 50, 200, 40)
 #options = ["A200","A201","A202","A203","A204","A205","A206","A207","A208","A209"]
 #option_rects = [pygame.Rect(50, 90 + i*40, 120, 40) for i in range(len(options))]
-
+départ_salle = None
+arrivée_salle = None
 color = (100, 100, 100)
 texte_rect = texte.get_rect()
 texte_rect.center = ((1000, 500))
+
+icone = pygame.image.load("verifier.png").convert_alpha()
+icone = pygame.transform.scale(icone, (50, 50))
 
 class Button:
     def __init__(self, x, y, width, height, text,):
@@ -48,24 +53,35 @@ class Button:
 
 
 class Dropdown:
-    def __init__(self, x, y, width, height, options):
+    def __init__(self, x, y, width, height, options, Validation=False):
         self.main=Button(x, y, width, height, "salles disponibles")
         self.open = False
         self.options = []
         self.type = "start"
 
         for i, opt in enumerate(options):
-            self.options.append(
-                Button(x, y + (i + 1) * height, width, height, opt)
-            )
+            if Validation==False:
+                self.options.append(
+                    Button(x, y + (i + 1) * height, width, height, opt)
+                )
+            else:
+                self.options.append(
+                    Button(x, y + (i + 1) * height, width, height, opt)
+                )
+
             
     def draw(self, screen, font):
+        global icone
         self.main.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         if self.open:
             self.main.draw(screen, top_left=10, top_right=10, bottom_right=0, bottom_left=0)
             for i, option in enumerate(self.options):
                 if i == len(self.options) - 1:
+                    icone_rect = icone.get_rect(center=option.rect.center)
+                    
                     option.draw(screen, top_left=0, top_right=0, bottom_right=10, bottom_left=10)
+                    screen.blit(icone, icone_rect)
+
                 else:
                     option.draw(screen, top_left=0, top_right=0, bottom_right=0, bottom_left=0)
 
@@ -86,18 +102,22 @@ class Dropdown:
 
     def handle_click(self, pos):
         global coloree
+        global depart_salle
+        global arrivée_salle
         if self.main.is_clicked(pos):
             self.open = not self.open
         elif self.open:
             for opt in self.options:
-                if opt.is_clicked(pos):
+                if opt.is_clicked(pos) and opt.text != "":
                     coloree= not coloree
                     if self.type == "start":
                         opt.color = (150, 255, 150)
+                        depart_salle = opt.text
                         self.type = "stop"
                         opt.is_clickedv = not opt.is_clickedv
                     elif self.type == "stop":
                         opt.color = (255, 150, 150)
+                        arrivée_salle = opt.text
                         self.type = "None"
                         opt.is_clickedv = not opt.is_clickedv
                     elif self.type == "None":
@@ -107,10 +127,12 @@ class Dropdown:
                         opt.is_clickedv = False
                         opt.color = (240, 240, 240)
                     self.type = "start"
+                if opt.is_clicked(pos) and opt.text == "":
+                    self.open = False
 
                     #self.open = False
         
-menu_deroulant= Dropdown(50, 50, 250, 40, ["A200","A201","A202","A203","A204","A205","A206","A207","A208","A209"])
+menu_deroulant= Dropdown(50, 50, 250, 40, ["A200","A201","A202","A203","A204","A205","A206","A207","A208","A209",""],True)
 
 while running:
     screen.fill(colore)
