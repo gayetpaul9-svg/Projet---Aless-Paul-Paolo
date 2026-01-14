@@ -1,7 +1,5 @@
-
 """
-Représente le lycée.
-Chaque sommet correspond à une salle, un couloir ou un escalier.
+Représente le lycée. Chaque sommet correspond à une salle, un couloir ou un escalier.
 Les arêtes représentent les déplacements possibles avec un poids correspondant au temps.
 """
 graphe = {
@@ -55,41 +53,67 @@ graphe = {
     }
 }
 
-
-
 def dijkstra(graphe, depart, arrivee):
     """
     Algorithme de Dijkstra.
     Calcule le plus court chemin entre le sommet de départ et le sommet d'arrivée.
     """
-
-    """
-    distance: distance minimale connue depuis le départ
-    precedent : permet de reconstruire le chemin
-    non_visites : sommets pas encore vu
-    """
     distances = {}
     precedent = {}
     non_visites = []
 
-    """
-    Tous les sommets sont initialisés avec une distance infinie
-    sauf le sommet de départ où sa distance est nul.
-    """
+    # Initialisation
     for sommet in graphe:
         distances[sommet] = float("inf")
         precedent[sommet] = None
         non_visites.append(sommet)
-
     distances[depart] = 0
 
-    """
-    A chaque étape, on sélectionne le sommet non visité
-    ayant la plus petite distance.
-    """
-    while non_visites:
-        sommet_courant = min(non_visites, key=lambda s: distances[s])
+    # Boucle principale
+    while len(non_visites) > 0:
+        # Trouvé le sommet non visitée avec la plus petite distance
+        min_distance = float("inf")
+        sommet_courant = None
+        for sommet in non_visites:
+            if distances[sommet] < min_distance:
+                min_distance = distances[sommet]
+                sommet_courant = sommet
+
         non_visites.remove(sommet_courant)
 
         if sommet_courant == arrivee:
             break
+
+        voisins = graphe[sommet_courant]
+        for voisin in voisins:
+            distance_temporaire = distances[sommet_courant] + voisins[voisin]
+            if distance_temporaire < distances[voisin]:
+                distances[voisin] = distance_temporaire
+                precedent[voisin] = sommet_courant
+
+    # Reconstruction du chemin
+    chemin = []
+    sommet = arrivee
+    while sommet != None:
+        chemin.insert(0, sommet)
+        sommet = precedent[sommet]
+
+    if distances[arrivee] == float("inf"):
+        return None
+
+    return chemin, distances[arrivee]
+
+salle_depart = input("Salle de départ : ")
+salle_arrivee = input("Salle d'arrivée : ")
+
+if salle_depart not in graphe or salle_arrivee not in graphe:
+    print("Salle invalide.")
+else:
+    resultat = dijkstra(graphe, salle_depart, salle_arrivee)
+    if resultat == None:
+        print("Aucun chemin trouvé.")
+    else:
+        chemin, distance = resultat
+        print("Chemin le plus court :")
+        print(" → ".join(chemin))
+        print("Distance totale :", distance)
