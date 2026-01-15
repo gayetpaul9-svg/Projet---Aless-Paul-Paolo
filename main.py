@@ -14,8 +14,10 @@ screen = pygame.display.set_mode()
 tmx_data = load_pygame("map B300 x2.tmx")
 TILE_SIZE = tmx_data.tileheight
 
-
-clock = pygame.time.Clock()
+map_width = tmx_data.width * TILE_SIZE
+map_height = tmx_data.height * TILE_SIZE
+offset_x = (screen.get_width() - map_width) // 2
+offset_y = (screen.get_height() - map_height) // 2
 # Définir la police et le texte à afficherSSS
 font = pygame.font.SysFont(None, 36)
 texte = font.render("bienvenue dans le version test de cette application", True, (0, 0, 0)) 
@@ -148,7 +150,7 @@ while running:
     for layer in tmx_data.visible_layers:
         if hasattr(layer, "tiles"):
             for x, y, image in layer.tiles():
-                screen.blit(image, (x * TILE_SIZE, y * TILE_SIZE))
+                screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
     
     menu_deroulant.draw(screen, font)
         
@@ -168,5 +170,6 @@ while running:
     else:
         colore=(255,255,255) 
     
+    clock = pygame.time.Clock()
     pygame.display.flip()
     clock.tick(60)
