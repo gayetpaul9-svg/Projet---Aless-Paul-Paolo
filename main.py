@@ -8,7 +8,14 @@ colore=(255, 255, 255)
 coloree=True
 # Crée une fenêtre en plein écran
 screen = pygame.display.set_mode()
-clock = pygame.time.Clock()
+
+tmx_data = load_pygame("map B300 x2.tmx")
+TILE_SIZE = tmx_data.tileheight
+
+map_width = tmx_data.width * TILE_SIZE
+map_height = tmx_data.height * TILE_SIZE
+offset_x = (screen.get_width() - map_width) // 2
+offset_y = (screen.get_height() - map_height) // 2
 # Définir la police et le texte à afficherSSS
 font = pygame.font.SysFont(None, 36)
 texte = font.render("bienvenue dans le version test de cette application", True, (0, 0, 0)) 
@@ -136,6 +143,13 @@ menu_deroulant= Dropdown(50, 50, 250, 40, ["A301","A302","A303","A304","A305","A
 
 while running:
     screen.fill(colore)
+    
+    # Draw the map tiles
+    for layer in tmx_data.visible_layers:
+        if hasattr(layer, "tiles"):
+            for x, y, image in layer.tiles():
+                screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
+    
     menu_deroulant.draw(screen, font)
         
     # Gérer les événements
@@ -152,7 +166,9 @@ while running:
     if coloree == True:
         colore=(255, 255, 255)
     else:
-        colore=(0,0,0) 
+        colore=(255,255,255) 
+    
+    clock = pygame.time.Clock()
     pygame.display.flip()
     clock.tick(60)   
 pygame.quit()
