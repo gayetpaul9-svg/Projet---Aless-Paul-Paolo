@@ -1,0 +1,60 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        ":/automap-tiles.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/map B300 1/Noir blanc vert.tsx": {
+            "scaleInDock": 45
+        },
+        "C:/map B300 1/jeu tuiles 2.tsx": {
+            "scaleInDock": 32,
+            "scaleInEditor": 1
+        },
+        "C:/map B300 1/map B300 - Copie.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 34.45454545454545,
+                "y": 62.09090909090908
+            }
+        },
+        "C:/map B300 1/map B300 x2.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": -15,
+                "y": 244.66666666666663
+            }
+        },
+        "C:/map B300 1/map B300.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": -61.75,
+                "y": 189.5
+            }
+        },
+        "MAP2.tmx": {
+            "scale": 23,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 276.5,
+                "y": 478.3478260869565
+            }
+        }
+    },
+    "openFiles": [
+    ],
+    "project": "map B300 2.tiled-project",
+    "recentFiles": [
+        "C:/map B300 1/map B300.tmx",
+        "C:/map B300 1/map B300 x2.tmx",
+        "C:/map B300 1/jeu tuiles 2.tsx",
+        "MAP2.tmx",
+        "C:/map B300 1/map B300 - Copie.tmx"
+    ]
+}

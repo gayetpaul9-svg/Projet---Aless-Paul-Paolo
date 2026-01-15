@@ -1,0 +1,43 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "map B300.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "Noir blanc vert.tsx": {
+            "scaleInDock": 64,
+            "scaleInEditor": 1
+        },
+        "map B300.tmx": {
+            "scale": 3,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 16.333333333333343,
+                "y": 99.66666666666669
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/valen/Downloads",
+    "map.height": 242,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 1,
+    "map.tileWidth": 1,
+    "map.width": 144,
+    "openFiles": [
+        "map B300.tmx"
+    ],
+    "project": "Carte B300.tiled-project",
+    "recentFiles": [
+        "map B300.tmx",
+        "Noir blanc vert.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 1,
+        "width": 1
+    }
+}
