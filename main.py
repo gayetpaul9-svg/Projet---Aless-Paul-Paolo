@@ -2,19 +2,12 @@
 # from pydoc import text
 #import algo.py
 import pygame 
-from pytmx.util_pygame import load_pygame
-
 running = True
 pygame.init()
 colore=(255, 255, 255)
 coloree=True
 # Crée une fenêtre en plein écran
 screen = pygame.display.set_mode()
-
-tmx_data = load_pygame("map B300 x2.tmx")
-TILE_SIZE = tmx_data.tileheight
-
-
 clock = pygame.time.Clock()
 # Définir la police et le texte à afficherSSS
 font = pygame.font.SysFont(None, 36)
@@ -139,17 +132,10 @@ class Dropdown:
 
                     #self.open = False
         
-menu_deroulant= Dropdown(50, 50, 250, 40, ["A200","A201","A202","A203","A204","A205","A206","A207","A208","A209",""],True)
+menu_deroulant= Dropdown(50, 50, 250, 40, ["A301","A302","A303","A304","A305","A306","A307","A308","B311","B312","B313","B314","B315","B316","B317","B318","B319","B320","B321","B322","B323","B324","B325",""],True)
 
 while running:
     screen.fill(colore)
-    
-    # Draw the map tiles
-    for layer in tmx_data.visible_layers:
-        if hasattr(layer, "tiles"):
-            for x, y, image in layer.tiles():
-                screen.blit(image, (x * TILE_SIZE, y * TILE_SIZE))
-    
     menu_deroulant.draw(screen, font)
         
     # Gérer les événements
@@ -161,12 +147,12 @@ while running:
                 running = False
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             menu_deroulant.handle_click(e.pos)
-    
+
     menu_deroulant.survol(pygame.mouse.get_pos())
     if coloree == True:
         colore=(255, 255, 255)
     else:
-        colore=(255,255,255) 
-    
+        colore=(0,0,0) 
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(60)   
+pygame.quit()
