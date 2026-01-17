@@ -1,34 +1,45 @@
 #
 # from pydoc import text
-#import algo.py
+import algo
 import pygame 
+from pytmx.util_pygame import load_pygame
 running = True
 pygame.init()
-colore=(255, 255, 255)
-coloree=True
+
+
 # Crée une fenêtre en plein écran
 screen = pygame.display.set_mode()
 
-tmx_data = load_pygame("map B300 x2.tmx")
+tmx_data = load_pygame("map B300 x4..tmx")
 TILE_SIZE = tmx_data.tileheight
+chemins = [tmx_data.layers[6]]
+layers =  {
+    "sol": tmx_data.layers[0],
+    "COULOIR_A": tmx_data.layers[1],
+    "COULOIR_B": tmx_data.layers[2],
+    "COULOIR_C": tmx_data.layers[3],
+    "COULOIR_D": tmx_data.layers[4],
+    "COULOIR_E": tmx_data.layers[5],
+    "murs_": tmx_data.layers[6],
+}
+print(layers["sol"])
 
 map_width = tmx_data.width * TILE_SIZE
 map_height = tmx_data.height * TILE_SIZE
 offset_x = (screen.get_width() - map_width) // 2
 offset_y = (screen.get_height() - map_height) // 2
+#resultat = tmx_data.layers
+
 # Définir la police et le texte à afficherSSS
 font = pygame.font.SysFont(None, 36)
-texte = font.render("bienvenue dans le version test de cette application", True, (0, 0, 0)) 
 #menu déroulant
 menu_ouvert = False
 menu_deroulant = pygame.Rect(50, 50, 200, 40)
-#options = ["A200","A201","A202","A203","A204","A205","A206","A207","A208","A209"]
-#option_rects = [pygame.Rect(50, 90 + i*40, 120, 40) for i in range(len(options))]
+
 départ_salle = None
 arrivée_salle = None
-color = (100, 100, 100)
-texte_rect = texte.get_rect()
-texte_rect.center = ((1000, 500))
+
+
 
 icone = pygame.image.load("verifier.png").convert_alpha()
 icone = pygame.transform.scale(icone, (50, 50))
@@ -65,6 +76,8 @@ class Dropdown:
         self.open = False
         self.options = []
         self.type = "start"
+        self.action=False
+        self.opening=False
 
         for i, opt in enumerate(options):
             if Validation==False:
@@ -107,16 +120,25 @@ class Dropdown:
         
         #return False
 
+    def reset_colors(self):
+        """Réinitialise les couleurs et états des options"""
+        for opt in self.options:
+            opt.is_clickedv = False
+            opt.color = (240, 240, 240)
+        self.type = "start"
+
     def handle_click(self, pos):
-        global coloree
         global depart_salle
         global arrivée_salle
         if self.main.is_clicked(pos):
             self.open = not self.open
+            self.opening=True
+            # Réinitialiser quand on ferme le menu
+            if not self.open:
+                self.reset_colors()
         elif self.open:
             for opt in self.options:
                 if opt.is_clicked(pos) and opt.text != "":
-                    coloree= not coloree
                     if self.type == "start":
                         opt.color = (150, 255, 150)
                         depart_salle = opt.text
@@ -129,28 +151,40 @@ class Dropdown:
                         opt.is_clickedv = not opt.is_clickedv
                     elif self.type == "None":
                         self.type = None
-                if self.type == None:
+                if self.type == None or self.open==False:
                     for opt in self.options:
                         opt.is_clickedv = False
                         opt.color = (240, 240, 240)
                     self.type = "start"
                 if opt.is_clicked(pos) and opt.text == "":
+                    self.action = True
                     self.open = False
+                    self.reset_colors()
 
                     #self.open = False
         
 menu_deroulant= Dropdown(50, 50, 250, 40, ["A301","A302","A303","A304","A305","A306","A307","A308","B311","B312","B313","B314","B315","B316","B317","B318","B319","B320","B321","B322","B323","B324","B325",""],True)
 
+#resultat_chemin = None
+#resultat_distance = None
+
+def gps(depart, arrivee):
+    resultat = algo.dijkstra(depart, arrivee)
+    for i in resultat:
+        chemins.append(layers[i])
+    return resultat
+
+clock = pygame.time.Clock()
+
 while running:
-    screen.fill(colore)
+    screen.fill((255, 255, 255))
     
     # Draw the map tiles
-    for layer in tmx_data.visible_layers:
-        if hasattr(layer, "tiles"):
-            for x, y, image in layer.tiles():
-                screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
+    for layer in chemins:
+        for x, y, image in layer.tiles():
+            screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
     
-    menu_deroulant.draw(screen, font)
+    
         
     # Gérer les événements
     for e in pygame.event.get():
@@ -161,14 +195,20 @@ while running:
                 running = False
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             menu_deroulant.handle_click(e.pos)
-
-    menu_deroulant.survol(pygame.mouse.get_pos())
-    if coloree == True:
-        colore=(255, 255, 255)
-    else:
-        colore=(255,255,255) 
     
-    clock = pygame.time.Clock()
+    menu_deroulant.draw(screen, font)
+    menu_deroulant.survol(pygame.mouse.get_pos())
+    
+    if menu_deroulant.opening==True:
+        chemins = [tmx_data.layers[6]]
+        menu_deroulant.opening=False
+    if menu_deroulant.action==True:
+        print("ok")
+        print(gps(depart_salle, arrivée_salle))
+        a=gps(depart_salle, arrivée_salle)
+        menu_deroulant.action=False
+        menu_deroulant.open=False
     pygame.display.flip()
-    clock.tick(60)   
+    clock.tick(60)
+    pygame.display.flip()   
 pygame.quit()

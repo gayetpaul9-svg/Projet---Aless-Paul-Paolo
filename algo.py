@@ -93,7 +93,7 @@ graphe = {
         "COULOIR_E": 3
     },# type: ignore
 } 
-def dijkstra(graphe, depart, arrivee):
+def dijkstra(depart, arrivee):
     """
     Algorithme de Dijkstra.
     Calcule le plus court chemin entre le sommet de départ et le sommet d'arrivée.
@@ -141,15 +141,17 @@ def dijkstra(graphe, depart, arrivee):
     if distances[arrivee] == float("inf"):
         return None
 
-    return chemin, distances[arrivee]
-
+    # Retourner le chemin sans le départ et l'arrivée
+    chemin_intermediaire = chemin[1:-1] if len(chemin) > 2 else []
+    return chemin_intermediaire#, distances[arrivee]
+'''
 salle_depart = input("Salle de départ : ")
 salle_arrivee = input("Salle d'arrivée : ")
 
 if salle_depart not in graphe or salle_arrivee not in graphe:
     print("Salle invalide.")
 else:
-    resultat = dijkstra(graphe, salle_depart, salle_arrivee)
+    resultat = dijkstra( salle_depart, salle_arrivee)
     if resultat == None:
         print("Aucun chemin trouvé.")
     else:
@@ -157,3 +159,4 @@ else:
         print("Chemin le plus court :")
         print(" → ".join(chemin))
         print("Distance totale :", distance)
+'''
