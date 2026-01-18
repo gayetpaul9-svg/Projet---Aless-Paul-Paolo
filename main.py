@@ -165,6 +165,13 @@ class Dropdown:
         
 menu_deroulant= Dropdown(50, 50, 250, 40, ["A301","A302","A303","A304","A305","A306","A307","A308","B311","B312","B313","B314","B315","B316","B317","B318","B319","B320","B321","B322","B323","B324","B325",""],True)
 
+bouton_options_x = screen.get_width() - 250
+bouton_options_y = 50
+bouton_options_largeur = 200
+bouton_options_hauteur = 40
+couleur_bouton_options = (240, 240, 240)
+options_ouvert = False
+
 #resultat_chemin = None
 #resultat_distance = None
 
@@ -184,6 +191,15 @@ while running:
         for x, y, image in layer.tiles():
             screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
     
+    pygame.draw.rect(screen, couleur_bouton_options, (bouton_options_x, bouton_options_y, bouton_options_largeur, bouton_options_hauteur))
+    texte_options = font.render("Options", True, (0, 0, 0))
+    screen.blit(texte_options, (bouton_options_x + 60, bouton_options_y + 8))
+    
+    pos_souris = pygame.mouse.get_pos()
+    if bouton_options_x <= pos_souris[0] <= bouton_options_x + bouton_options_largeur and bouton_options_y <= pos_souris[1] <= bouton_options_y + bouton_options_hauteur:
+        couleur_bouton_options = (180, 180, 180)
+    else:
+        couleur_bouton_options = (240, 240, 240)
     
         
     # Gérer les événements
@@ -195,6 +211,16 @@ while running:
                 running = False
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             menu_deroulant.handle_click(e.pos)
+            
+            if bouton_options_x <= e.pos[0] <= bouton_options_x + bouton_options_largeur and bouton_options_y <= e.pos[1] <= bouton_options_y + bouton_options_hauteur:
+                options_ouvert = not options_ouvert
+            
+            if options_ouvert:
+                retour_x = screen.get_width()//2 - 80
+                retour_y = screen.get_height()//2 + 40
+                
+                if retour_x <= e.pos[0] <= retour_x + 160 and retour_y <= e.pos[1] <= retour_y + 50:
+                    options_ouvert = False
     
     menu_deroulant.draw(screen, font)
     menu_deroulant.survol(pygame.mouse.get_pos())
@@ -208,6 +234,21 @@ while running:
         a=gps(depart_salle, arrivée_salle)
         menu_deroulant.action=False
         menu_deroulant.open=False
+        
+    if options_ouvert:
+        pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
+        
+        texte = font.render("Menu Options", True, (255, 255, 255))
+        screen.blit(texte, (screen.get_width()//2 - 80, screen.get_height()//2 - 50))
+       
+        retour_x = screen.get_width()//2 - 80
+        
+        retour_y = screen.get_height()//2 + 40
+        pygame.draw.rect(screen, (220, 220, 220), (retour_x, retour_y, 160, 50))
+        
+        texte_retour = font.render("Retour", True, (0, 0, 0))
+        screen.blit(texte_retour, (retour_x + 40, retour_y + 12))
+    
     pygame.display.flip()
     clock.tick(60)
     pygame.display.flip()   
