@@ -4,11 +4,16 @@ import algo
 import pygame 
 from pytmx.util_pygame import load_pygame
 running = True
+options_ouvert = False
 pygame.init()
 
+etat = "accueil"
 
 # Crée une fenêtre en plein écran
 screen = pygame.display.set_mode()
+
+fond_image = pygame.image.load("civ.png").convert()
+fond_image = pygame.transform.scale(fond_image, screen.get_size())
 
 tmx_data = load_pygame("map B300 x4..tmx")
 TILE_SIZE = tmx_data.tileheight
@@ -170,7 +175,6 @@ bouton_options_y = 50
 bouton_options_largeur = 200
 bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
-options_ouvert = False
 
 #resultat_chemin = None
 #resultat_distance = None
@@ -184,68 +188,106 @@ def gps(depart, arrivee):
 clock = pygame.time.Clock()
 
 while running:
-    screen.fill((255, 255, 255))
-    
-    # Draw the map tiles
-    for layer in chemins:
-        for x, y, image in layer.tiles():
-            screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
-    
-    pygame.draw.rect(screen, couleur_bouton_options, (bouton_options_x, bouton_options_y, bouton_options_largeur, bouton_options_hauteur))
-    texte_options = font.render("Options", True, (0, 0, 0))
-    screen.blit(texte_options, (bouton_options_x + 60, bouton_options_y + 8))
-    
-    pos_souris = pygame.mouse.get_pos()
-    if bouton_options_x <= pos_souris[0] <= bouton_options_x + bouton_options_largeur and bouton_options_y <= pos_souris[1] <= bouton_options_y + bouton_options_hauteur:
-        couleur_bouton_options = (180, 180, 180)
-    else:
-        couleur_bouton_options = (240, 240, 240)
-    
+    if etat == "accueil":
+        screen.blit(fond_image, (0, 0))
         
+        titre_font = pygame.font.SysFont(None, 120)
+        titre = titre_font.render("GPS CIV", True, (255, 255, 255))
+        screen.blit(titre, (screen.get_width()//2 - titre.get_width()//2, 180))
+        
+        pygame.draw.rect(screen, (220, 220, 255), (screen.get_width()//2 - 200, 350, 400, 80))
+        jouer_txt = pygame.font.SysFont(None, 60).render("ITINÉRAIRE", True, (0, 0, 0))
+        screen.blit(jouer_txt, (screen.get_width()//2 - jouer_txt.get_width()//2, 375))
+        
+        pygame.draw.rect(screen, (220, 220, 255), (screen.get_width()//2 - 200, 450, 400, 80))
+        opt_txt = pygame.font.SysFont(None, 60).render("OPTIONS", True, (0, 0, 0))
+        screen.blit(opt_txt, (screen.get_width()//2 - opt_txt.get_width()//2, 475))
+
+    elif etat == "itinéraire":
+        screen.fill((255, 255, 255))
+        
+        # Draw the map tiles
+        for layer in chemins:
+            for x, y, image in layer.tiles():
+                screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
+        
+        pygame.draw.rect(screen, couleur_bouton_options, (bouton_options_x, bouton_options_y, bouton_options_largeur, bouton_options_hauteur))
+        texte_options = font.render("Options", True, (0, 0, 0))
+        screen.blit(texte_options, (bouton_options_x + 60, bouton_options_y + 8))
+        
+        pos_souris = pygame.mouse.get_pos()
+        if bouton_options_x <= pos_souris[0] <= bouton_options_x + bouton_options_largeur and bouton_options_y <= pos_souris[1] <= bouton_options_y + bouton_options_hauteur:
+            couleur_bouton_options = (180, 180, 180)
+        else:
+            couleur_bouton_options = (240, 240, 240)
+
     # Gérer les événements
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             running = False
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:       
-                running = False
+                if etat == "itinéraire":
+                    etat = "accueil"
+                else:
+                    running = False
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
-            menu_deroulant.handle_click(e.pos)
+            mx, my = e.pos
             
-            if bouton_options_x <= e.pos[0] <= bouton_options_x + bouton_options_largeur and bouton_options_y <= e.pos[1] <= bouton_options_y + bouton_options_hauteur:
-                options_ouvert = not options_ouvert
+            if etat == "accueil":
+                # Clic sur ITINÉRAIRE
+                if (screen.get_width()//2 - 200 <= mx <= screen.get_width()//2 + 200 and
+                    350 <= my <= 430):
+                    etat = "itinéraire"
+                    print("ITINÉRAIRE cliqué: passage à l'itinéraire")
+                
+    
+                # option de puis accueil
+                if (screen.get_width()//2 - 200 <= mx <= screen.get_width()//2 + 200 and
+                    450 <= my <= 530):
+                    options_ouvert = True
+                    print("OPTIONS cliqué depuis l'accueil !")
             
+            elif etat == "itinéraire":
+                menu_deroulant.handle_click(e.pos)
+                
+                # Bouton Options du gps
+                if bouton_options_x <= mx <= bouton_options_x + bouton_options_largeur and bouton_options_y <= my <= bouton_options_y + bouton_options_hauteur:
+                    options_ouvert = not options_ouvert
+                    print("Options du gps cliqué")
+                
             if options_ouvert:
                 retour_x = screen.get_width()//2 - 80
                 retour_y = screen.get_height()//2 + 40
-                
-                if retour_x <= e.pos[0] <= retour_x + 160 and retour_y <= e.pos[1] <= retour_y + 50:
+                    
+                if retour_x <= mx <= retour_x + 160 and retour_y <= my <= retour_y + 50:
                     options_ouvert = False
-    
-    menu_deroulant.draw(screen, font)
-    menu_deroulant.survol(pygame.mouse.get_pos())
-    
-    if menu_deroulant.opening==True:
-        chemins = [tmx_data.layers[6]]
-        menu_deroulant.opening=False
-    if menu_deroulant.action==True:
-        print("ok")
-        print(gps(depart_salle, arrivée_salle))
-        a=gps(depart_salle, arrivée_salle)
-        menu_deroulant.action=False
-        menu_deroulant.open=False
+                    print("Retour cliqué")
+
+    if etat == "itinéraire":
+        menu_deroulant.draw(screen, font)
+        menu_deroulant.survol(pygame.mouse.get_pos())
         
+        if menu_deroulant.opening==True:
+            chemins = [tmx_data.layers[6]]
+            menu_deroulant.opening=False
+        if menu_deroulant.action==True:
+            print("ok")
+            print(gps(depart_salle, arrivée_salle))
+            a=gps(depart_salle, arrivée_salle)
+            menu_deroulant.action=False
+            menu_deroulant.open=False
+            
     if options_ouvert:
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
         
         texte = font.render("Menu Options", True, (255, 255, 255))
         screen.blit(texte, (screen.get_width()//2 - 80, screen.get_height()//2 - 50))
-       
+           
         retour_x = screen.get_width()//2 - 80
-        
         retour_y = screen.get_height()//2 + 40
         pygame.draw.rect(screen, (220, 220, 220), (retour_x, retour_y, 160, 50))
-        
+            
         texte_retour = font.render("Retour", True, (0, 0, 0))
         screen.blit(texte_retour, (retour_x + 40, retour_y + 12))
     
