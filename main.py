@@ -7,8 +7,14 @@ from pytmx.util_pygame import load_pygame
 running = True
 options_ouvert = False
 pygame.init()
+pygame.mixer.init()
 
 etat = "accueil"
+pygame.mixer.music.load("sons/sons_fond.mp3")
+pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.play(-1)
+son_clic = pygame.mixer.Sound("sons/effet_sonore.mp3")
+
 
 # Crée une fenêtre en plein écran
 screen = pygame.display.set_mode()
@@ -213,6 +219,8 @@ clock = pygame.time.Clock()
 
 while running:
     if etat == "accueil":
+        pygame.mixer.music.stop()
+        pygame.mixer.music.play(-1)
         screen.blit(fond_image, (0, 0))
         
         titre_font = pygame.font.SysFont(None, 120)
@@ -262,11 +270,12 @@ while running:
                     running = False
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             mx, my = e.pos
-            
+    
             if etat == "accueil":
                 # Clic sur ITINÉRAIRE
                 if (screen.get_width()//2 - 200 <= mx <= screen.get_width()//2 + 200 and
                     350 <= my <= 430):
+                    son_clic.play()
                     etat = "itinéraire"
                     print("ITINÉRAIRE cliqué: passage à l'itinéraire")
                 
