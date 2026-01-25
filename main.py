@@ -1,5 +1,6 @@
 #
 # from pydoc import text
+import math
 import algo
 import pygame 
 from pytmx.util_pygame import load_pygame
@@ -27,7 +28,7 @@ layers =  {
     "COULOIR_E": tmx_data.layers[5],
     "murs_": tmx_data.layers[6],
 }
-print(layers["sol"])
+#print(layers["sol"])
 
 map_width = tmx_data.width * TILE_SIZE
 map_height = tmx_data.height * TILE_SIZE
@@ -83,6 +84,9 @@ class Dropdown:
         self.type = "start"
         self.action=False
         self.opening=False
+        self.offset_y=-189
+        self.index_y=7
+        
 
         for i, opt in enumerate(options):
             if Validation==False:
@@ -93,29 +97,49 @@ class Dropdown:
                 self.options.append(
                     Button(x, y + (i + 1) * height, width, height, opt)
                 )
+        self.options_affichées = list(self.options[0:8])
+        self.options_affichées.append(self.options[-1])  
 
-            
+    def scroll_options(self):
+        self.index_y=7 + ( (-189 - self.offset_y) / 40 )
+        #print(self.index_y,self.offset_y)
+        if self.index_y % 1 == 0.5 or self.index_y==18.0:
+            self.index_y = math.floor(self.index_y)
+            self.index_y= max(7, min(self.index_y, len(self.options)-7))  
+            self.options_affichées = list(self.options[self.index_y-7:self.index_y+2]+[self.options[-1]])
+        else:  
+            self.index_y = math.floor(self.index_y)
+        #self.index_y= min(self.index_y, self.index_y-0.5)
+        #self.index_y= int(self.index_y)
+            self.index_y= max(7, min(self.index_y, len(self.options)-7))
+            self.options_affichées = list(self.options[self.index_y-7:self.index_y+1]+[self.options[-1]])
+        print(self.index_y,self.offset_y,self.options_affichées)
+    
     def draw(self, screen, font):
         global icone
-        self.main.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         if self.open:
-            self.main.draw(screen, top_left=10, top_right=10, bottom_right=0, bottom_left=0)
-            for i, option in enumerate(self.options):
-                if i == len(self.options) - 1:
+            #self.main.draw(screen, top_left=10, top_right=10, bottom_right=0, bottom_left=0)
+            for i, option in enumerate(self.options_affichées):
+                if i == len(self.options_affichées) - 1:
+                    option.rect.y = y + (8+1) * self.main.rect.height - 189
                     icone_rect = icone.get_rect(center=option.rect.center)
-                    
                     option.draw(screen, top_left=0, top_right=0, bottom_right=10, bottom_left=10)
                     screen.blit(icone, icone_rect)
 
                 else:
+                    option.rect.y = y + (i + 1) * self.main.rect.height + self.offset_y +(self.index_y-7)*self.main.rect.height
                     option.draw(screen, top_left=0, top_right=0, bottom_right=0, bottom_left=0)
+
+            self.main.draw(screen, top_left=10, top_right=10, bottom_right=0, bottom_left=0)
+        else:
+            self.main.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10)
 
     def survol(self, pos):
         if self.main.is_clicked(pos):
             self.main.color = (200, 200, 200)
             #return True
         elif self.open:
-            for opt in self.options:
+            for opt in self.options_affichées:
                 if opt.is_clicked(pos) and not opt.is_clickedv:
                     opt.color = (200, 200, 200)
                 elif not opt.is_clickedv:
@@ -127,7 +151,7 @@ class Dropdown:
 
     def reset_colors(self):
         """Réinitialise les couleurs et états des options"""
-        for opt in self.options:
+        for opt in self.options_affichées:
             opt.is_clickedv = False
             opt.color = (240, 240, 240)
         self.type = "start"
@@ -142,7 +166,7 @@ class Dropdown:
             if not self.open:
                 self.reset_colors()
         elif self.open:
-            for opt in self.options:
+            for opt in self.options_affichées:
                 if opt.is_clicked(pos) and opt.text != "":
                     if self.type == "start":
                         opt.color = (150, 255, 150)
@@ -225,6 +249,11 @@ while running:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             running = False
+        elif e.type == pygame.MOUSEWHEEL:
+            menu_deroulant.offset_y += e.y *20
+            menu_deroulant.offset_y = min(-189, menu_deroulant.offset_y)
+            menu_deroulant.offset_y = max(-629, menu_deroulant.offset_y)
+            menu_deroulant.scroll_options()
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:       
                 if etat == "itinéraire":
@@ -292,6 +321,5 @@ while running:
         screen.blit(texte_retour, (retour_x + 40, retour_y + 12))
     
     pygame.display.flip()
-    clock.tick(60)
-    pygame.display.flip()   
+    clock.tick(60) 
 pygame.quit()
