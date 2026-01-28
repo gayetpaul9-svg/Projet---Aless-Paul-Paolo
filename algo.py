@@ -12,6 +12,8 @@ graphe = {
     "A306": {"COULOIR_B": 1},
     "A307": {"COULOIR_B": 1},
     "A308": {"COULOIR_B": 1},
+    "A309": {"COULOIR_B": 1},
+    "A310": {"COULOIR_B": 1},
     "B311": {"COULOIR_B": 1},
     
     "B312": {"COULOIR_C": 1},
@@ -31,12 +33,41 @@ graphe = {
     "B324": {"COULOIR_E": 1},
     "B325": {"COULOIR_E": 1},
 
+    "A201": {"COULOIR_F": 1},
+    "A202": {"COULOIR_F": 1},
+    "A203": {"COULOIR_F": 1},
+    "A204": {"COULOIR_F": 1},
+
+    "A205": {"COULOIR_G": 1},
+    "A206": {"COULOIR_G": 1},
+    "A207": {"COULOIR_G": 1},
+
+    "A208": {"COULOIR_H": 1},
+    "A209": {"COULOIR_H": 1},
+    "A210": {"COULOIR_H": 1},
+    "A211": {"COULOIR_H": 1},
+
+    # Salles B200
+    "B214": {"COULOIR_J": 1},
+    "B215": {"COULOIR_I": 1},
+    "B216": {"COULOIR_I": 1},
+
+    "B217": {"COULOIR_I": 1},
+    "B218": {"COULOIR_I": 1},
+    "B219": {"COULOIR_K": 1},
+    "B220": {"COULOIR_K": 1},
+    "B221": {"COULOIR_K": 1},
+
+    "B222": {"COULOIR_L": 1},
+    "B223": {"COULOIR_L": 1},
+
+    "B200": {"COULOIR_M": 1},
+
     "COULOIR_A": {
         "A301": 1,
         "A302": 1,
         "A303": 1,
         "COULOIR_B": 2,
-        "ESCALIER_1": 3
     },
 
     "COULOIR_B": {
@@ -45,10 +76,13 @@ graphe = {
         "A306": 1,
         "A307": 1,
         "A308": 1,
+        "A309": 1,
+        "A310": 1,
         "B311": 1,
         "COULOIR_A": 2,
         "COULOIR_C": 2,
-        "COULOIR_D": 2
+        "COULOIR_D": 2,
+        "ESCALIER_1": 3
     },
 
     "COULOIR_C": {
@@ -67,6 +101,7 @@ graphe = {
         "COULOIR_E": 2,
         "COULOIR_C": 2,
         "COULOIR_B": 2,
+        "ESCALIER_3": 3
     },
 
     "COULOIR_E": {
@@ -82,17 +117,70 @@ graphe = {
     },
 
     "ESCALIER_1": {
-        "COULOIR_A": 3
+        "COULOIR_B": 3
     },
 
     "ESCALIER_2": {
-        "COULOIR_C": 3
+        "COULOIR_C": 3,
+        "COULOIR_I": 3
     } ,# type: ignore
 
     "ESCALIER_3": {
-        "COULOIR_E": 3
+        "COULOIR_D": 3,
+        "COULOIR_L": 3,
     },# type: ignore
-} 
+    # Salles A200
+    
+
+    # Couloirs renommés
+    "COULOIR_F": {
+        "A201": 1, "A202": 1, "A203": 1, "A204": 1,
+        "COULOIR_G": 2,
+        "COULOIR_H": 2,
+        "ESCALIER_1": 3
+    },
+
+    "COULOIR_G": {
+        "A205": 1, "A206": 1, "A207": 1,
+        "COULOIR_F": 2,
+    },
+
+    "COULOIR_H": {
+        "A208": 1, "A209": 1, "A210": 1, "A211": 1,
+        "COULOIR_F": 2,
+    },
+
+    "COULOIR_I": {
+        "B215": 1, "B216": 1,"B218": 1,"B217": 1,
+        "COULOIR_J": 2,
+        "ESCALIER_2": 3
+    },
+
+    "COULOIR_J": {
+        "B214": 1, "B217": 1,
+        "COULOIR_I": 2,
+        "COULOIR_K": 2
+    },
+
+    "COULOIR_K": {
+        "B218": 1, "B219": 1, "B220": 1, "B221": 1,
+        "COULOIR_J": 2,
+        "COULOIR_L": 2
+    },
+
+    "COULOIR_L": {
+        "B222": 1, "B223": 1,
+        "COULOIR_K": 2,
+        "COULOIR_M": 2,
+        "ESCALIER_3": 3
+    },
+
+    "COULOIR_M": {
+        "B200": 1,
+        "COULOIR_L": 2
+    }
+}
+
 def dijkstra(depart, arrivee):
     """
     Algorithme de Dijkstra.
@@ -143,8 +231,8 @@ def dijkstra(depart, arrivee):
 
     # Retourner le chemin sans le départ et l'arrivée
     chemin_intermediaire = chemin[1:-1] if len(chemin) > 2 else []
-    return chemin_intermediaire#, distances[arrivee]
-'''
+    return chemin, distances[arrivee]
+
 salle_depart = input("Salle de départ : ")
 salle_arrivee = input("Salle d'arrivée : ")
 
@@ -159,4 +247,4 @@ else:
         print("Chemin le plus court :")
         print(" → ".join(chemin))
         print("Distance totale :", distance)
-'''
+307
