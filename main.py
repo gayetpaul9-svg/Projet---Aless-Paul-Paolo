@@ -10,10 +10,10 @@ pygame.init()
 pygame.mixer.init()
 
 etat = "accueil"
-pygame.mixer.music.load("sons/sons_fond.mp3")
+pygame.mixer.music.load("sons_fond.mp3")
 pygame.mixer.music.set_volume(0.3)
 pygame.mixer.music.play(-1)
-son_clic = pygame.mixer.Sound("sons/effet_sonore.mp3")
+son_clic = pygame.mixer.Sound("effet_sonore.mp3")
 
 
 # Crée une fenêtre en plein écran
