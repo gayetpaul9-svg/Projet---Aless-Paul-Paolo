@@ -62,8 +62,6 @@ graphe = {
     "B222": {"COULOIR_L": 1},
     "B223": {"COULOIR_L": 1},
 
-    "B200": {"COULOIR_M": 1},
-
     "COULOIR_A": {
         "A301": 1,
         "A302": 1,
@@ -184,12 +182,12 @@ graphe = {
         "B222": 1, "B223": 1,
         "COULOIR_K": 2,
         "COULOIR_M": 2,
-        "ESCALIER_3": 3
+        "ESCALIER_5": 3
     },
 
     "COULOIR_M": {
-        "B200": 1,
         "COULOIR_L": 2
+        "COULOIR_I": 2
     }
 }
 
