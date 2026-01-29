@@ -46,6 +46,7 @@ graphe = {
     "A209": {"COULOIR_H": 1},
     "A210": {"COULOIR_H": 1},
     "A211": {"COULOIR_H": 1},
+    "A212": {"COULOIR_H": 1},
 
     # Salles B200
     "B214": {"COULOIR_J": 1},
@@ -83,6 +84,7 @@ graphe = {
         "COULOIR_C": 2,
         "COULOIR_D": 2,
         "ESCALIER_1": 3
+        "ESCALIER_2": 3
     },
 
     "COULOIR_C": {
@@ -91,7 +93,7 @@ graphe = {
         "B314": 1,
         "COULOIR_D": 2,
         "COULOIR_B": 2,
-        "ESCALIER_2": 3
+        "ESCALIER_3": 3
     },
     "COULOIR_D": {
         "B315": 1,
@@ -101,7 +103,8 @@ graphe = {
         "COULOIR_E": 2,
         "COULOIR_C": 2,
         "COULOIR_B": 2,
-        "ESCALIER_3": 3
+        "ESCALIER_4": 3
+        "ESCALIER_5": 3
     },
 
     "COULOIR_E": {
@@ -113,7 +116,6 @@ graphe = {
         "B324": 1,
         "B325": 1,
         "COULOIR_D": 2,
-        "ESCALIER_3": 3
     },
 
     "ESCALIER_1": {
@@ -121,14 +123,21 @@ graphe = {
     },
 
     "ESCALIER_2": {
-        "COULOIR_C": 3,
-        "COULOIR_I": 3
+        "COULOIR_B": 3,
     } ,# type: ignore
 
     "ESCALIER_3": {
-        "COULOIR_D": 3,
-        "COULOIR_L": 3,
+        "COULOIR_C": 3,
     },# type: ignore
+
+    "ESCALIER_4": {
+        "COULOIR_D": 3,
+    },# type: ignore
+
+    "ESCALIER_5": {
+        "COULOIR_D": 3,
+    },# type: ignore
+
     # Salles A200
     
 
@@ -143,17 +152,19 @@ graphe = {
     "COULOIR_G": {
         "A205": 1, "A206": 1, "A207": 1,
         "COULOIR_F": 2,
+        "ESCALIER_6": 3
     },
 
     "COULOIR_H": {
         "A208": 1, "A209": 1, "A210": 1, "A211": 1,
         "COULOIR_F": 2,
+        "ESCALIER_2": 3
     },
 
     "COULOIR_I": {
         "B215": 1, "B216": 1,"B218": 1,"B217": 1,
         "COULOIR_J": 2,
-        "ESCALIER_2": 3
+        "ESCALIER_3": 3
     },
 
     "COULOIR_J": {
@@ -166,6 +177,7 @@ graphe = {
         "B218": 1, "B219": 1, "B220": 1, "B221": 1,
         "COULOIR_J": 2,
         "COULOIR_L": 2
+        "ESCALIER_4": 3
     },
 
     "COULOIR_L": {
