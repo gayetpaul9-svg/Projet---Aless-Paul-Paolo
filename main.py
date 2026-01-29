@@ -11,7 +11,7 @@ pygame.mixer.init()
 
 etat = "accueil"
 pygame.mixer.music.load("sons_fond.mp3")
-pygame.mixer.music.set_volume(0.3)
+pygame.mixer.music.set_volume(1)
 pygame.mixer.music.play(-1)
 son_clic = pygame.mixer.Sound("effet_sonore.mp3")
 
@@ -23,6 +23,7 @@ fond_image = pygame.image.load("civ.png").convert()
 fond_image = pygame.transform.scale(fond_image, screen.get_size())
 
 tmx_data = load_pygame("map B300 x4..tmx")
+tmx_data_b = load_pygame("map B200-A200 x4.tmx")
 TILE_SIZE = tmx_data.tileheight
 chemins = [tmx_data.layers[6]]
 layers =  {
@@ -33,6 +34,7 @@ layers =  {
     "COULOIR_D": tmx_data.layers[4],
     "COULOIR_E": tmx_data.layers[5],
     "murs_": tmx_data.layers[6],
+    
 }
 #print(layers["sol"])
 
@@ -109,17 +111,18 @@ class Dropdown:
     def scroll_options(self):
         self.index_y=7 + ( (-189 - self.offset_y) / 40 )
         #print(self.index_y,self.offset_y)
-        if self.index_y % 1 == 0.5 or self.index_y==18.0:
+        if self.index_y % 1 == 0.5 or self.index_y==39.0:
             self.index_y = math.floor(self.index_y)
             self.index_y= max(7, min(self.index_y, len(self.options)-7))  
             self.options_affichées = list(self.options[self.index_y-7:self.index_y+2]+[self.options[-1]])
         else:  
+            print(self.index_y,self.offset_y)
             self.index_y = math.floor(self.index_y)
         #self.index_y= min(self.index_y, self.index_y-0.5)
         #self.index_y= int(self.index_y)
             self.index_y= max(7, min(self.index_y, len(self.options)-7))
             self.options_affichées = list(self.options[self.index_y-7:self.index_y+1]+[self.options[-1]])
-        print(self.index_y,self.offset_y,self.options_affichées)
+        
     
     def draw(self, screen, font):
         global icone
@@ -198,7 +201,16 @@ class Dropdown:
 
                     #self.open = False
         
-menu_deroulant= Dropdown(50, 50, 250, 40, ["A301","A302","A303","A304","A305","A306","A307","A308","B311","B312","B313","B314","B315","B316","B317","B318","B319","B320","B321","B322","B323","B324","B325",""],True)
+menu_deroulant= Dropdown(50, 50, 250, 40, [
+    "A301","A302","A303","A304","A305","A306","A307","A308",
+
+    "A201","A202","A203","A204","A205","A206","A207","A208","A209","A210","A211",
+
+    "B214","B215","B216","B217","B218","B219","B220","B221","B222","B223",
+
+    "B311","B312","B313","B314","B315","B316","B317","B318","B319","B320",
+    "B321","B322","B323","B324","B325",""
+])
 
 bouton_options_x = screen.get_width() - 250
 bouton_options_y = 50
@@ -211,6 +223,7 @@ couleur_bouton_options = (240, 240, 240)
 
 def gps(depart, arrivee):
     resultat = algo.dijkstra(depart, arrivee)
+    print("Chemin trouvé :", resultat)
     for i in resultat:
         chemins.append(layers[i])
     return resultat
@@ -260,7 +273,7 @@ while running:
         elif e.type == pygame.MOUSEWHEEL:
             menu_deroulant.offset_y += e.y *20
             menu_deroulant.offset_y = min(-189, menu_deroulant.offset_y)
-            menu_deroulant.offset_y = max(-629, menu_deroulant.offset_y)
+            menu_deroulant.offset_y = max(-1469, menu_deroulant.offset_y)
             menu_deroulant.scroll_options()
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:       
@@ -300,6 +313,7 @@ while running:
                     
                 if retour_x <= mx <= retour_x + 160 and retour_y <= my <= retour_y + 50:
                     options_ouvert = False
+                    son_clic.play()
                     print("Retour cliqué")
 
     if etat == "itinéraire":
@@ -311,7 +325,7 @@ while running:
             menu_deroulant.opening=False
         if menu_deroulant.action==True:
             print("ok")
-            print(gps(depart_salle, arrivée_salle))
+            #print(gps(depart_salle, arrivée_salle))
             a=gps(depart_salle, arrivée_salle)
             menu_deroulant.action=False
             menu_deroulant.open=False
