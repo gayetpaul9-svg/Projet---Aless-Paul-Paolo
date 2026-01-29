@@ -241,9 +241,10 @@ def dijkstra(depart, arrivee):
 
     # Retourner le chemin sans le départ et l'arrivée
     chemin_intermediaire = chemin[1:-1] if len(chemin) > 2 else []
-    return chemin, distances[arrivee]
+    return chemin_intermediaire#, distances[arrivee]
+   
 
-salle_depart = input("Salle de départ : ")
+"""salle_depart = input("Salle de départ : ")
 salle_arrivee = input("Salle d'arrivée : ")
 
 if salle_depart not in graphe or salle_arrivee not in graphe:
@@ -257,4 +258,4 @@ else:
         print("Chemin le plus court :")
         print(" → ".join(chemin))
         print("Distance totale :", distance)
-307
+307"""
