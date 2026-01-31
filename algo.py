@@ -81,8 +81,8 @@ graphe = {
         "COULOIR_A": 2,
         "COULOIR_C": 2,
         "COULOIR_D": 2,
-        "ESCALIER_1": 3
-        "ESCALIER_2": 3
+        "ESCALIER_1": 3,
+        "ESCALIER_2": 3,
     },
 
     "COULOIR_C": {
@@ -101,7 +101,7 @@ graphe = {
         "COULOIR_E": 2,
         "COULOIR_C": 2,
         "COULOIR_B": 2,
-        "ESCALIER_4": 3
+        "ESCALIER_4": 3,
         "ESCALIER_5": 3
     },
 
@@ -174,7 +174,7 @@ graphe = {
     "COULOIR_K": {
         "B218": 1, "B219": 1, "B220": 1, "B221": 1,
         "COULOIR_J": 2,
-        "COULOIR_L": 2
+        "COULOIR_L": 2,
         "ESCALIER_4": 3
     },
 
@@ -186,7 +186,7 @@ graphe = {
     },
 
     "COULOIR_M": {
-        "COULOIR_L": 2
+        "COULOIR_L": 2,
         "COULOIR_I": 2
     }
 }

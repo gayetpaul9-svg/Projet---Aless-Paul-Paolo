@@ -23,7 +23,7 @@ fond_image = pygame.image.load("civ.png").convert()
 fond_image = pygame.transform.scale(fond_image, screen.get_size())
 
 tmx_data = load_pygame("map B300 x4..tmx")
-tmx_data_b = load_pygame("map B200-A200 x4.tmx")
+#tmx_data_b = load_pygame("map B200-A200 x4.tmx")
 TILE_SIZE = tmx_data.tileheight
 chemins = [tmx_data.layers[6]]
 layers =  {
