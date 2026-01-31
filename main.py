@@ -4,6 +4,7 @@ import math
 import algo
 import pygame 
 from pytmx.util_pygame import load_pygame
+
 running = True
 options_ouvert = False
 pygame.init()
@@ -23,19 +24,38 @@ fond_image = pygame.image.load("civ.png").convert()
 fond_image = pygame.transform.scale(fond_image, screen.get_size())
 
 tmx_data = load_pygame("map B300 x4..tmx")
-#tmx_data_b = load_pygame("map B200-A200 x4.tmx")
+tmx_data_b = load_pygame("map B200-A200 x4.tmx")
 TILE_SIZE = tmx_data.tileheight
-chemins = [tmx_data.layers[6]]
-layers =  {
-    "sol": tmx_data.layers[0],
+#chemins = [tmx_data.layers[6]]
+layers_3 =  {
+    "sol3": tmx_data.layers[0],
     "COULOIR_A": tmx_data.layers[1],
     "COULOIR_B": tmx_data.layers[2],
     "COULOIR_C": tmx_data.layers[3],
     "COULOIR_D": tmx_data.layers[4],
     "COULOIR_E": tmx_data.layers[5],
-    "murs_": tmx_data.layers[6],
+    "murs3": tmx_data.layers[6],
+    "sol2": tmx_data_b.layers[0],
+    "COULOIR_F": tmx_data_b.layers[8],
+    "COULOIR_G": tmx_data_b.layers[2],
+    "ESCALIER_1": tmx_data_b.layers[1],
+    "ESCALIER_2": tmx_data_b.layers[2],
+    "ESCALIER_3": tmx_data_b.layers[3],
+    "ESCALIER_4": tmx_data_b.layers[4],
+    "ESCALIER_5": tmx_data_b.layers[5],
+    "ESCALIER_6": tmx_data_b.layers[6],
+    "COULOIR_F": tmx_data_b.layers[7],
+    "COULOIR_G": tmx_data_b.layers[8],
+    "COULOIR_H": tmx_data_b.layers[9],
+    "COULOIR_I": tmx_data_b.layers[10],
+    "COULOIR_J": tmx_data_b.layers[11],
+    "COULOIR_K": tmx_data_b.layers[12],
+    "COULOIR_L": tmx_data_b.layers[13],
+    "COULOIR_M": tmx_data_b.layers[14],
+    "murs2": tmx_data_b.layers[15],
     
 }
+chemins = [tmx_data.layers[6]]
 #print(layers["sol"])
 
 map_width = tmx_data.width * TILE_SIZE
@@ -59,13 +79,20 @@ icone = pygame.image.load("verifier.png").convert_alpha()
 icone = pygame.transform.scale(icone, (50, 50))
 
 class Button:
-    def __init__(self, x, y, width, height, text,):
+    def __init__(self, x, y, width, height, text=None,font =None):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.color = (240, 240, 240)
         self.is_clickedv=False
-
-    def draw(self, screen, top_left, top_right, bottom_right, bottom_left):
+        if font is None:
+            self.font = pygame.font.SysFont(None, 36)
+        else:
+            self.font=font
+    def draw(self, screen, top_left, top_right, bottom_right, bottom_left, text=None,font=None):
+        if text is not None:
+            self.text = text
+        if font is not None:
+            self.font=font
         pygame.draw.rect(
             screen, self.color, self.rect, border_radius=0,
             border_top_left_radius=top_left,
@@ -74,15 +101,16 @@ class Button:
             border_bottom_right_radius=bottom_right
             )
         
-        font = pygame.font.SysFont(None, 36)
-        text_surf = font.render(self.text, True, (0, 0, 0))
+        #font = pygame.font.SysFont(None, 36)
+        text_surf = self.font.render(self.text, True, (0, 0, 0))
         text_rect = text_surf.get_rect(center=self.rect.center)
         screen.blit(text_surf, text_rect)
     
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
 
-
+etage_sup=Button(1386, 934, 25, 25, "↑",font=pygame.font.Font("DejaVuSans.ttf", 15))
+etage_inf=Button(1386, 934+25, 25, 25, "↓",font=pygame.font.Font("DejaVuSans.ttf", 15))
 
 class Dropdown:
     def __init__(self, x, y, width, height, options, Validation=False):
@@ -94,16 +122,17 @@ class Dropdown:
         self.opening=False
         self.offset_y=-189
         self.index_y=7
+        self.y = y
         
 
         for i, opt in enumerate(options):
             if Validation==False:
                 self.options.append(
-                    Button(x, y + (i + 1) * height, width, height, opt)
+                    Button(x, self.y + (i + 1) * height, width, height, opt)
                 )
             else:
                 self.options.append(
-                    Button(x, y + (i + 1) * height, width, height, opt)
+                    Button(x, self.y + (i + 1) * height, width, height, opt)
                 )
         self.options_affichées = list(self.options[0:8])
         self.options_affichées.append(self.options[-1])  
@@ -124,19 +153,19 @@ class Dropdown:
             self.options_affichées = list(self.options[self.index_y-7:self.index_y+1]+[self.options[-1]])
         
     
-    def draw(self, screen, font):
+    def draw(self, screen,  font):
         global icone
         if self.open:
             #self.main.draw(screen, top_left=10, top_right=10, bottom_right=0, bottom_left=0)
             for i, option in enumerate(self.options_affichées):
                 if i == len(self.options_affichées) - 1:
-                    option.rect.y = y + (8+1) * self.main.rect.height - 189
+                    option.rect.y = self.y + (8+1) * self.main.rect.height #- 189
                     icone_rect = icone.get_rect(center=option.rect.center)
                     option.draw(screen, top_left=0, top_right=0, bottom_right=10, bottom_left=10)
                     screen.blit(icone, icone_rect)
 
                 else:
-                    option.rect.y = y + (i + 1) * self.main.rect.height + self.offset_y +(self.index_y-7)*self.main.rect.height
+                    option.rect.y = self.y + (i + 1) * self.main.rect.height + self.offset_y +(self.index_y-7)*self.main.rect.height+189
                     option.draw(screen, top_left=0, top_right=0, bottom_right=0, bottom_left=0)
 
             self.main.draw(screen, top_left=10, top_right=10, bottom_right=0, bottom_left=0)
@@ -200,7 +229,11 @@ class Dropdown:
                     self.reset_colors()
 
                     #self.open = False
-        
+
+#dev=input("mode dev (o/n) ? ")
+#if dev.lower()=="o":
+coodonnées_souris=Button(10,10,200,40,)
+
 menu_deroulant= Dropdown(50, 50, 250, 40, [
     "A301","A302","A303","A304","A305","A306","A307","A308",
 
@@ -218,18 +251,55 @@ bouton_options_largeur = 200
 bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
 
+chemins3 = []
+chemins2 = []
+chemins1 = []
+chemins=[chemins1, chemins2, chemins3]
+
+
 #resultat_chemin = None
 #resultat_distance = None
 
 def gps(depart, arrivee):
+    global chemins
+    global chemins1
+    global chemins2
+    global chemins3
+    if not depart or not arrivee:
+        print("Départ ou arrivée non défini.")
+        return None
+
     resultat = algo.dijkstra(depart, arrivee)
     print("Chemin trouvé :", resultat)
+    if resultat is None:
+        print("Aucun chemin trouvé par l'algorithme.")
+        return None
     for i in resultat:
-        chemins.append(layers[i])
+        chemins.append(layers_3[i])
+    chemins3 = []
+    chemins2 = []
+    chemins1 = []
+    for s in resultat:
+        if not s:  # skip si string vide
+            continue
+        
+        last = s[-1]
+        
+        if 'A' <= last <= 'D':
+            chemins2.append(layers_3[s])
+            chemins2.append(tmx_data.layers[6])  # ajouter les murs de l'étage 3
+        elif 'F' <= last <= 'M':
+            chemins3.append(layers_3[s])
+            chemins3.append(tmx_data_b.layers[15])  # ajouter les murs de l'étage 2
+        else:
+        # les autres vont dans les deux catégories
+            #chemins3.append(layers_3[s])
+            chemins2.append(layers_3[s])
+    chemins=[chemins1, chemins2, chemins3]
     return resultat
 
 clock = pygame.time.Clock()
-
+etage = 2
 while running:
     if etat == "accueil":
         pygame.mixer.music.stop()
@@ -252,9 +322,10 @@ while running:
         screen.fill((255, 255, 255))
         
         # Draw the map tiles
-        for layer in chemins:
-            for x, y, image in layer.tiles():
-                screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
+        for m in range(1):
+            for  layer in chemins[etage-1]:
+                for x, y, image in layer.tiles():
+                    screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
         
         pygame.draw.rect(screen, couleur_bouton_options, (bouton_options_x, bouton_options_y, bouton_options_largeur, bouton_options_hauteur))
         texte_options = font.render("Options", True, (0, 0, 0))
@@ -301,6 +372,14 @@ while running:
             
             elif etat == "itinéraire":
                 menu_deroulant.handle_click(e.pos)
+                if etage_sup.is_clicked(e.pos):
+                    etage = min(etage + 1, 3)
+                    son_clic.play()
+                    
+                if etage_inf.is_clicked(e.pos):
+                    etage = max(etage - 1, 0)
+                    son_clic.play()
+                
                 
                 # Bouton Options du gps
                 if bouton_options_x <= mx <= bouton_options_x + bouton_options_largeur and bouton_options_y <= my <= bouton_options_y + bouton_options_hauteur:
@@ -317,11 +396,13 @@ while running:
                     print("Retour cliqué")
 
     if etat == "itinéraire":
+        etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
+        etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
         menu_deroulant.draw(screen, font)
         menu_deroulant.survol(pygame.mouse.get_pos())
         
         if menu_deroulant.opening==True:
-            chemins = [tmx_data.layers[6]]
+            #chemins = [tmx_data.layers[6]]
             menu_deroulant.opening=False
         if menu_deroulant.action==True:
             print("ok")
@@ -343,6 +424,7 @@ while running:
         texte_retour = font.render("Retour", True, (0, 0, 0))
         screen.blit(texte_retour, (retour_x + 40, retour_y + 12))
     
+    coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} self.y: {pygame.mouse.get_pos()[1]}")
     pygame.display.flip()
     clock.tick(60) 
 pygame.quit()

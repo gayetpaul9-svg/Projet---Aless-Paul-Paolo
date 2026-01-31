@@ -117,23 +117,29 @@ graphe = {
     },
 
     "ESCALIER_1": {
-        "COULOIR_B": 3
+        "COULOIR_B": 3,
+        "COULOIR_F": 3
     },
 
     "ESCALIER_2": {
         "COULOIR_B": 3,
+        "COULOIR_H": 3
     } ,# type: ignore
 
     "ESCALIER_3": {
         "COULOIR_C": 3,
+        "COULOIR_I": 3
+
     },# type: ignore
 
     "ESCALIER_4": {
         "COULOIR_D": 3,
+        "COULOIR_K": 3
     },# type: ignore
 
     "ESCALIER_5": {
         "COULOIR_D": 3,
+        "COULOIR_L": 3
     },# type: ignore
 
     # Salles A200
@@ -188,6 +194,9 @@ graphe = {
     "COULOIR_M": {
         "COULOIR_L": 2,
         "COULOIR_I": 2
+    },
+    "ESCALIER_6": {
+        "COULOIR_G": 3
     }
 }
 
@@ -196,6 +205,12 @@ def dijkstra(depart, arrivee):
     Algorithme de Dijkstra.
     Calcule le plus court chemin entre le sommet de départ et le sommet d'arrivée.
     """
+    # Validate inputs
+    if depart not in graphe or arrivee not in graphe:
+        return None
+
+    print(f"Départ: {depart}, Arrivée: {arrivee}")
+
     distances = {}
     precedent = {}
     non_visites = []
@@ -216,6 +231,13 @@ def dijkstra(depart, arrivee):
             if distances[sommet] < min_distance:
                 min_distance = distances[sommet]
                 sommet_courant = sommet
+
+        # if no reachable unvisited node remains, stop
+        if sommet_courant is None or min_distance == float("inf"):
+            break
+
+        if sommet_courant not in non_visites:
+            break
 
         non_visites.remove(sommet_courant)
 
