@@ -286,11 +286,11 @@ def gps(depart, arrivee):
         last = s[-1]
         
         if 'A' <= last <= 'D':
-            chemins2.append(layers_3[s])
-            chemins2.append(tmx_data.layers[6])  # ajouter les murs de l'étage 3
-        elif 'F' <= last <= 'M':
             chemins3.append(layers_3[s])
-            chemins3.append(tmx_data_b.layers[15])  # ajouter les murs de l'étage 2
+            chemins3.append(tmx_data.layers[6])  # ajouter les murs de l'étage 3
+        elif 'F' <= last <= 'M':
+            chemins2.append(layers_3[s])
+            chemins2.append(tmx_data_b.layers[15])  # ajouter les murs de l'étage 2
         else:
         # les autres vont dans les deux catégories
             #chemins3.append(layers_3[s])
