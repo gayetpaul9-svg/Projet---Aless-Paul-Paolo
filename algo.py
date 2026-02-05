@@ -79,7 +79,6 @@ graphe = {
         "A310": 1,
         "COULOIR_A": 2,
         "COULOIR_N": 2,
-        "COULOIR_D": 2,
         "ESCALIER_1": 3,
         "ESCALIER_2": 3,
     },
@@ -106,7 +105,6 @@ graphe = {
         "B318": 1,
         "COULOIR_E": 2,
         "COULOIR_C": 2,
-        "COULOIR_B": 2,
         "ESCALIER_4": 3,
         "ESCALIER_5": 3,
     },
@@ -128,13 +126,13 @@ graphe = {
     },
 
     "ESCALIER_2": {
-        "COULOIR_B": 3,
+        "COULOIR_N": 3,
         "COULOIR_H": 3
     } ,# type: ignore
 
     "ESCALIER_3": {
         "COULOIR_C": 3,
-        "COULOIR_I": 3
+        "COULOIR_I": 3,
 
     },# type: ignore
 
