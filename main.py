@@ -27,7 +27,7 @@ screen = pygame.display.set_mode()
 fond_image = pygame.image.load("civ.png").convert()
 fond_image = pygame.transform.scale(fond_image, screen.get_size())
 
-tmx_data = load_pygame("map B300 x4..tmx")
+tmx_data = load_pygame("map B300 x4.tmx")
 tmx_data_b = load_pygame("map B200-A200 x4.tmx")
 TILE_SIZE = tmx_data.tileheight
 #chemins = [tmx_data.layers[6]]
@@ -35,11 +35,18 @@ layers_3 =  {
     "sol3": tmx_data.layers[0],
     "COULOIR_A": tmx_data.layers[1],
     "COULOIR_B": tmx_data.layers[2],
-    "COULOIR_C": tmx_data.layers[3],
-    "COULOIR_D": tmx_data.layers[4],
-    "COULOIR_E": tmx_data.layers[5],
-    "murs3": tmx_data.layers[6],
-    
+    "COULOIR_N": tmx_data.layers[3],
+    "COULOIR_C": tmx_data.layers[4],
+    "COULOIR_D": tmx_data.layers[5],
+    "COULOIR_E": tmx_data.layers[6],
+    "ESCALIER_1": tmx_data.layers[7],
+    "ESCALIER_2": tmx_data.layers[8],
+    "ESCALIER_3": tmx_data.layers[9],
+    "ESCALIER_4": tmx_data.layers[10],
+    "ESCALIER_5": tmx_data.layers[11],
+    "murs3": tmx_data.layers[12],
+}
+layers_2 = {
     "sol2": tmx_data_b.layers[0],
     "ESCALIER_1": tmx_data_b.layers[1],
     "ESCALIER_2": tmx_data_b.layers[2],
@@ -278,8 +285,6 @@ def gps(depart, arrivee):
     if resultat is None:
         print("Aucun chemin trouvé par l'algorithme.")
         return None
-    for i in resultat:
-        chemins.append(layers_3[i])
     chemins3 = []
     chemins2 = []
     chemins1 = []
@@ -289,16 +294,19 @@ def gps(depart, arrivee):
         
         last = s[-1]
         
-        if 'A' <= last <= 'D':
+        if 'A' <= last <= 'E' or last == 'N' or last.isdigit():  # les salles du couloir A à D et N vont dans chemins3
             chemins3.append(layers_3[s])
-            chemins3.append(tmx_data.layers[6])  # ajouter les murs de l'étage 3
-        elif 'F' <= last <= 'M':
-            chemins2.append(layers_3[s])
+            chemins3.append(tmx_data.layers[12])  # ajouter les murs de l'étage 3
+        elif 'F' <= last <= 'M' or last.isdigit():  # les salles du couloir F à M vont dans chemins2
+            chemins2.append(layers_2[s])
             chemins2.append(tmx_data_b.layers[15])  # ajouter les murs de l'étage 2
         else:
+            pass
+        if last.isdigit():
+            chemins2.append(layers_2[s])
         # les autres vont dans les deux catégories
             #chemins3.append(layers_3[s])
-            chemins2.append(layers_3[s])
+            #chemins2.append(layers_3[s])
     chemins=[chemins1, chemins2, chemins3]
     return resultat
 
