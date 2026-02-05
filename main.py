@@ -7,6 +7,9 @@ from pytmx.util_pygame import load_pygame
 
 running = True
 options_ouvert = False
+fonc={
+    'calories' : ""
+}
 pygame.init()
 pygame.mixer.init()
 
@@ -35,9 +38,8 @@ layers_3 =  {
     "COULOIR_D": tmx_data.layers[4],
     "COULOIR_E": tmx_data.layers[5],
     "murs3": tmx_data.layers[6],
+    
     "sol2": tmx_data_b.layers[0],
-    "COULOIR_F": tmx_data_b.layers[8],
-    "COULOIR_G": tmx_data_b.layers[2],
     "ESCALIER_1": tmx_data_b.layers[1],
     "ESCALIER_2": tmx_data_b.layers[2],
     "ESCALIER_3": tmx_data_b.layers[3],
@@ -109,9 +111,9 @@ class Button:
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
 
-etage_sup=Button(1386, 934, 25, 25, "↑",font=pygame.font.Font("DejaVuSans.ttf", 15))
-etage_inf=Button(1386, 934+25, 25, 25, "↓",font=pygame.font.Font("DejaVuSans.ttf", 15))
-
+etage_sup=Button(1386, 934, 40, 40, "↑",font=pygame.font.Font("DejaVuSans.ttf", 15))
+etage_inf=Button(1386, 934+40, 40, 40, "↓",font=pygame.font.Font("DejaVuSans.ttf", 15))
+ui=Button(1529,236, 340, 200)
 class Dropdown:
     def __init__(self, x, y, width, height, options, Validation=False):
         self.main=Button(x, y, width, height, "salles disponibles")
@@ -250,11 +252,11 @@ bouton_options_y = 50
 bouton_options_largeur = 200
 bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
-
+chemins4=[]
 chemins3 = []
 chemins2 = []
 chemins1 = []
-chemins=[chemins1, chemins2, chemins3]
+chemins=[chemins1, chemins2, chemins3, chemins4]
 
 
 #resultat_chemin = None
@@ -265,11 +267,12 @@ def gps(depart, arrivee):
     global chemins1
     global chemins2
     global chemins3
+    global chemins4
     if not depart or not arrivee:
         print("Départ ou arrivée non défini.")
         return None
 
-    resultat = algo.dijkstra(depart, arrivee)
+    resultat, _ = algo.dijkstra(depart, arrivee)
     print("Chemin trouvé :", resultat)
     if resultat is None:
         print("Aucun chemin trouvé par l'algorithme.")
@@ -297,6 +300,11 @@ def gps(depart, arrivee):
             chemins2.append(layers_3[s])
     chemins=[chemins1, chemins2, chemins3]
     return resultat
+
+def fonctionalitees(depart,arrivee):
+    _, distance =algo.dijkstra(depart, arrivee)
+    return {"calories" : str(distance*0.9)
+    }
 
 clock = pygame.time.Clock()
 etage = 2
@@ -396,8 +404,10 @@ while running:
                     print("Retour cliqué")
 
     if etat == "itinéraire":
+        
         etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
         etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
+        
         menu_deroulant.draw(screen, font)
         menu_deroulant.survol(pygame.mouse.get_pos())
         
@@ -408,9 +418,10 @@ while running:
             print("ok")
             #print(gps(depart_salle, arrivée_salle))
             a=gps(depart_salle, arrivée_salle)
+            fonc=fonctionalitees(depart_salle, arrivée_salle)
             menu_deroulant.action=False
             menu_deroulant.open=False
-            
+        ui.draw(screen, top_left=10, top_right=10, bottom_left=10, bottom_right=10, text=fonc['calories'])
     if options_ouvert:
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
         
