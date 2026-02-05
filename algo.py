@@ -14,7 +14,7 @@ graphe = {
     "A308": {"COULOIR_B": 1},
     "A309": {"COULOIR_B": 1},
     "A310": {"COULOIR_B": 1},
-    "B311": {"COULOIR_B": 1},
+    "B311": {"COULOIR_N": 1},
     
     "B312": {"COULOIR_C": 1},
     "B313": {"COULOIR_C": 1},
@@ -77,11 +77,17 @@ graphe = {
         "A308": 1,
         "A309": 1,
         "A310": 1,
-        "B311": 1,
         "COULOIR_A": 2,
-        "COULOIR_C": 2,
+        "COULOIR_N": 2,
         "COULOIR_D": 2,
         "ESCALIER_1": 3,
+        "ESCALIER_2": 3,
+    },
+
+    "COULOIR_N": {
+        "B311": 1,
+        "COULOIR_B": 2,
+        "COULOIR_C": 2,
         "ESCALIER_2": 3,
     },
 
@@ -102,7 +108,7 @@ graphe = {
         "COULOIR_C": 2,
         "COULOIR_B": 2,
         "ESCALIER_4": 3,
-        "ESCALIER_5": 3
+        "ESCALIER_5": 3,
     },
 
     "COULOIR_E": {
@@ -140,6 +146,10 @@ graphe = {
     "ESCALIER_5": {
         "COULOIR_D": 3,
         "COULOIR_L": 3
+    },# type: ignore
+
+    "ESCALIER_6": {
+        "COULOIR_F": 3
     },# type: ignore
 
     # Salles A200
@@ -195,9 +205,6 @@ graphe = {
         "COULOIR_L": 2,
         "COULOIR_I": 2
     },
-    "ESCALIER_6": {
-        "COULOIR_G": 3
-    }
 }
 
 def dijkstra(depart, arrivee):
