@@ -30,6 +30,8 @@ tmx_data = load_pygame("map B300 x4..tmx")
 tmx_data_b = load_pygame("map B200-A200 x4.tmx")
 TILE_SIZE = tmx_data.tileheight
 #chemins = [tmx_data.layers[6]]
+
+#Cette partie sur les layer sert à faire le lien entre la modélisation sur tiled et avec le programme, et chaque dictionnaire (ex: "COULOIR_A") est relié au graphe de l'algo. 
 layers_3 =  {
     "sol3": tmx_data.layers[0],
     "COULOIR_A": tmx_data.layers[1],
@@ -60,6 +62,7 @@ layers_3 =  {
 chemins = [tmx_data.layers[6]]
 #print(layers["sol"])
 
+#dimension des maps
 map_width = tmx_data.width * TILE_SIZE
 map_height = tmx_data.height * TILE_SIZE
 offset_x = (screen.get_width() - map_width) // 2
@@ -80,6 +83,7 @@ arrivée_salle = None
 icone = pygame.image.load("verifier.png").convert_alpha()
 icone = pygame.transform.scale(icone, (50, 50))
 
+#Cette class sert à la facilitation pour la création de boutons 
 class Button:
     def __init__(self, x, y, width, height, text=None,font =None):
         self.rect = pygame.Rect(x, y, width, height)
@@ -114,6 +118,8 @@ class Button:
 etage_sup=Button(1386, 934, 40, 40, "↑",font=pygame.font.Font("DejaVuSans.ttf", 15))
 etage_inf=Button(1386, 934+40, 40, 40, "↓",font=pygame.font.Font("DejaVuSans.ttf", 15))
 ui=Button(1529,236, 340, 200)
+
+#Cette class sert à initialiser toutes les caractéristiques principales présentes dans le programme (ex: boutons principales, le scroll..)
 class Dropdown:
     def __init__(self, x, y, width, height, options, Validation=False):
         self.main=Button(x, y, width, height, "salles disponibles")
@@ -236,6 +242,7 @@ class Dropdown:
 #if dev.lower()=="o":
 coodonnées_souris=Button(10,10,200,40,)
 
+#Crétion d'un menu déroulant grâce aux fonctionnalités de la classe Dropdown
 menu_deroulant= Dropdown(50, 50, 250, 40, [
     "A301","A302","A303","A304","A305","A306","A307","A308",
 
@@ -247,11 +254,14 @@ menu_deroulant= Dropdown(50, 50, 250, 40, [
     "B321","B322","B323","B324","B325",""
 ])
 
+#création du bouton option
 bouton_options_x = screen.get_width() - 250
 bouton_options_y = 50
 bouton_options_largeur = 200
 bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
+
+#Création de listes chemin où chemin3 correspond à l'étage A300-B300 et le chemin2 à l'étage A200-B200..
 chemins4=[]
 chemins3 = []
 chemins2 = []
@@ -262,6 +272,7 @@ chemins=[chemins1, chemins2, chemins3, chemins4]
 #resultat_chemin = None
 #resultat_distance = None
 
+#création d'une fonction def qui prend en compte les layers et l'algo dijkstra et séparé les étages grâce aux listes chemins 1,2,3..
 def gps(depart, arrivee):
     global chemins
     global chemins1
@@ -308,6 +319,7 @@ def fonctionalitees(depart,arrivee):
 
 clock = pygame.time.Clock()
 etage = 2
+#Initialise les différentes caractéristiques de l'écran d'accueil
 while running:
     if etat == "accueil":
         pygame.mixer.music.stop()
