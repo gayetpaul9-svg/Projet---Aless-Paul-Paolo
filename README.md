@@ -70,7 +70,7 @@ Notre projet consiste à créer une carte en 2D du CIV, permettant aux utilisate
 # Liste des tâches:
 ##### Nous utiliserons la bibliothèque pygame et (ursina(3d)peut etre) ainsi que l'algorithme dijkstra
 - - [x] Une interface avec un plan du lycée (batiments A(étage par étage) sûr et peut etre batiment B)
-    - [ ] étages 
+    - [x] étages 
 - - [x] Une interface utilisateur qui permet de choisir la salle de départ et celle d'arrivée
 - - [x] Une ligne indiquant le chemin à suivre
 - - [ ] des messages qui indiquent chaque action (tourner a droite/gauche, monter d'un étage,avancer etc)
