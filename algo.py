@@ -96,7 +96,7 @@ graphe = {
         "B314": 1,
         "COULOIR_D": 2,
         "COULOIR_B": 2,
-        "ESCALIER_3": 3
+        "ESCALIER_3": 3,
     },
     "COULOIR_D": {
         "B315": 1,
@@ -122,12 +122,12 @@ graphe = {
 
     "ESCALIER_1": {
         "COULOIR_B": 3,
-        "COULOIR_F": 3
+        "COULOIR_F": 3,
     },
 
     "ESCALIER_2": {
         "COULOIR_N": 3,
-        "COULOIR_H": 3
+        "COULOIR_H": 3,
     } ,# type: ignore
 
     "ESCALIER_3": {
@@ -138,16 +138,16 @@ graphe = {
 
     "ESCALIER_4": {
         "COULOIR_D": 3,
-        "COULOIR_K": 3
+        "COULOIR_K": 3,
     },# type: ignore
 
     "ESCALIER_5": {
         "COULOIR_D": 3,
-        "COULOIR_L": 3
+        "COULOIR_L": 3,
     },# type: ignore
 
     "ESCALIER_6": {
-        "COULOIR_F": 3
+        "COULOIR_F": 3,
     },# type: ignore
 
     # Salles A200
@@ -155,53 +155,69 @@ graphe = {
 
     # Couloirs renommés
     "COULOIR_F": {
-        "A201": 1, "A202": 1, "A203": 1, "A204": 1,
+        "A201": 1, 
+        "A202": 1, 
+        "A203": 1, 
+        "A204": 1,
         "COULOIR_G": 2,
         "COULOIR_H": 2,
-        "ESCALIER_1": 3
+        "ESCALIER_1": 3,
+        "ESCALIER_6": 3,
     },
 
     "COULOIR_G": {
-        "A205": 1, "A206": 1, "A207": 1,
+        "A205": 1, 
+        "A206": 1, 
+        "A207": 1,
         "COULOIR_F": 2,
-        "ESCALIER_6": 3
+        "ESCALIER_6": 3,
     },
 
     "COULOIR_H": {
-        "A208": 1, "A209": 1, "A210": 1, "A211": 1,
+        "A208": 1, 
+        "A209": 1, 
+        "A210": 1, 
+        "A211": 1,
+        "A212": 1,
         "COULOIR_F": 2,
-        "ESCALIER_2": 3
+        "ESCALIER_2": 3,
     },
 
     "COULOIR_I": {
-        "B215": 1, "B216": 1,"B218": 1,"B217": 1,
+        "B215": 1, 
+        "B216": 1,
+        "B217": 1,
+        "B218": 1,
         "COULOIR_J": 2,
-        "ESCALIER_3": 3
+        "ESCALIER_3": 3,
     },
 
     "COULOIR_J": {
-        "B214": 1, "B217": 1,
+        "B214": 1,
         "COULOIR_I": 2,
-        "COULOIR_K": 2
+        "COULOIR_K": 2,
     },
 
     "COULOIR_K": {
-        "B218": 1, "B219": 1, "B220": 1, "B221": 1,
+        "B219": 1, 
+        "B220": 1, 
+        "B221": 1,
         "COULOIR_J": 2,
         "COULOIR_L": 2,
-        "ESCALIER_4": 3
+        "ESCALIER_4": 3,
     },
 
     "COULOIR_L": {
-        "B222": 1, "B223": 1,
+        "B222": 1, 
+        "B223": 1,
         "COULOIR_K": 2,
         "COULOIR_M": 2,
-        "ESCALIER_5": 3
+        "ESCALIER_5": 3,
     },
 
     "COULOIR_M": {
         "COULOIR_L": 2,
-        "COULOIR_I": 2
+        "COULOIR_I": 2,
     },
 }
 
