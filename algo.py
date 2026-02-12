@@ -3,6 +3,33 @@ Représente le lycée. Chaque sommet correspond à une salle, un couloir ou un e
 Les arêtes représentent les déplacements possibles avec un poids correspondant au temps.
 """
 graphe = {
+
+    "A106": {"COULOIR_O": 1},
+    "A107": {"COULOIR_O": 1},
+    "A108": {"COULOIR_O": 1},
+
+    "A105": {"COULOIR_R": 1},
+    "A104": {"COULOIR_R": 1},
+    "A103": {"COULOIR_R": 1},
+    "A102": {"COULOIR_R": 1},
+
+    "A014": {"COULOIR_X": 1},
+    "A013": {"COULOIR_X": 1},
+    "A012": {"COULOIR_X": 1},
+    "A011": {"COULOIR_X": 1},
+    "A010": {"COULOIR_X": 1},
+
+    "A006": {"COULOIR_V": 1},
+    "A007": {"COULOIR_V": 1},
+    "A008": {"COULOIR_V": 1},
+    "A009": {"COULOIR_V": 1},
+
+    "A005": {"COULOIR_T": 1},
+    "A003": {"COULOIR_T": 1},
+    "A002": {"COULOIR_T": 1},
+
+    "A001": {"COULOIR_U": 1},
+    
     "A301": {"COULOIR_A": 1},
     "A302": {"COULOIR_A": 1},
     "A303": {"COULOIR_A": 1},
@@ -148,6 +175,17 @@ graphe = {
 
     "ESCALIER_6": {
         "COULOIR_F": 3,
+        "COULOIR_O": 3,
+        "COULOIR_T": 3,
+    },# type: ignore
+
+    "ESCALIER_7": {
+        "COULOIR_R": 3,
+    },# type: ignore
+
+    "ESCALIER_9": {
+        "COULOIR_Q": 3,
+        "COULOIR_U": 3,
     },# type: ignore
 
     # Salles A200
@@ -218,6 +256,77 @@ graphe = {
     "COULOIR_M": {
         "COULOIR_L": 2,
         "COULOIR_I": 2,
+    },
+
+    "COULOIR_O": {
+        "COULOIR_P": 2,
+        "ESCALIER_6": 3,
+        "A106": 1, 
+        "A107": 1,
+        "A108": 1,
+    },
+
+    "COULOIR_P": {
+        "COULOIR_O": 2,
+        "COULOIR_Q": 2,
+    },
+
+    "COULOIR_Q": {
+        "COULOIR_P": 2,
+        "COULOIR_R": 2,
+        "ESCALIER_9": 3,
+    },
+
+    "COULOIR_R": {
+        "COULOIR_Q": 2,
+        "ESCALIER_7": 3,
+        "A105": 1, 
+        "A104": 1,
+        "A103": 1,
+        "A102": 1,
+    },
+
+    "COULOIR_S": {
+        "COULOIR_T": 2,
+        "COULOIR_V": 2,
+    },
+
+    "COULOIR_T": {
+        "COULOIR_S": 2,
+        "COULOIR_U": 2,
+        "ESCALIER_6": 3,
+        "A005": 1, 
+        "A003": 1,
+        "A002": 1,
+    },
+
+    "COULOIR_U": {
+        "COULOIR_T": 2,
+        "ESCALIER_9": 3,
+        "A001": 1,
+    },
+
+    "COULOIR_V": {
+        "COULOIR_S": 2,
+        "COULOIR_W": 2,
+        "A006": 1,
+        "A007": 1,
+        "A008": 1,
+        "A009": 1,
+    },
+
+    "COULOIR_W": {
+        "COULOIR_V": 2,
+        "COULOIR_X": 2,
+    },
+
+    "COULOIR_X": {
+        "COULOIR_W": 2,
+        "A014": 1,
+        "A013": 1,
+        "A012": 1,
+        "A011": 1,
+        "A010": 1,
     },
 }
 
