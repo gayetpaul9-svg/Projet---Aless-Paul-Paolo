@@ -4,7 +4,7 @@ import math
 import algo
 import pygame 
 from pytmx.util_pygame import load_pygame
-from classes import *
+import classes 
 
 
 running = True
@@ -14,6 +14,7 @@ fonc={
     'calories' : "",
     'temps' : ""
 }
+
 pygame.init()
 pygame.mixer.init()
 
@@ -82,19 +83,18 @@ font = pygame.font.SysFont(None, 36)
 menu_ouvert = False
 menu_deroulant = pygame.Rect(50, 50, 200, 40)
 
-départ_salle = None
-arrivée_salle = None
 
 
 
 
 
 
-coodonnées_souris=Button(10,10,200,40,)
-etage_sup=Button(1386, 934, 40, 40, "↑",font=pygame.font.Font("DejaVuSans.ttf", 15))
-etage_inf=Button(1386, 934+40, 40, 40, "↓",font=pygame.font.Font("DejaVuSans.ttf", 15))
-ui=Button(1529,236, 340, 200,text="",font=pygame.font.Font("DejaVuSans.ttf", 15))
-menu_deroulant= Dropdown(50, 50, 250, 40, [
+
+coodonnées_souris=classes.Button(10,10,200,40,)
+etage_sup=classes.Button(1386, 934, 40, 40, "↑",font=pygame.font.Font("DejaVuSans.ttf", 15))
+etage_inf=classes.Button(1386, 934+40, 40, 40, "↓",font=pygame.font.Font("DejaVuSans.ttf", 15))
+ui=classes.Button(1529,236, 340, 200,text="",font=pygame.font.Font("DejaVuSans.ttf", 15))
+menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "A301","A302","A303","A304","A305","A306","A307","A308",
 
     "A201","A202","A203","A204","A205","A206","A207","A208","A209","A210","A211",
@@ -278,8 +278,8 @@ while running:
         if menu_deroulant.action==True:
             print("ok")
             #print(gps(depart_salle, arrivée_salle))
-            a=gps(depart_salle, arrivée_salle)
-            fonc=fonctionalitees(depart_salle, arrivée_salle)
+            a=gps(classes.départ_salle, classes.arrivée_salle)
+            fonc=fonctionalitees(classes.départ_salle, classes.arrivée_salle)
             menu_deroulant.action=False
             menu_deroulant.open=False
         fonctions = str(fonc['calories']) + "\n" + str(fonc["temps"])

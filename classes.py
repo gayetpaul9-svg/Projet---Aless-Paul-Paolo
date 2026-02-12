@@ -121,7 +121,7 @@ class Dropdown:
         self.type = "start"
 
     def handle_click(self, pos):
-        global depart_salle
+        global départ_salle
         global arrivée_salle
         if self.main.is_clicked(pos):
             self.open = not self.open
@@ -134,7 +134,7 @@ class Dropdown:
                 if opt.is_clicked(pos) and opt.text != "":
                     if self.type == "start":
                         opt.color = (150, 255, 150)
-                        depart_salle = opt.text
+                        départ_salle = opt.text
                         self.type = "stop"
                         opt.is_clickedv = not opt.is_clickedv
                     elif self.type == "stop":
