@@ -11,8 +11,8 @@ running = True
 
 options_ouvert = False
 fonc={
-    'calories' : "",
-    'temps' : ""
+    'calories' : "0",
+    'temps' : "0"
 }
 
 pygame.init()
@@ -68,7 +68,7 @@ layers_2 = {
     "murs2": tmx_data_b.layers[15],
     
 }
-chemins = [tmx_data.layers[6]]
+chemins = [tmx_data.layers[12]]
 #print(layers["sol"])
 
 map_width = tmx_data.width * TILE_SIZE
@@ -128,6 +128,9 @@ def gps(depart, arrivee):
     global chemins4
     if not depart or not arrivee:
         print("Départ ou arrivée non défini.")
+        chemins3.append(tmx_data.layers[12])
+        chemins2.append(tmx_data_b.layers[15])
+        chemins=[chemins1, chemins2, chemins3]
         return None
 
     resultat, _ = algo.dijkstra(depart, arrivee)
@@ -167,8 +170,10 @@ def fonctionalitees(depart,arrivee):
 
     }
 
+
 clock = pygame.time.Clock()
-etage = 2
+etage = 3
+gps(None,None)
 while running:
     if etat == "accueil":
         pygame.mixer.music.stop()
@@ -190,7 +195,7 @@ while running:
     elif etat == "itinéraire":
         screen.fill((255, 255, 255))
         
-        # Draw the map tiles
+        # Draw the map tiles            
         for m in range(1):
             for  layer in chemins[etage-1]:
                 for x, y, image in layer.tiles():
@@ -282,7 +287,7 @@ while running:
             fonc=fonctionalitees(classes.départ_salle, classes.arrivée_salle)
             menu_deroulant.action=False
             menu_deroulant.open=False
-        fonctions = str(fonc['calories']) + "\n" + str(fonc["temps"])
+        fonctions = str("calories : " + fonc['calories']) + "  " +"temps " + str(fonc["temps"]+" min")
         ui.draw(screen, top_left=10, top_right=10, bottom_left=10, bottom_right=10, text=fonctions)
     if options_ouvert:
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
