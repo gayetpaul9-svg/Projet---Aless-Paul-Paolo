@@ -66,15 +66,16 @@ layers_2 = {
     "ESCALIER_4": tmx_data_b.layers[4],
     "ESCALIER_5": tmx_data_b.layers[5],
     "ESCALIER_6": tmx_data_b.layers[6],
-    "COULOIR_F": tmx_data_b.layers[7],
-    "COULOIR_G": tmx_data_b.layers[8],
-    "COULOIR_H": tmx_data_b.layers[9],
-    "COULOIR_I": tmx_data_b.layers[10],
-    "COULOIR_J": tmx_data_b.layers[11],
-    "COULOIR_K": tmx_data_b.layers[12],
-    "COULOIR_L": tmx_data_b.layers[13],
-    "COULOIR_M": tmx_data_b.layers[14],
-    "murs2": tmx_data_b.layers[15],
+    "EsCALIER_7": tmx_data_b.layers[7],
+    "COULOIR_F": tmx_data_b.layers[8],
+    "COULOIR_G": tmx_data_b.layers[9],
+    "COULOIR_H": tmx_data_b.layers[10],
+    "COULOIR_I": tmx_data_b.layers[11],
+    "COULOIR_J": tmx_data_b.layers[12],
+    "COULOIR_K": tmx_data_b.layers[13],
+    "COULOIR_L": tmx_data_b.layers[14],
+    "COULOIR_M": tmx_data_b.layers[15],
+    "murs2": tmx_data_b.layers[16],
     
 }
 layers_1 = {
@@ -114,7 +115,9 @@ ui=classes.Button(1529,236, 340, 200,text="",font=pygame.font.Font("assets/DejaV
 menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "A301","A302","A303","A304","A305","A306","A307","A308",
 
-    "A201","A202","A203","A204","A205","A206","A207","A208","A209","A210","A211",
+    "A201","A202","A203","A204","A205","A206","A207","A208","A209","A210",
+    "A211","A102","A103", "A104","A105","A106","A001","A002","A003","A004",
+    "A005","A006","A007","A008","A010","A011","A012","A013","A014",
 
     "B214","B215","B216","B217","B218","B219","B220","B221","B222","B223",
 
@@ -175,7 +178,7 @@ while running:
         elif e.type == pygame.MOUSEWHEEL:
             menu_deroulant.offset_y += e.y *20
             menu_deroulant.offset_y = min(-189, menu_deroulant.offset_y)
-            menu_deroulant.offset_y = max(-1469, menu_deroulant.offset_y)
+            menu_deroulant.offset_y = max(-2189, menu_deroulant.offset_y)
             menu_deroulant.scroll_options()
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:       

@@ -174,7 +174,7 @@ graphe = {
     },# type: ignore
 
     "ESCALIER_6": {
-        "COULOIR_F": 3,
+        "COULOIR_G": 3,
         "COULOIR_O": 3,
         "COULOIR_T": 3,
     },# type: ignore
@@ -200,7 +200,6 @@ graphe = {
         "COULOIR_G": 2,
         "COULOIR_H": 2,
         "ESCALIER_1": 3,
-        "ESCALIER_6": 3,
     },
 
     "COULOIR_G": {

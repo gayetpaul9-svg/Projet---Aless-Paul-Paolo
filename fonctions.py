@@ -18,7 +18,7 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2,
         chemins_cdi.append(tmx_data_c.layers[9])
         chemins3.append(tmx_data.layers[12])
         chemins2.append(tmx_data_b.layers[15])
-        chemins = [chemins1, chemins_cdi, chemins2, chemins3]
+        chemins = [chemins_cdi, chemins1, chemins2, chemins3]
         print("chemins :", chemins)
         return None, chemins
 
@@ -39,21 +39,17 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2,
         # Couloir A à E + N
         if ('A' <= last <= 'E') or last == 'N':
             chemins3.append(layers_3[s])
-            chemins3.append(tmx_data.layers[12])
             
 
         # Couloir F à M
         elif 'F' <= last <= 'M':
             chemins2.append(layers_2[s])
-            chemins2.append(tmx_data_b.layers[15])
 
-        elif 'o' <= last <= 'r':
-            chemins1.append(tmx_data_d.layers[15])
+        elif 'O' <= last <= 'R':
             chemins1.append(layers_1[s])
 
-        elif 's' <= last <= 'z':
-            chemins1.append(tmx_data_c.layers[15])
-            chemins1.append(layers_cdi[s])
+        elif 'S' <= last <= 'X':
+            chemins_cdi.append(layers_cdi[s])
 
         # Si c'est un chiffre
         elif last.isdigit():
@@ -69,9 +65,12 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2,
             if layer1:
                 chemins1.append(layer1)
             if layer_cdi:
-                chemins1.append(layer_cdi)
-    
-    chemins = [chemins1, chemins_cdi, chemins2, chemins3]
+                chemins_cdi.append(layer_cdi)
+    chemins_cdi.append(tmx_data_c.layers[9])
+    chemins1.append(tmx_data_d.layers[8])
+    chemins2.append(tmx_data_b.layers[16])
+    chemins3.append(tmx_data.layers[12])
+    chemins = [chemins_cdi,chemins1, chemins2, chemins3]
     print(chemins)
     return resultat, chemins
 
