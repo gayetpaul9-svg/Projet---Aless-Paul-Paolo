@@ -1,7 +1,5 @@
 #
 # from pydoc import text
-import math
-import algo
 import pygame 
 from pytmx.util_pygame import load_pygame
 import classes 
@@ -32,8 +30,9 @@ fonc={
     'calories' : "0",
     'temps' : "0"
 }
-etage = 3
+etage = 4
 chemins1 = []
+chemins_cdi = []
 chemins2 = []
 chemins3 = []
 chemins = [chemins1, chemins2, chemins3]
@@ -41,6 +40,8 @@ chemins = [chemins1, chemins2, chemins3]
 #importation des données de la carte
 tmx_data = load_pygame("maps/map B300 x4.tmx")
 tmx_data_b = load_pygame("maps/map B200-A200 x4.tmx")
+tmx_data_c = load_pygame("maps/map CDI.tmx")
+tmx_data_d = load_pygame("maps/map A100.tmx")
 TILE_SIZE = tmx_data.tileheight
 layers_3 =  {
     "sol3": tmx_data.layers[0],
@@ -76,6 +77,28 @@ layers_2 = {
     "murs2": tmx_data_b.layers[15],
     
 }
+layers_1 = {
+    "sol1": tmx_data_b.layers[0],
+    "COULOIR_O": tmx_data_d.layers[1],
+    "COULOIR_P": tmx_data_d.layers[2],
+    "COULOIR_Q": tmx_data_d.layers[3],
+    "COULOIR_R": tmx_data_d.layers[4],
+    "ESCALIER_6": tmx_data_d.layers[5],
+    "ESCALIER_7": tmx_data_d.layers[6],
+    "ESCALIER_9": tmx_data_d.layers[7],
+    "murs1": tmx_data_d.layers[8],
+}
+layers_cdi = {
+    "sol_cdi": tmx_data_c.layers[0],
+    "COULOIR_S": tmx_data_c.layers[1],
+    "COULOIR_T": tmx_data_c.layers[2],
+    "COULOIR_U": tmx_data_c.layers[3],
+    "COULOIR_V": tmx_data_c.layers[4],
+    "COULOIR_W": tmx_data_c.layers[5],
+    "COULOIR_X": tmx_data_c.layers[6],
+    "ESCALIER_6": tmx_data_c.layers[7],
+    "ESCALIER_9": tmx_data_c.layers[8],
+    "murs_cdi": tmx_data_c.layers[9],}
 map_width = tmx_data.width * TILE_SIZE
 map_height = tmx_data.height * TILE_SIZE
 offset_x = (screen.get_width() - map_width) // 2
@@ -105,7 +128,7 @@ bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
 
 
-_,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, layers_2, layers_3)
+_,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi)
 
 #boucle principale
 while running:
@@ -181,11 +204,11 @@ while running:
             elif etat == "itinéraire":
                 menu_deroulant.handle_click(e.pos)
                 if etage_sup.is_clicked(e.pos):
-                    etage = min(etage + 1, 3)
+                    etage = min(etage + 1, 4)
                     son_clic.play()
                     
                 if etage_inf.is_clicked(e.pos):
-                    etage = max(etage - 1, 0)
+                    etage = max(etage - 1, 1)
                     son_clic.play()
                 
                 
@@ -218,7 +241,7 @@ while running:
         if menu_deroulant.action==True:
             print("ok")
             #print(gps(depart_salle, arrivée_salle))
-            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, layers_2, layers_3)
+            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi)
             fonc=fonctions.fonctionnalitees(classes.départ_salle, classes.arrivée_salle)
             menu_deroulant.action=False
             menu_deroulant.open=False
