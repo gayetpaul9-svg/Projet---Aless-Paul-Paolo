@@ -7,33 +7,41 @@ from pytmx.util_pygame import load_pygame
 import classes 
 
 
-running = True
 
+
+#initialisation pygame
+pygame.init()
+pygame.mixer.init()
+screen = pygame.display.set_mode()
+fond_image = pygame.image.load("assets/civ.png").convert()
+fond_image = pygame.transform.scale(fond_image, screen.get_size())
+pygame.mixer.music.load("assets/sons_fond.mp3")
+pygame.mixer.music.set_volume(1)
+pygame.mixer.music.play(-1)
+son_clic = pygame.mixer.Sound("assets/effet_sonore.mp3")
+font = pygame.font.SysFont(None, 36)
+clock = pygame.time.Clock()
+clock.tick(60)
+
+# Variables globales
+etat = "accueil"
+running = True
 options_ouvert = False
 fonc={
     'calories' : "0",
     'temps' : "0"
 }
+etage = 3
+chemins4=[]
+chemins3 = []
+chemins2 = []
+chemins1 = []
+chemins=[chemins1, chemins2, chemins3, chemins4]
 
-pygame.init()
-pygame.mixer.init()
-
-etat = "accueil"
-pygame.mixer.music.load("sons_fond.mp3")
-pygame.mixer.music.set_volume(1)
-pygame.mixer.music.play(-1)
-son_clic = pygame.mixer.Sound("effet_sonore.mp3")
-
-
-# Crée une fenêtre en plein écran
-screen = pygame.display.set_mode()
-
-fond_image = pygame.image.load("civ.png").convert()
-fond_image = pygame.transform.scale(fond_image, screen.get_size())
-tmx_data = load_pygame("map B300 x4.tmx")
-tmx_data_b = load_pygame("map B200-A200 x4.tmx")
+#importation des données de la carte
+tmx_data = load_pygame("maps/map B300 x4.tmx")
+tmx_data_b = load_pygame("maps/map B200-A200 x4.tmx")
 TILE_SIZE = tmx_data.tileheight
-#chemins = [tmx_data.layers[6]]
 layers_3 =  {
     "sol3": tmx_data.layers[0],
     "COULOIR_A": tmx_data.layers[1],
@@ -68,32 +76,18 @@ layers_2 = {
     "murs2": tmx_data_b.layers[15],
     
 }
-chemins = [tmx_data.layers[12]]
-#print(layers["sol"])
-
 map_width = tmx_data.width * TILE_SIZE
 map_height = tmx_data.height * TILE_SIZE
 offset_x = (screen.get_width() - map_width) // 2
 offset_y = (screen.get_height() - map_height) // 2
-#resultat = tmx_data.layers
 
-# Définir la police et le texte à afficherSSS
-font = pygame.font.SysFont(None, 36)
-#menu déroulant
+
+#bouttons
 menu_ouvert = False
-menu_deroulant = pygame.Rect(50, 50, 200, 40)
-
-
-
-
-
-
-
-
 coodonnées_souris=classes.Button(10,10,200,40,)
-etage_sup=classes.Button(1386, 934, 40, 40, "↑",font=pygame.font.Font("DejaVuSans.ttf", 15))
-etage_inf=classes.Button(1386, 934+40, 40, 40, "↓",font=pygame.font.Font("DejaVuSans.ttf", 15))
-ui=classes.Button(1529,236, 340, 200,text="",font=pygame.font.Font("DejaVuSans.ttf", 15))
+etage_sup=classes.Button(1386, 934, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+etage_inf=classes.Button(1386, 934+40, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui=classes.Button(1529,236, 340, 200,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "A301","A302","A303","A304","A305","A306","A307","A308",
 
@@ -104,22 +98,13 @@ menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "B311","B312","B313","B314","B315","B316","B317","B318","B319","B320",
     "B321","B322","B323","B324","B325",""
 ])
-
 bouton_options_x = screen.get_width() - 250
 bouton_options_y = 50
 bouton_options_largeur = 200
 bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
-chemins4=[]
-chemins3 = []
-chemins2 = []
-chemins1 = []
-chemins=[chemins1, chemins2, chemins3, chemins4]
 
-
-#resultat_chemin = None
-#resultat_distance = None
-
+#fonctions
 def gps(depart, arrivee):
     global chemins
     global chemins1
@@ -162,19 +147,17 @@ def gps(depart, arrivee):
             #chemins2.append(layers_3[s])
     chemins=[chemins1, chemins2, chemins3]
     return resultat
-
 def fonctionalitees(depart,arrivee):
     _, distance =algo.dijkstra(depart, arrivee)
     return {"calories" : str(distance*0.9),
             "temps" :str(distance*9//60) + " : " + str(distance*9%60)
 
     }
-
-
-clock = pygame.time.Clock()
-etage = 3
 gps(None,None)
+
+#boucle principale
 while running:
+    #pages d'accueil et d'itinéraire
     if etat == "accueil":
         pygame.mixer.music.stop()
         pygame.mixer.music.play(-1)
@@ -191,7 +174,6 @@ while running:
         pygame.draw.rect(screen, (220, 220, 255), (screen.get_width()//2 - 200, 450, 400, 80))
         opt_txt = pygame.font.SysFont(None, 60).render("OPTIONS", True, (0, 0, 0))
         screen.blit(opt_txt, (screen.get_width()//2 - opt_txt.get_width()//2, 475))
-
     elif etat == "itinéraire":
         screen.fill((255, 255, 255))
         
@@ -268,7 +250,8 @@ while running:
                     options_ouvert = False
                     son_clic.play()
                     print("Retour cliqué")
-
+    
+    # Affichage de l'itinéraire et du menu déroulant
     if etat == "itinéraire":
         
         etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
@@ -289,6 +272,8 @@ while running:
             menu_deroulant.open=False
         fonctions = str("calories : " + fonc['calories']) + "  " +"temps " + str(fonc["temps"]+" min")
         ui.draw(screen, top_left=10, top_right=10, bottom_left=10, bottom_right=10, text=fonctions)
+    
+    # Affichage du menu d'options
     if options_ouvert:
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
         
@@ -302,7 +287,7 @@ while running:
         texte_retour = font.render("Retour", True, (0, 0, 0))
         screen.blit(texte_retour, (retour_x + 40, retour_y + 12))
     
-    coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} self.y: {pygame.mouse.get_pos()[1]}")
+    coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} Y: {pygame.mouse.get_pos()[1]}")
+    
     pygame.display.flip()
-    clock.tick(60) 
 pygame.quit()

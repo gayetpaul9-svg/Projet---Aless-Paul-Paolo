@@ -4,7 +4,7 @@ pygame.init()
 
 screen = pygame.display.set_mode()
 
-icone = pygame.image.load("verifier.png").convert_alpha()
+icone = pygame.image.load("assets/verifier.png").convert_alpha()
 icone = pygame.transform.scale(icone, (50, 50))
 class Button:
     def __init__(self, x, y, width, height, text=None,font =None):
