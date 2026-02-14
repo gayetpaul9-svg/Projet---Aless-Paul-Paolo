@@ -5,6 +5,7 @@ import algo
 import pygame 
 from pytmx.util_pygame import load_pygame
 import classes 
+import fonctions
 
 
 
@@ -32,11 +33,10 @@ fonc={
     'temps' : "0"
 }
 etage = 3
-chemins4=[]
-chemins3 = []
-chemins2 = []
 chemins1 = []
-chemins=[chemins1, chemins2, chemins3, chemins4]
+chemins2 = []
+chemins3 = []
+chemins = [chemins1, chemins2, chemins3]
 
 #importation des données de la carte
 tmx_data = load_pygame("maps/map B300 x4.tmx")
@@ -54,7 +54,7 @@ layers_3 =  {
     "ESCALIER_2": tmx_data.layers[8],
     "ESCALIER_3": tmx_data.layers[9],
     "ESCALIER_4": tmx_data.layers[10],
-    "ESCALIER_5": tmx_data.layers[11],
+    "ESCALIER_8": tmx_data.layers[11],
     "murs3": tmx_data.layers[12],
 }
 layers_2 = {
@@ -104,56 +104,8 @@ bouton_options_largeur = 200
 bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
 
-#fonctions
-def gps(depart, arrivee):
-    global chemins
-    global chemins1
-    global chemins2
-    global chemins3
-    global chemins4
-    if not depart or not arrivee:
-        print("Départ ou arrivée non défini.")
-        chemins3.append(tmx_data.layers[12])
-        chemins2.append(tmx_data_b.layers[15])
-        chemins=[chemins1, chemins2, chemins3]
-        return None
 
-    resultat, _ = algo.dijkstra(depart, arrivee)
-    print("Chemin trouvé :", resultat)
-    if resultat is None:
-        print("Aucun chemin trouvé par l'algorithme.")
-        return None
-    chemins3 = []
-    chemins2 = []
-    chemins1 = []
-    for s in resultat:
-        if not s:  # skip si string vide
-            continue
-        
-        last = s[-1]
-        
-        if 'A' <= last <= 'E' or last == 'N' or last.isdigit():  # les salles du couloir A à D et N vont dans chemins3
-            chemins3.append(layers_3[s])
-            chemins3.append(tmx_data.layers[12])  # ajouter les murs de l'étage 3
-        elif 'F' <= last <= 'M' or last.isdigit():  # les salles du couloir F à M vont dans chemins2
-            chemins2.append(layers_2[s])
-            chemins2.append(tmx_data_b.layers[15])  # ajouter les murs de l'étage 2
-        else:
-            pass
-        if last.isdigit():
-            chemins2.append(layers_2[s])
-        # les autres vont dans les deux catégories
-            #chemins3.append(layers_3[s])
-            #chemins2.append(layers_3[s])
-    chemins=[chemins1, chemins2, chemins3]
-    return resultat
-def fonctionalitees(depart,arrivee):
-    _, distance =algo.dijkstra(depart, arrivee)
-    return {"calories" : str(distance*0.9),
-            "temps" :str(distance*9//60) + " : " + str(distance*9%60)
-
-    }
-gps(None,None)
+_,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, layers_2, layers_3)
 
 #boucle principale
 while running:
@@ -177,7 +129,7 @@ while running:
     elif etat == "itinéraire":
         screen.fill((255, 255, 255))
         
-        # Draw the map tiles            
+        # Draw the map tiles         
         for m in range(1):
             for  layer in chemins[etage-1]:
                 for x, y, image in layer.tiles():
@@ -266,12 +218,12 @@ while running:
         if menu_deroulant.action==True:
             print("ok")
             #print(gps(depart_salle, arrivée_salle))
-            a=gps(classes.départ_salle, classes.arrivée_salle)
-            fonc=fonctionalitees(classes.départ_salle, classes.arrivée_salle)
+            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, layers_2, layers_3)
+            fonc=fonctions.fonctionnalitees(classes.départ_salle, classes.arrivée_salle)
             menu_deroulant.action=False
             menu_deroulant.open=False
-        fonctions = str("calories : " + fonc['calories']) + "  " +"temps " + str(fonc["temps"]+" min")
-        ui.draw(screen, top_left=10, top_right=10, bottom_left=10, bottom_right=10, text=fonctions)
+        fonctions_ = str("calories : " + fonc['calories']) + "  " +str("temps : " + fonc["temps"]+" min")
+        ui.draw(screen, top_left=10, top_right=10, bottom_left=10, bottom_right=10, text=fonctions_)
     
     # Affichage du menu d'options
     if options_ouvert:
