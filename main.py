@@ -66,7 +66,7 @@ layers_2 = {
     "ESCALIER_4": tmx_data_b.layers[4],
     "ESCALIER_5": tmx_data_b.layers[5],
     "ESCALIER_6": tmx_data_b.layers[6],
-    "EsCALIER_7": tmx_data_b.layers[7],
+    "ESCALIER_7": tmx_data_b.layers[7],
     "COULOIR_F": tmx_data_b.layers[8],
     "COULOIR_G": tmx_data_b.layers[9],
     "COULOIR_H": tmx_data_b.layers[10],
