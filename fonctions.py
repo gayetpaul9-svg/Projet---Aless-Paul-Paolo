@@ -66,6 +66,26 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2,
                 chemins1.append(layer1)
             if layer_cdi:
                 chemins_cdi.append(layer_cdi)
+    
+    # Rendre salle de départ et d'arrivée visibles
+    if depart in layers_3:
+        chemins3.append(layers_3[depart])
+    elif depart in layers_2:
+        chemins2.append(layers_2[depart])
+    elif depart in layers_1:
+        chemins1.append(layers_1[depart])
+    elif depart in layers_cdi:
+        chemins_cdi.append(layers_cdi[depart])
+    
+    if arrivee in layers_3:
+        chemins3.append(layers_3[arrivee])
+    elif arrivee in layers_2:
+        chemins2.append(layers_2[arrivee])
+    elif arrivee in layers_1:
+        chemins1.append(layers_1[arrivee])
+    elif arrivee in layers_cdi:
+        chemins_cdi.append(layers_cdi[arrivee])
+    
     chemins_cdi.append(tmx_data_c.layers[9])
     chemins1.append(tmx_data_d.layers[8])
     chemins2.append(tmx_data_b.layers[16])
