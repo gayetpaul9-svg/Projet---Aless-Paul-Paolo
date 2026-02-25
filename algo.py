@@ -25,7 +25,7 @@ graphe = {
     "A009": {"COULOIR_V": 1},
 
     "A005": {"COULOIR_T": 1},
-    "A003": {"COULOIR_T": 1},
+    "A003/A004": {"COULOIR_T": 1},
     "A002": {"COULOIR_T": 1},
 
     "A001": {"COULOIR_U": 1},
@@ -295,7 +295,7 @@ graphe = {
         "COULOIR_U": 2,
         "ESCALIER_6": 3,
         "A005": 1, 
-        "A003": 1,
+        "A003/A004": 1,
         "A002": 1,
     },
 
