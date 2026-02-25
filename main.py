@@ -5,9 +5,6 @@ from pytmx.util_pygame import load_pygame
 import classes 
 import fonctions
 
-
-
-
 #initialisation pygame
 pygame.init()
 pygame.mixer.init()
@@ -57,6 +54,31 @@ layers_3 =  {
     "ESCALIER_4": tmx_data.layers[10],
     "ESCALIER_8": tmx_data.layers[11],
     "murs3": tmx_data.layers[12],
+    "A301": tmx_data.layers[13],
+    "A302": tmx_data.layers[14],
+    "A303": tmx_data.layers[15],
+    "A304": tmx_data.layers[16],
+    "A305": tmx_data.layers[17],
+    "A306": tmx_data.layers[18],
+    "A307": tmx_data.layers[19],
+    "A308": tmx_data.layers[20],
+    "A309": tmx_data.layers[21],
+    "A310": tmx_data.layers[22],
+    "B311": tmx_data.layers[23],
+    "B312": tmx_data.layers[24],
+    "B313": tmx_data.layers[25],
+    "B314": tmx_data.layers[26],
+    "B315": tmx_data.layers[27],
+    "B316": tmx_data.layers[28],
+    "B317": tmx_data.layers[29],
+    "B318": tmx_data.layers[30],
+    "B319": tmx_data.layers[31],
+    "B320": tmx_data.layers[32],
+    "B321": tmx_data.layers[33],
+    "B322": tmx_data.layers[34],
+    "B323": tmx_data.layers[35],
+    "B324": tmx_data.layers[36],
+    "B325": tmx_data.layers[37],
 }
 layers_2 = {
     "sol2": tmx_data_b.layers[0],
@@ -76,7 +98,29 @@ layers_2 = {
     "COULOIR_L": tmx_data_b.layers[14],
     "COULOIR_M": tmx_data_b.layers[15],
     "murs2": tmx_data_b.layers[16],
-    
+    "A201": tmx_data_b.layers[17],
+    "A202": tmx_data_b.layers[18],
+    "A203": tmx_data_b.layers[19],
+    "A204": tmx_data_b.layers[20],
+    "A205": tmx_data_b.layers[21],
+    "A206": tmx_data_b.layers[22],
+    "A207": tmx_data_b.layers[23],
+    "A208": tmx_data_b.layers[24],
+    "A209": tmx_data_b.layers[25],
+    "A210": tmx_data_b.layers[26],
+    "A211": tmx_data_b.layers[27],
+    "A212": tmx_data_b.layers[28],
+    "B213": tmx_data_b.layers[29],
+    "B214": tmx_data_b.layers[30],
+    "B215": tmx_data_b.layers[31],
+    "B216": tmx_data_b.layers[32],
+    "B217": tmx_data_b.layers[33],
+    "B218": tmx_data_b.layers[34],
+    "B219": tmx_data_b.layers[35],
+    "B220": tmx_data_b.layers[36],
+    "B221": tmx_data_b.layers[37],
+    "B222": tmx_data_b.layers[38],
+    "B223": tmx_data_b.layers[39],
 }
 layers_1 = {
     "sol1": tmx_data_b.layers[0],
@@ -88,6 +132,13 @@ layers_1 = {
     "ESCALIER_7": tmx_data_d.layers[6],
     "ESCALIER_9": tmx_data_d.layers[7],
     "murs1": tmx_data_d.layers[8],
+    "A102": tmx_data_d.layers[9],
+    "A103": tmx_data_d.layers[10],
+    "A104": tmx_data_d.layers[11],
+    "A105": tmx_data_d.layers[12],
+    "A106": tmx_data_d.layers[13],
+    "A107": tmx_data_d.layers[14],
+    "A108": tmx_data_d.layers[15],
 }
 layers_cdi = {
     "sol_cdi": tmx_data_c.layers[0],
@@ -99,7 +150,22 @@ layers_cdi = {
     "COULOIR_X": tmx_data_c.layers[6],
     "ESCALIER_6": tmx_data_c.layers[7],
     "ESCALIER_9": tmx_data_c.layers[8],
-    "murs_cdi": tmx_data_c.layers[9],}
+    "murs_cdi": tmx_data_c.layers[9],
+    "A001": tmx_data_c.layers[10],
+    "A002": tmx_data_c.layers[11],
+    "A003": tmx_data_c.layers[12],
+    "A004": tmx_data_c.layers[13],
+    "A005": tmx_data_c.layers[14],
+    "A006": tmx_data_c.layers[15],
+    "A007": tmx_data_c.layers[16],
+    "A008": tmx_data_c.layers[17],
+    "A009": tmx_data_c.layers[18],
+    "A010": tmx_data_c.layers[19],
+    "A011": tmx_data_c.layers[20],
+    "A012": tmx_data_c.layers[21],
+    "A013": tmx_data_c.layers[22],
+    "A014": tmx_data_c.layers[23],
+}
 map_width = tmx_data.width * TILE_SIZE
 map_height = tmx_data.height * TILE_SIZE
 offset_x = (screen.get_width() - map_width) // 2
