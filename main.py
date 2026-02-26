@@ -178,7 +178,7 @@ menu_ouvert = False
 coodonnées_souris=classes.Button(10,10,200,40,)
 etage_sup=classes.Button(1386, 934, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 etage_inf=classes.Button(1386, 934+40, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-ui=classes.Button(1529,236, 340, 200,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui=classes.Button(1529,236, 340, 100,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "A301","A302","A303","A304","A305","A306","A307","A308",
 
@@ -196,6 +196,8 @@ bouton_options_y = 50
 bouton_options_largeur = 200
 bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
+bat_a=classes.Button(1472, 934, 200, 80)
+bat_b=classes.Button(1677, 934, 200, 80)
 
 
 _,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi)
@@ -253,6 +255,10 @@ while running:
                     etat = "accueil"
                 else:
                     running = False
+            if e.key == pygame.K_UP and etat == "itinéraire":
+                etage = min(etage + 1, 4)
+            if e.key == pygame.K_DOWN and etat == "itinéraire":
+                etage = max(etage - 1, 1)
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             mx, my = e.pos
     
@@ -298,10 +304,17 @@ while running:
     
     # Affichage de l'itinéraire et du menu déroulant
     if etat == "itinéraire":
-        
+        if etage == 2:
+            bat_a.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Bâtiment : A",color=(240, 240, 240))
+            bat_b.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Bâtiment : B",color=(240, 240, 240))
+        else:
+            bat_a.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Bâtiment : A",color=(200, 200, 200))
+            bat_b.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Bâtiment : B",color=(200, 200, 200))
         etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
         etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
         
+       
+
         menu_deroulant.draw(screen, font)
         menu_deroulant.survol(pygame.mouse.get_pos())
         

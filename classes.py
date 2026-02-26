@@ -17,11 +17,13 @@ class Button:
             self.font = pygame.font.SysFont(None, 36)
         else:
             self.font=font
-    def draw(self, screen, top_left, top_right, bottom_right, bottom_left, text=None,font=None):
+    def draw(self, screen, top_left, top_right, bottom_right, bottom_left, text=None,font=None, color=None):
         if text is not None:
             self.text = text
         if font is not None:
             self.font=font
+        if color is not None:
+            self.color = color
         pygame.draw.rect(
             screen, self.color, self.rect, border_radius=0,
             border_top_left_radius=top_left,
