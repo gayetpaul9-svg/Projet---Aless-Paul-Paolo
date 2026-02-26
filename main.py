@@ -18,6 +18,8 @@ son_clic = pygame.mixer.Sound("assets/effet_sonore.mp3")
 font = pygame.font.SysFont(None, 36)
 clock = pygame.time.Clock()
 clock.tick(60)
+info = pygame.display.Info()
+
 
 # Variables globales
 etat = "accueil"
@@ -178,7 +180,7 @@ menu_ouvert = False
 coodonnées_souris=classes.Button(10,10,200,40,)
 etage_sup=classes.Button(1386, 934, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 etage_inf=classes.Button(1386, 934+40, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-ui=classes.Button(1529,236, 340, 100,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui=classes.Button(info.current_w-340-50,236, 340, 100,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "A301","A302","A303","A304","A305","A306","A307","A308",
 
