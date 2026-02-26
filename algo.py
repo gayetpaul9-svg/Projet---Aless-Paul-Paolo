@@ -89,6 +89,16 @@ graphe = {
     "B222": {"COULOIR_L": 1},
     "B223": {"COULOIR_L": 1},
 
+    "B111": {"COULOIR_A1": 1},
+    "B112": {"COULOIR_A1": 1},
+    "B113": {"COULOIR_A1": 1},
+    "B114": {"COULOIR_D1": 1},
+    "B115": {"COULOIR_D1": 1},
+    "B116": {"COULOIR_Y": 1},
+    "B117": {"COULOIR_Y": 1},
+    "B118": {"COULOIR_Y": 1},
+
+
     "COULOIR_A": {
         "A301": 1,
         "A302": 1,
@@ -160,6 +170,7 @@ graphe = {
     "ESCALIER_3": {
         "COULOIR_C": 3,
         "COULOIR_I": 3,
+        "COULOIR_B1": 3,
 
     },# type: ignore
 
@@ -181,6 +192,11 @@ graphe = {
 
     "ESCALIER_7": {
         "COULOIR_R": 3,
+    },# type: ignore
+
+    "ESCALIER_8": {
+        "COULOIR_L": 3,
+        "COULOIR_E1": 3,
     },# type: ignore
 
     "ESCALIER_9": {
@@ -250,6 +266,7 @@ graphe = {
         "COULOIR_K": 2,
         "COULOIR_M": 2,
         "ESCALIER_5": 3,
+        "ESCALIER_8": 3,
     },
 
     "COULOIR_M": {
@@ -327,6 +344,50 @@ graphe = {
         "A011": 1,
         "A010": 1,
     },
+
+    "COULOIR_Y": {
+        "COULOIR_Z": 2,
+        "B116": 1,
+        "B117": 1,
+        "B118": 1,
+    },
+
+    "COULOIR_Z": {
+        "COULOIR_Y": 2,
+        "COULOIR_A1": 2,
+        "COULOIR_C1": 2,
+    },
+
+    "COULOIR_A1": {
+        "COULOIR_Z": 2,
+        "COULOIR_B1": 2,
+        "B113": 1,
+        "B112": 1,
+        "B111": 1,
+    },
+
+    "COULOIR_B1": {
+        "COULOIR_A1": 2,
+        "ESCALIER_3": 3,
+    },
+
+    "COULOIR_C1": {
+        "COULOIR_Z": 2,
+        "COULOIR_D1": 2,
+    },
+
+    "COULOIR_D1": {
+        "COULOIR_E1": 2,
+        "COULOIR_C1": 2,
+        "B114": 1,
+        "B115": 1,
+    },
+
+    "COULOIR_E1": {
+        "COULOIR_D1": 2,
+        "ESCALIER_8": 3,
+    },
+
 }
 
 def dijkstra(depart, arrivee):
