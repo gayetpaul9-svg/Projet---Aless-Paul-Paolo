@@ -17,7 +17,7 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2,
         chemins1.append(tmx_data_d.layers[8])
         chemins_cdi.append(tmx_data_c.layers[9])
         chemins3.append(tmx_data.layers[12])
-        chemins2.append(tmx_data_b.layers[16])
+        chemins2.append(tmx_data_b.layers[17])
         chemins = [chemins_cdi, chemins1, chemins2, chemins3]
         print("chemins :", chemins)
         return None, chemins
@@ -44,6 +44,7 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2,
         # Couloir F à M
         elif 'F' <= last <= 'M':
             chemins2.append(layers_2[s])
+            print("Chemin ajouté à chemins2 :", layers_2[s])
 
         elif 'O' <= last <= 'R':
             chemins1.append(layers_1[s])
@@ -88,7 +89,7 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2,
     
     chemins_cdi.append(tmx_data_c.layers[9])
     chemins1.append(tmx_data_d.layers[8])
-    chemins2.append(tmx_data_b.layers[16])
+    chemins2.append(tmx_data_b.layers[17])
     chemins3.append(tmx_data.layers[12])
     chemins = [chemins_cdi,chemins1, chemins2, chemins3]
     print(chemins)
