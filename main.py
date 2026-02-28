@@ -4,6 +4,7 @@ import pygame
 from pytmx.util_pygame import load_pygame
 import classes 
 import fonctions
+from layers import layers_1, layers_2, layers_3, layers_cdi
 
 #initialisation pygame
 pygame.init()
@@ -42,133 +43,6 @@ tmx_data_b = load_pygame("maps/map B200-A200 x4.tmx")
 tmx_data_c = load_pygame("maps/map CDI.tmx")
 tmx_data_d = load_pygame("maps/map A100.tmx")
 TILE_SIZE = tmx_data.tileheight
-layers_3 =  {
-    "sol3": tmx_data.layers[0],
-    "COULOIR_A": tmx_data.layers[1],
-    "COULOIR_B": tmx_data.layers[2],
-    "COULOIR_N": tmx_data.layers[3],
-    "COULOIR_C": tmx_data.layers[4],
-    "COULOIR_D": tmx_data.layers[5],
-    "COULOIR_E": tmx_data.layers[6],
-    "ESCALIER_1": tmx_data.layers[7],
-    "ESCALIER_2": tmx_data.layers[8],
-    "ESCALIER_3": tmx_data.layers[9],
-    "ESCALIER_4": tmx_data.layers[10],
-    "ESCALIER_8": tmx_data.layers[11],
-    "murs3": tmx_data.layers[12],
-    "A301": tmx_data.layers[13],
-    "A302": tmx_data.layers[14],
-    "A303": tmx_data.layers[15],
-    "A304": tmx_data.layers[16],
-    "A305": tmx_data.layers[17],
-    "A306": tmx_data.layers[18],
-    "A307": tmx_data.layers[19],
-    "A308": tmx_data.layers[20],
-    "A309": tmx_data.layers[21],
-    "A310": tmx_data.layers[22],
-    "B311": tmx_data.layers[23],
-    "B312": tmx_data.layers[24],
-    "B313": tmx_data.layers[25],
-    "B314": tmx_data.layers[26],
-    "B315": tmx_data.layers[27],
-    "B316": tmx_data.layers[28],
-    "B317": tmx_data.layers[29],
-    "B318": tmx_data.layers[30],
-    "B319": tmx_data.layers[31],
-    "B320": tmx_data.layers[32],
-    "B321": tmx_data.layers[33],
-    "B322": tmx_data.layers[34],
-    "B323": tmx_data.layers[35],
-    "B324": tmx_data.layers[36],
-    "B325": tmx_data.layers[37],
-}
-layers_2 = {
-    "sol2": tmx_data_b.layers[0],
-    "ESCALIER_1": tmx_data_b.layers[1],
-    "ESCALIER_2": tmx_data_b.layers[2],
-    "ESCALIER_3": tmx_data_b.layers[3],
-    "ESCALIER_4": tmx_data_b.layers[4],
-    "ESCALIER_5": tmx_data_b.layers[5],
-    "ESCALIER_6": tmx_data_b.layers[6],
-    "ESCALIER_7": tmx_data_b.layers[7],
-    "ESCALIER_8": tmx_data_b.layers[8],
-    "COULOIR_F": tmx_data_b.layers[9],
-    "COULOIR_G": tmx_data_b.layers[10],
-    "COULOIR_H": tmx_data_b.layers[11],
-    "COULOIR_I": tmx_data_b.layers[12],
-    "COULOIR_J": tmx_data_b.layers[13],
-    "COULOIR_K": tmx_data_b.layers[14],
-    "COULOIR_L": tmx_data_b.layers[15],
-    "COULOIR_M": tmx_data_b.layers[16],
-    "murs2": tmx_data_b.layers[17],
-    "A201": tmx_data_b.layers[18],
-    "A202": tmx_data_b.layers[19],
-    "A203": tmx_data_b.layers[20],
-    "A204": tmx_data_b.layers[21],
-    "A205": tmx_data_b.layers[22],
-    "A206": tmx_data_b.layers[23],
-    "A207": tmx_data_b.layers[24],
-    "A208": tmx_data_b.layers[25],
-    "A209": tmx_data_b.layers[26],
-    "A210": tmx_data_b.layers[27],
-    "A211": tmx_data_b.layers[28],
-    "A212": tmx_data_b.layers[29],
-    "B213": tmx_data_b.layers[30],
-    "B214": tmx_data_b.layers[31],
-    "B215": tmx_data_b.layers[32],
-    "B216": tmx_data_b.layers[33],
-    "B217": tmx_data_b.layers[34],
-    "B218": tmx_data_b.layers[35],
-    "B219": tmx_data_b.layers[36],
-    "B220": tmx_data_b.layers[37],
-    "B221": tmx_data_b.layers[38],
-    "B222": tmx_data_b.layers[39],
-    "B223": tmx_data_b.layers[40],
-}
-layers_1 = {
-    "sol1": tmx_data_b.layers[0],
-    "COULOIR_O": tmx_data_d.layers[1],
-    "COULOIR_P": tmx_data_d.layers[2],
-    "COULOIR_Q": tmx_data_d.layers[3],
-    "COULOIR_R": tmx_data_d.layers[4],
-    "ESCALIER_6": tmx_data_d.layers[5],
-    "ESCALIER_7": tmx_data_d.layers[6],
-    "ESCALIER_9": tmx_data_d.layers[7],
-    "murs1": tmx_data_d.layers[8],
-    "A102": tmx_data_d.layers[9],
-    "A103": tmx_data_d.layers[10],
-    "A104": tmx_data_d.layers[11],
-    "A105": tmx_data_d.layers[12],
-    "A106": tmx_data_d.layers[13],
-    "A107": tmx_data_d.layers[14],
-    "A108": tmx_data_d.layers[15],
-}
-layers_cdi = {
-    "sol_cdi": tmx_data_c.layers[0],
-    "COULOIR_S": tmx_data_c.layers[1],
-    "COULOIR_T": tmx_data_c.layers[2],
-    "COULOIR_U": tmx_data_c.layers[3],
-    "COULOIR_V": tmx_data_c.layers[4],
-    "COULOIR_W": tmx_data_c.layers[5],
-    "COULOIR_X": tmx_data_c.layers[6],
-    "ESCALIER_6": tmx_data_c.layers[7],
-    "ESCALIER_9": tmx_data_c.layers[8],
-    "murs_cdi": tmx_data_c.layers[9],
-    "A001": tmx_data_c.layers[10],
-    "A002": tmx_data_c.layers[11],
-    "A003": tmx_data_c.layers[12],
-    "A004": tmx_data_c.layers[13],
-    "A005": tmx_data_c.layers[14],
-    "A006": tmx_data_c.layers[15],
-    "A007": tmx_data_c.layers[16],
-    "A008": tmx_data_c.layers[17],
-    "A009": tmx_data_c.layers[18],
-    "A010": tmx_data_c.layers[19],
-    "A011": tmx_data_c.layers[20],
-    "A012": tmx_data_c.layers[21],
-    "A013": tmx_data_c.layers[22],
-    "A014": tmx_data_c.layers[23],
-}
 map_width = tmx_data.width * TILE_SIZE
 map_height = tmx_data.height * TILE_SIZE
 offset_x = (screen.get_width() - map_width) // 2
@@ -178,9 +52,10 @@ offset_y = (screen.get_height() - map_height) // 2
 #bouttons
 menu_ouvert = False
 coodonnées_souris=classes.Button(10,10,200,40,)
-etage_sup=classes.Button(1386, 934, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-etage_inf=classes.Button(1386, 934+40, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-ui=classes.Button(info.current_w-340-50,236, 340, 100,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+etage_inf=classes.Button(1386, info.current_h-145+40, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "A301","A302","A303","A304","A305","A306","A307","A308",
 
@@ -198,8 +73,8 @@ bouton_options_y = 50
 bouton_options_largeur = 200
 bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
-bat_a=classes.Button(1472, 934, 200, 80)
-bat_b=classes.Button(1677, 934, 200, 80)
+bat_a=classes.Button(info.current_w-447, info.current_h-145, 200, 80)
+bat_b=classes.Button(info.current_w-447+200+5, info.current_h-145, 200, 80)
 
 
 _,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi)
@@ -289,6 +164,13 @@ while running:
                     etage = max(etage - 1, 1)
                     son_clic.play()
                 
+                if e.pos[0] >= 1386 and e.pos[0] <= 1426 and e.pos[1] >= 934 and e.pos[1] <= 974:
+                    son_clic.play()
+
+
+
+
+                    
                 
                 # Bouton Options du gps
                 if bouton_options_x <= mx <= bouton_options_x + bouton_options_largeur and bouton_options_y <= my <= bouton_options_y + bouton_options_hauteur:
@@ -331,8 +213,8 @@ while running:
             menu_deroulant.action=False
             menu_deroulant.open=False
         fonctions_ = str("calories : " + fonc['calories']) + "  " +str("temps : " + fonc["temps"]+" min")
-        ui.draw(screen, top_left=10, top_right=10, bottom_left=10, bottom_right=10, text=fonctions_)
-    
+        ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
+        ui_2.draw(screen, top_left=0, top_right=0, bottom_left=10, bottom_right=10, text=fonctions_)
     # Affichage du menu d'options
     if options_ouvert:
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
