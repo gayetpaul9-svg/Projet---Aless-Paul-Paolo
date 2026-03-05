@@ -3,6 +3,7 @@ tmx_data = load_pygame("maps/map B300 x4.tmx")
 tmx_data_b = load_pygame("maps/map B200-A200 x4.tmx")
 tmx_data_c = load_pygame("maps/map CDI.tmx")
 tmx_data_d = load_pygame("maps/map A100.tmx")
+tmx_data_e = load_pygame("maps/B100.tmx")
 layers_3 =  {
     "sol3": tmx_data.layers[0],
     "COULOIR_A": tmx_data.layers[1],
@@ -129,4 +130,25 @@ layers_cdi = {
     "A012": tmx_data_c.layers[21],
     "A013": tmx_data_c.layers[22],
     "A014": tmx_data_c.layers[23],
+}
+layers_1B = {
+    "sol": tmx_data_e.layers[0],
+    "COULOIR_Y": tmx_data_e.layers[1],
+    "COULOIR_Z": tmx_data_e.layers[2],
+    "COULOIR_A1": tmx_data_e.layers[3],
+    "COULOIR_B1": tmx_data_e.layers[4],
+    "COULOIR_C1": tmx_data_e.layers[5],
+    "COULOIR_D1": tmx_data_e.layers[6],
+    "COULOIR_E1": tmx_data_e.layers[7],
+    "ESCALIER_3": tmx_data_e.layers[8],
+    "ESCALIER_8": tmx_data_e.layers[9],
+    "murs": tmx_data_e.layers[10],
+    "B111": tmx_data_e.layers[11],
+    "B112": tmx_data_e.layers[12],
+    "B113": tmx_data_e.layers[13],
+    "B114": tmx_data_e.layers[14],
+    "B115": tmx_data_e.layers[15],
+    "B116": tmx_data_e.layers[16],
+    "B117": tmx_data_e.layers[17],
+    "B118": tmx_data_e.layers[18],
 }

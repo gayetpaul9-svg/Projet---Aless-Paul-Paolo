@@ -5,7 +5,7 @@ from pytmx.util_pygame import load_pygame
 import classes 
 import fonctions
 import algo_long
-from layers import layers_1, layers_2, layers_3, layers_cdi
+from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B
 
 #initialisation pygame
 pygame.init()
@@ -24,6 +24,7 @@ info = pygame.display.Info()
 
 
 # Variables globales
+long=False
 etat = "accueil"
 running = True
 saisie_active = False
@@ -34,7 +35,8 @@ fonc={
     'calories' : "0",
     'temps' : "0"
 }
-etage = 4
+etage = 5
+chemins1B = []
 chemins1 = []
 chemins_cdi = []
 chemins2 = []
@@ -47,6 +49,7 @@ tmx_data = load_pygame("maps/map B300 x4.tmx")
 tmx_data_b = load_pygame("maps/map B200-A200 x4.tmx")
 tmx_data_c = load_pygame("maps/map CDI.tmx")
 tmx_data_d = load_pygame("maps/map A100.tmx")
+tmx_data_e = load_pygame("maps/B100.tmx")
 TILE_SIZE = tmx_data.tileheight
 map_width = tmx_data.width * TILE_SIZE
 map_height = tmx_data.height * TILE_SIZE
@@ -70,6 +73,8 @@ menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "A211","A102","A103", "A104","A105","A106","A001","A002","A003","A004",
     "A005","A006","A007","A008","A010","A011","A012","A013","A014",
 
+    "B111","B112","B113","B114","B115","B116","B117","B118",
+
     "B214","B215","B216","B217","B218","B219","B220","B221","B222","B223",
 
     "B311","B312","B313","B314","B315","B316","B317","B318","B319","B320",
@@ -84,7 +89,7 @@ bat_a=classes.Button(info.current_w-447, info.current_h-145, 200, 80)
 bat_b=classes.Button(info.current_w-447+200+5, info.current_h-145, 200, 80)
 
 
-_,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi, mode_long)
+_,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B)
 
 #boucle principale
 while running:
@@ -131,7 +136,7 @@ while running:
         elif e.type == pygame.MOUSEWHEEL:
             menu_deroulant.offset_y += e.y *20
             menu_deroulant.offset_y = min(-189, menu_deroulant.offset_y)
-            menu_deroulant.offset_y = max(-2189, menu_deroulant.offset_y)
+            menu_deroulant.offset_y = max(-2429, menu_deroulant.offset_y)
             menu_deroulant.scroll_options()
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:       
@@ -145,7 +150,10 @@ while running:
                 etage = max(etage - 1, 1)
             if e.key == pygame.K_BACKSPACE and saisie_active:
                 texte_saisi = texte_saisi[:-1]
-            if e.key == pygame.K_RETURN and saisie_active and
+            if e.key == pygame.K_RETURN and saisie_active and infos_cours_result:
+                print("Salle sélectionnée :", texte_saisi)
+                classes.départ_salle = texte_saisi
+                saisie_active = False
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             mx, my = e.pos
     
@@ -177,11 +185,6 @@ while running:
                 if e.pos[0] >= 1386 and e.pos[0] <= 1426 and e.pos[1] >= 934 and e.pos[1] <= 974:
                     son_clic.play()
 
-
-
-
-                    
-                
                 # Bouton Options du gps
                 if bouton_options_x <= mx <= bouton_options_x + bouton_options_largeur and bouton_options_y <= my <= bouton_options_y + bouton_options_hauteur:
                     options_ouvert = not options_ouvert
