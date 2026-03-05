@@ -11,7 +11,7 @@ def plus_long_chemin(depart, arrivee):
     meilleur_distance = 0
     salles_visitees = [depart]
 
-    # Fonction qui explore le graphe récursivement
+    # Fonction qui explore le graphe 
     def explorer(salle_actuelle, chemin_actuel, distance_actuelle):
         
         # On a accès aux variables du dessus grâce à "nonlocal"
@@ -23,7 +23,7 @@ def plus_long_chemin(depart, arrivee):
                 meilleur_chemin = chemin_actuel.copy()
             return
 
-        #salles voisines accessibles depuis la salle actuelle
+        #salles voisines accessibles depuis la salle actuel
         for voisin, poids in graphe[salle_actuelle].items():
             if voisin not in salles_visitees:
                 salles_visitees.append(voisin)
@@ -126,4 +126,5 @@ def fonctionnalitees_long(depart, arrivee):
     return {
         "calories": str(distance * 0.9),
         "temps": str(distance * 9 // 60) + " : " + str(distance * 9 % 60)
+
     }
