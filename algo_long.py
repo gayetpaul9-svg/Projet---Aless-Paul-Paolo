@@ -59,6 +59,56 @@ def chemin_aleatoire_unique(graphe, depart, arrivee, intermediaire=None):
     chemin_intermediaire = chemin_total[1:-1] if len(chemin_total) > 2 else []
 
     return chemin_intermediaire, distance_total
+
+graphe = algo.graphe
+
+def plus_long_chemin(depart, arrivee):
+    
+    if depart not in graphe or arrivee not in graphe:
+        return None, 0
+
+    meilleur_chemin = []
+    meilleur_distance = 0
+    salles_visitees = [depart]
+
+    # Fonction qui explore le graphe 
+    def explorer(salle_actuelle, chemin_actuel, distance_actuelle):
+        
+        # On a accès aux variables du dessus grâce à "nonlocal"
+        nonlocal meilleur_chemin, meilleur_distance
+
+        if salle_actuelle == arrivee:
+            if distance_actuelle > meilleur_distance:
+                meilleur_distance = distance_actuelle
+                meilleur_chemin = chemin_actuel.copy()
+            return
+
+        #salles voisines accessibles depuis la salle actuel
+        for voisin, poids in graphe[salle_actuelle].items():
+            if voisin not in salles_visitees:
+                salles_visitees.append(voisin)
+                chemin_actuel.append(voisin)
+
+                # On continue d'explorer depuis ce voisin
+                explorer(voisin, chemin_actuel, distance_actuelle + poids)
+
+                # On revient en arrière : on retre le voisin du chemin et des visitées
+                # pour pouvoir explorer d'autres chemins
+                chemin_actuel.pop()
+                salles_visitees.remove(voisin)
+
+    # on lanc l'exploration depuis le depart
+    explorer(depart, [depart], 0)
+
+    if meilleur_chemin == []:
+        return None, 0
+
+    # on retire le depart et l'arrivée du chemin (comme dans algo.py)
+    chemin_intermediaire = meilleur_chemin[1:-1] if len(meilleur_chemin) > 2 else []
+
+    return chemin_intermediaire, meilleur_distance
+
+
 def gps_long(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi):
 
     chemins1 = []

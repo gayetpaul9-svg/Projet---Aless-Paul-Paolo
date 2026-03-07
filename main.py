@@ -26,6 +26,9 @@ info = pygame.display.Info()
 # Variables globales
 etat = "accueil"
 running = True
+saisie_active = False
+texte_saisi = ""
+infos_cours_result = None
 options_ouvert = False
 fonc={
     'calories' : "0",
@@ -140,6 +143,9 @@ while running:
                 etage = min(etage + 1, 4)
             if e.key == pygame.K_DOWN and etat == "itinéraire":
                 etage = max(etage - 1, 1)
+            if e.key == pygame.K_BACKSPACE and saisie_active:
+                texte_saisi = texte_saisi[:-1]
+            if e.key == pygame.K_RETURN and saisie_active and
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             mx, my = e.pos
     
@@ -194,6 +200,10 @@ while running:
                     son_clic.play()
                     print("Retour cliqué")
     
+        elif e.type == pygame.TEXTINPUT:
+            if saisie_active:
+                texte_saisi += e.text
+
     # Affichage de l'itinéraire et du menu déroulant
     if etat == "itinéraire":
         if etage == 2:
@@ -216,19 +226,19 @@ while running:
         if menu_deroulant.action==True:
             print("ok")
             #print(gps(depart_salle, arrivée_salle))
-            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi, mode_long)
+            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi)
             fonc=fonctions.fonctionnalitees(classes.départ_salle, classes.arrivée_salle)
             menu_deroulant.action=False
             menu_deroulant.open=False
+            saisie_active = True
+            texte_saisi = ""
+            infos_cours_result = None
         fonctions_ = str("calories : " + fonc['calories']) + "  " +str("temps : " + fonc["temps"]+" min")
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=10, bottom_right=10, text=fonctions_)
-
-        
     # Affichage du menu d'options
     if options_ouvert:
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
-        bouton_mode_long.draw(screen, top_left=10, top_right=10, bottom_left=10, bottom_right=10)
         
         texte = font.render("Menu Options", True, (255, 255, 255))
         screen.blit(texte, (screen.get_width()//2 - 80, screen.get_height()//2 - 50))
