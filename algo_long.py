@@ -1,4 +1,64 @@
 import algo #type: ignore
+import random
+
+graphe = algo.graphe
+
+import random
+
+def chemin_aleatoire_unique(graphe, depart, arrivee, intermediaire=None):
+    """
+    Trouve un chemin aléatoire de depart à arrivee sans repasser par le même endroit,
+    avec possibilité de passer par une ou plusieurs salles intermédiaires.
+    Backtracking uniquement si bloqué.
+    """
+
+    def trouver_chemin(d, a, interdit=set()):
+        """DFS aléatoire avec backtracking minimal"""
+        chemin = [d]
+        visites = {d} | interdit
+        distance = 0
+
+        while chemin[-1] != a:
+            current = chemin[-1]
+            voisins_possibles = [v for v in graphe[current] if v not in visites]
+
+            if voisins_possibles:
+                voisin = random.choice(voisins_possibles)
+                chemin.append(voisin)
+                visites.add(voisin)
+                distance += graphe[current][voisin]
+            else:
+                # Backtracking uniquement si bloqué
+                if len(chemin) == 1:
+                    return None, 0  # impossible d'avancer
+                chemin.pop()
+                # recalcul distance
+                distance = sum(graphe[chemin[i]][chemin[i+1]] for i in range(len(chemin)-1))
+        return chemin, distance
+
+    # Si on a une étape intermédiaire
+    if intermediaire:
+        # 1️⃣ Chemin du départ à l'intermédiaire
+        chemin1, dist1 = trouver_chemin(depart, intermediaire)
+        if chemin1 is None:
+            return None, 0
+
+        # 2️⃣ Chemin de l'intermédiaire à l'arrivée
+        # On interdit de repasser par les salles déjà visitée
+        chemin2, dist2 = trouver_chemin(intermediaire, arrivee, set(chemin1))
+        if chemin2 is None:
+            return None, 0
+
+        # Combiner les chemins
+        chemin_total = chemin1 + chemin2[1:]
+        distance_total = dist1 + dist2
+    else:
+        chemin_total, distance_total = trouver_chemin(depart, arrivee)
+
+    # Retirer le départ et l'arrivée pour garder les salles intermédiaires
+    chemin_intermediaire = chemin_total[1:-1] if len(chemin_total) > 2 else []
+
+    return chemin_intermediaire, distance_total
 
 graphe = algo.graphe
 

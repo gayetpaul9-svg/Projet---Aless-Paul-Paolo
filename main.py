@@ -4,6 +4,7 @@ import pygame
 from pytmx.util_pygame import load_pygame
 import classes 
 import fonctions
+import algo_long
 from layers import layers_1, layers_2, layers_3, layers_cdi
 
 #initialisation pygame
@@ -39,6 +40,7 @@ chemins_cdi = []
 chemins2 = []
 chemins3 = []
 chemins = [chemins1, chemins2, chemins3]
+mode_long = False
 
 #importation des données de la carte
 tmx_data = load_pygame("maps/map B300 x4.tmx")
@@ -59,6 +61,8 @@ etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.fon
 etage_inf=classes.Button(1386, info.current_h-145+40, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+bouton_mode_long = classes.Button(screen.get_width() // 2 - 160, screen.get_height() // 2 - 20, 320, 50, 
+                                  "Itinéraire le plus long", font=pygame.font.Font("assets/DejaVuSans.ttf", 25))
 menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "A301","A302","A303","A304","A305","A306","A307","A308",
 
@@ -80,7 +84,7 @@ bat_a=classes.Button(info.current_w-447, info.current_h-145, 200, 80)
 bat_b=classes.Button(info.current_w-447+200+5, info.current_h-145, 200, 80)
 
 
-_,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi)
+_,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi, mode_long)
 
 #boucle principale
 while running:
@@ -186,6 +190,10 @@ while running:
             if options_ouvert:
                 retour_x = screen.get_width()//2 - 80
                 retour_y = screen.get_height()//2 + 40
+
+                if bouton_mode_long.is_clicked(e.pos):
+                    mode_long = not mode_long
+                    son_clic.play()
                     
                 if retour_x <= mx <= retour_x + 160 and retour_y <= my <= retour_y + 50:
                     options_ouvert = False

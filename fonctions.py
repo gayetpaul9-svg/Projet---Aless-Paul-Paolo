@@ -1,10 +1,101 @@
 import algo
+import algo_long
+from algo import graphe
+
+# =========================
+# SELECTION ETAPE INTERMEDIAIRE LOINTAINE
+# =========================
+
+def dijkstra_inverse(arrivee):
+    """
+    Calcule les distances de TOUTES les salles vers l'arrivée.
+    Utilise Dijkstra en inversant la direction d graphe.
+    Retourne un dictionnaire {salle: distance_vers_arrivee}
+    """
+    distances = {}
+    precedent = {}
+    non_visites = []
+
+    # Initialisation
+    for sommet in graphe:
+        distances[sommet] = float("inf")
+        precedent[sommet] = None
+        non_visites.append(sommet)
+    distances[arrivee] = 0
+
+    # Boucle principale
+    while len(non_visites) > 0:
+        # Trouvé le sommet non visité avec la plus petite distance
+        min_distance = float("inf")
+        sommet_courant = None
+        for sommet in non_visites:
+            if distances[sommet] < min_distance:
+                min_distance = distances[sommet]
+                sommet_courant = sommet
+
+        if sommet_courant is None or min_distance == float("inf"):
+            break
+
+        non_visites.remove(sommet_courant)
+
+        # Explorer les voisins
+        voisins = graphe[sommet_courant]
+        for voisin in voisins:
+            distance_temporaire = distances[sommet_courant] + voisins[voisin]
+            if distance_temporaire < distances[voisin]:
+                distances[voisin] = distance_temporaire
+                precedent[voisin] = sommet_courant
+
+    return distances
+
+
+def selectionner_etape_lointaine(depart, arrivee):
+    """
+    Sélectionne l'étape intermédiaire la plus loin possible de la salle d'arrivée.
+    
+    Paramètres:
+        depart: Salle de départ
+        arrivee: Salle d'arrivée
+    
+    Retourne:
+        (etape_lointaine, distance_a_l_arrivee) ou (None, 0) si pas de chemin valide
+    """
+    # Vérifier que les salles existent
+    if depart not in graphe or arrivee not in graphe:
+        print("Salle invalide.")
+        return None, 0
+    
+    # Récupérer le chemin optimal du départ à l'arrivée
+    chemin, _ = algo.dijkstra(depart, arrivee)
+    
+    if chemin is None or len(chemin) == 0:
+        print("Aucun chemin trouvé.")
+        return None, 0
+    
+    # Calculer les distances de toutes les salles à l'arrivée
+    distances = dijkstra_inverse(arrivee)
+    
+    # Trouver l'étape intermédiaire la plus loin de l'arrivée sur le chemin
+    etape_lointaine = None
+    distance_max = -1
+    
+    for etape in chemin:
+        distance = distances.get(etape, float("inf"))
+        if distance != float("inf") and distance > distance_max:
+            distance_max = distance
+            etape_lointaine = etape
+    
+    if etape_lointaine is None:
+        print("Aucune étape intermédiaire trouvée.")
+        return None, 0
+    print(f"Étape intermédiaire la plus lointaine de l'arrivée : {etape_lointaine} (distance à l'arrivée : {distance_max})")
+    return etape_lointaine
 
 # =========================
 # FONCTION GPS
 # =========================
 
-def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi):
+def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi,long):
 
     chemins1 = []
     chemins_cdi = []
@@ -21,8 +112,11 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2,
         chemins = [chemins_cdi, chemins1, chemins2, chemins3]
         print("chemins :", chemins)
         return None, chemins
-
-    resultat, _ = algo.dijkstra(depart, arrivee)
+    if long == False:
+        resultat, _ = algo.dijkstra(depart, arrivee)
+    else:
+        resultat, _ = algo_long.chemin_aleatoire_unique(graphe,depart,arrivee,selectionner_etape_lointaine(depart, arrivee))
+        print("mode long")
 
     print("Chemin trouvé :", resultat)
 
