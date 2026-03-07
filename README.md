@@ -69,24 +69,21 @@ Notre projet consiste à créer une carte en 2D du CIV, permettant aux utilisate
 
 # Liste des tâches:
 ##### Nous utiliserons la bibliothèque pygame et (ursina(3d)peut etre) ainsi que l'algorithme dijkstra
-- - [ ] Une interface avec un plan du lycée (batiments A(étage par étage) sûr et peut etre batiment B)
-    - [ ] étages 
-- - [ ] Une interface utilisateur qui permet de choisir la salle de départ et celle d'arrivée
-- - [ ] Une ligne indiquant le chemin à suivre
-- - [ ] des messages qui indiquent chaque action (tourner a droite/gauche, monter d'un étage,avancer etc)
-- - [ ] calcul du temps de trajet estimée
-- - [ ] messages personnalisés en fonction des cours et des salles ainsi qu'un calcul du taux d'ennuie en fonction du cours.
-- - [ ] Des choix de types de trajet
-    - [ ] Plus court ou plus long
-    - [ ] Energie minimum
-    - [ ] calcul des calories
-    - [ ] on peut enregistrer et nommer des trajets dans les favoris pour les réutiliser
-    - [ ] trajet ver les toilettes les plus prochees
+- - [x] Une interface avec un plan du lycée (batiments A(étage par étage) sûr et peut etre batiment B)
+    - [x] étages 
+- - [x] Une interface utilisateur qui permet de choisir la salle de départ et celle d'arrivée
+- - [x] Une ligne indiquant le chemin à suivre
+- - [x] calcul du temps de trajet estimée
+- - [ ] messages personnalisés en fonction des cours ainsi qu'un calcul du taux d'ennuie en fonction du cours.
+- - [x] Des choix de types de trajet
+    - [x] Plus court ou plus long
+    - [x] Energie minimum
+    - [x] calcul des calories
 - - [ ] Aspect graphique
     - [ ] Graphisme simple, épuré et moderne
     - [ ] Utilisable avec le clavier
     - [ ] Couleur principale de l'interface personnalisable
-    - [ ] format pc
-    - [ ] clavié et souris
+    - [x] format pc
+    - [x] clavié et souris
     
 ### Pour avoir accès à notre roadmap, nous permettant de nous organiser, veuille cliquer ici :[https://github.com/users/gayetpaul9-svg/projects/2/views/1]
