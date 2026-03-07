@@ -25,6 +25,9 @@ info = pygame.display.Info()
 # Variables globales
 etat = "accueil"
 running = True
+saisie_active = False
+texte_saisi = ""
+infos_cours_result = None
 options_ouvert = False
 fonc={
     'calories' : "0",
@@ -136,6 +139,9 @@ while running:
                 etage = min(etage + 1, 4)
             if e.key == pygame.K_DOWN and etat == "itinéraire":
                 etage = max(etage - 1, 1)
+            if e.key == pygame.K_BACKSPACE and saisie_active:
+                texte_saisi = texte_saisi[:-1]
+            if e.key == pygame.K_RETURN and saisie_active and
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             mx, my = e.pos
     
@@ -186,6 +192,10 @@ while running:
                     son_clic.play()
                     print("Retour cliqué")
     
+        elif e.type == pygame.TEXTINPUT:
+            if saisie_active:
+                texte_saisi += e.text
+
     # Affichage de l'itinéraire et du menu déroulant
     if etat == "itinéraire":
         if etage == 2:
@@ -212,6 +222,9 @@ while running:
             fonc=fonctions.fonctionnalitees(classes.départ_salle, classes.arrivée_salle)
             menu_deroulant.action=False
             menu_deroulant.open=False
+            saisie_active = True
+            texte_saisi = ""
+            infos_cours_result = None
         fonctions_ = str("calories : " + fonc['calories']) + "  " +str("temps : " + fonc["temps"]+" min")
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=10, bottom_right=10, text=fonctions_)
