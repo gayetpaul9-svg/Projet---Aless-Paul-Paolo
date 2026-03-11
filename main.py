@@ -61,11 +61,11 @@ offset_y = (screen.get_height() - map_height) // 2
 menu_ouvert = False
 coodonnées_souris=classes.Button(10,10,200,40,)
 etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-etage_inf=classes.Button(1386, info.current_h-145+40, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+etage_inf=classes.Button(1386, info.current_h-95, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-bouton_mode_long = classes.Button(screen.get_width() // 2 - 160, screen.get_height() // 2 - 20, 320, 50, 
-                                  "Itinéraire le plus long", font=pygame.font.Font("assets/DejaVuSans.ttf", 25))
+bouton_mode_long = classes.Button(info.current_w//2-160,info.current_h//2-25, 320, 50, 
+                                  "Itinéraire le plus long")
 menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "A301","A302","A303","A304","A305","A306","A307","A308",
 
@@ -145,7 +145,7 @@ while running:
                 else:
                     running = False
             if e.key == pygame.K_UP and etat == "itinéraire":
-                etage = min(etage + 1, 4)
+                etage = min(etage + 1, 5)
             if e.key == pygame.K_DOWN and etat == "itinéraire":
                 etage = max(etage - 1, 1)
             if e.key == pygame.K_BACKSPACE and saisie_active:
@@ -175,7 +175,7 @@ while running:
             elif etat == "itinéraire":
                 menu_deroulant.handle_click(e.pos)
                 if etage_sup.is_clicked(e.pos):
-                    etage = min(etage + 1, 4)
+                    etage = min(etage + 1, 5)
                     son_clic.play()
                     
                 if etage_inf.is_clicked(e.pos):
@@ -229,7 +229,7 @@ while running:
         if menu_deroulant.action==True:
             print("ok")
             #print(gps(depart_salle, arrivée_salle))
-            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, layers_2, layers_3, layers_1, layers_cdi)
+            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e, layers_2, layers_3, layers_1, layers_cdi,layers_1B)
             fonc=fonctions.fonctionnalitees(classes.départ_salle, classes.arrivée_salle)
             menu_deroulant.action=False
             menu_deroulant.open=False
@@ -252,6 +252,7 @@ while running:
             
         texte_retour = font.render("Retour", True, (0, 0, 0))
         screen.blit(texte_retour, (retour_x + 40, retour_y + 12))
+        bouton_mode_long.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Itinéraire le plus long",color=(200, 200, 200))
     
     coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} Y: {pygame.mouse.get_pos()[1]}")
     
