@@ -152,3 +152,13 @@ layers_1B = {
     "B117": tmx_data_e.layers[17],
     "B118": tmx_data_e.layers[18],
 }
+
+layers=[layers_2,layers_1,layers_1B,layers_3,layers_cdi]
+
+dico_etage={
+    2: "layers_1",
+    1: "layers_cdi",
+    3: "layers_1B",
+    4: "layers_2",
+    5: "layers_3"
+}

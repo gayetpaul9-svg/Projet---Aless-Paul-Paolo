@@ -1,6 +1,8 @@
 import algo
 import algo_long
 from algo import graphe
+from layers import *
+import random
 
 # =========================
 # SELECTION ETAPE INTERMEDIAIRE LOINTAINE
@@ -49,47 +51,31 @@ def dijkstra_inverse(arrivee):
     return distances
 
 
-def selectionner_etape_lointaine(depart, arrivee):
-    """
-    Sélectionne l'étape intermédiaire la plus loin possible de la salle d'arrivée.
+def trouver_nombre_eloigne(debut, fin):
+    # Création de la liste de nombres de 1 à 5
+    nombres = [1, 2, 3, 4, 5]
     
-    Paramètres:
-        depart: Salle de départ
-        arrivee: Salle d'arrivée
+    # Créer le chemin entre début et fin
+    chemin = list(range(min(debut, fin), max(debut, fin) + 1))
     
-    Retourne:
-        (etape_lointaine, distance_a_l_arrivee) ou (None, 0) si pas de chemin valide
-    """
-    # Vérifier que les salles existent
-    if depart not in graphe or arrivee not in graphe:
-        print("Salle invalide.")
-        return None, 0
+    # Exclure les nombres du chemin
+    autres_nombres = [n for n in nombres if n not in chemin]
     
-    # Récupérer le chemin optimal du départ à l'arrivée
-    chemin, _ = algo.dijkstra(depart, arrivee)
-    
-    if chemin is None or len(chemin) == 0:
-        print("Aucun chemin trouvé.")
-        return None, 0
-    
-    # Calculer les distances de toutes les salles à l'arrivée
-    distances = dijkstra_inverse(arrivee)
-    
-    # Trouver l'étape intermédiaire la plus loin de l'arrivée sur le chemin
-    etape_lointaine = None
+    # Trouver les nombres les plus éloignés
     distance_max = -1
+    nombre_eloigne = None
     
-    for etape in chemin:
-        distance = distances.get(etape, float("inf"))
-        if distance != float("inf") and distance > distance_max:
+    for n in autres_nombres:
+        # Calculer la distance à l'un des bords du chemin
+        distance = min(abs(debut - n), abs(fin - n))
+        
+        if distance > distance_max:
             distance_max = distance
-            etape_lointaine = etape
-    
-    if etape_lointaine is None:
-        print("Aucune étape intermédiaire trouvée.")
-        return None, 0
-    print(f"Étape intermédiaire la plus lointaine de l'arrivée : {etape_lointaine} (distance à l'arrivée : {distance_max})")
-    return etape_lointaine
+            nombre_eloigne = n
+            
+    return nombre_eloigne
+
+
 
 # =========================
 # FONCTION GPS
@@ -117,7 +103,21 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e
     if long == False:
         resultat, _ = algo.dijkstra(depart, arrivee)
     else:
-        resultat, _ = algo_long.chemin_aleatoire_unique(graphe,depart,arrivee,selectionner_etape_lointaine(depart, arrivee))
+        #recherche etage depart
+        for layer_etage in layers:
+            for cle, val in layer_etage.items():
+                if val == arrivee:
+                    b=cle
+        for layer_etage in layers:
+            for cle, val in layer_etage.items():
+                if val == depart:
+                    a=cle
+        c=dico_etage[trouver_nombre_eloigne(a,b)]
+        d=c[random.randint(0,len(cle)-1)]
+        resultata, _ = algo.dijkstra(depart, d)
+        print("etape intermediare = ",d)
+        resultatb, _ = algo.dijkstra(d, arrivee)
+        resultat=resultata+resultatb
         print("mode long")
 
     print("Chemin trouvé :", resultat)
