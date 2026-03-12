@@ -7,6 +7,8 @@ import classes
 import fonctions
 from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B
 
+
+
 #initialisation pygame
 pygame.init()
 pygame.mixer.init()
