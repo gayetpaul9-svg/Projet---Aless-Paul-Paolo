@@ -4,9 +4,6 @@ from layers import *
 import random
 from data_cours import ennui_par_cours, messages_par_cours
 import unicodedata
-
-
-
 # =========================
 # SELECTION ETAPE INTERMEDIAIRE LOINTAINE
 # =========================
