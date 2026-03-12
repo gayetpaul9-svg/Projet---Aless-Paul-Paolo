@@ -1,5 +1,4 @@
 import algo
-import algo_long
 from algo import graphe
 from layers import *
 import random
@@ -7,50 +6,6 @@ import random
 # =========================
 # SELECTION ETAPE INTERMEDIAIRE LOINTAINE
 # =========================
-
-def dijkstra_inverse(arrivee):
-    """
-    Calcule les distances de TOUTES les salles vers l'arrivée.
-    Utilise Dijkstra en inversant la direction d graphe.
-    Retourne un dictionnaire {salle: distance_vers_arrivee}
-    """
-    distances = {}
-    precedent = {}
-    non_visites = []
-
-    # Initialisation
-    for sommet in graphe:
-        distances[sommet] = float("inf")
-        precedent[sommet] = None
-        non_visites.append(sommet)
-    distances[arrivee] = 0
-
-    # Boucle principale
-    while len(non_visites) > 0:
-        # Trouvé le sommet non visité avec la plus petite distance
-        min_distance = float("inf")
-        sommet_courant = None
-        for sommet in non_visites:
-            if distances[sommet] < min_distance:
-                min_distance = distances[sommet]
-                sommet_courant = sommet
-
-        if sommet_courant is None or min_distance == float("inf"):
-            break
-
-        non_visites.remove(sommet_courant)
-
-        # Explorer les voisins
-        voisins = graphe[sommet_courant]
-        for voisin in voisins:
-            distance_temporaire = distances[sommet_courant] + voisins[voisin]
-            if distance_temporaire < distances[voisin]:
-                distances[voisin] = distance_temporaire
-                precedent[voisin] = sommet_courant
-
-    return distances
-
-
 def trouver_nombre_eloigne(debut, fin):
     # Création de la liste de nombres de 1 à 5
     nombres = [1, 2, 3, 4, 5]
@@ -104,18 +59,31 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e
         resultat, _ = algo.dijkstra(depart, arrivee)
     else:
         #recherche etage depart
-        for layer_etage in layers:
-            for cle, val in layer_etage.items():
-                if val == arrivee:
-                    b=cle
-        for layer_etage in layers:
-            for cle, val in layer_etage.items():
-                if val == depart:
-                    a=cle
+        for layer in layers:
+            for cle in layer.keys():
+                 if cle == arrivee:
+                    b=layer
+        for layer in layers:
+            for cle in layer.keys():
+                if cle == depart:
+                    a=layer
+        for cle, val in dico_etage.items():
+            if val == b:
+                b=cle
+            if val == a:
+                a=cle
+        print("b = ",b)
+        print("a = ",a)
+        
         c=dico_etage[trouver_nombre_eloigne(a,b)]
-        d=c[random.randint(0,len(cle)-1)]
-        resultata, _ = algo.dijkstra(depart, d)
+        e=list(c.values())
+        d=e[random.randint(len(e)-7,len(e)-1)]
+        for cle, val in c.items():
+            if val==d:
+                d=cle
         print("etape intermediare = ",d)
+        print("d = ",d)
+        resultata, _ = algo.dijkstra(depart, d)
         resultatb, _ = algo.dijkstra(d, arrivee)
         resultat=resultata+resultatb
         print("mode long")

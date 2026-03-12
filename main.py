@@ -4,7 +4,6 @@ import pygame
 from pytmx.util_pygame import load_pygame
 import classes 
 import fonctions
-import algo_long
 from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B
 
 #initialisation pygame
