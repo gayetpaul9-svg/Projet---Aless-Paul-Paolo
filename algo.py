@@ -132,7 +132,7 @@ graphe = {
         "B313": 1,
         "B314": 1,
         "COULOIR_D": 2,
-        "COULOIR_B": 2,
+        "COULOIR_N": 2,
         "ESCALIER_3": 3,
     },
     "COULOIR_D": {
