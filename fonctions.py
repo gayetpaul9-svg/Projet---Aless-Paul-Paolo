@@ -2,7 +2,8 @@ import algo
 from algo import graphe
 from layers import *
 import random
-
+from data_cours import ennui_par_cours, messages_par_cours
+import unicodedata
 # =========================
 # SELECTION ETAPE INTERMEDIAIRE LOINTAINE
 # =========================
@@ -183,3 +184,31 @@ def fonctionnalitees(depart, arrivee):
         "calories": str(distance * 0.9),
         "temps": str(distance * 9 // 60) + " : " + str(distance * 9 % 60)
     }
+
+
+def enlever_accents(texte):
+    return ''.join(c for c in unicodedata.normalize('NFD', texte) if unicodedata.category(c) != 'Mn')
+
+def get_ennui(cours):
+    cours_nettoye = enlever_accents(cours).lower()
+    resultat = ennui_par_cours.get(cours_nettoye, 50)
+    return resultat
+
+def message_ennui(taux):
+    if taux > 75:
+        return "Bonne chance"
+    elif taux >= 40:
+        return "Tranquille"
+    else:
+        return "Ba incroyable"
+
+def get_message(cours):
+    cours_nettoyee = enlever_accents(cours).lower()
+    message_trouve = messages_par_cours.get(cours_nettoyee, "Bonne route !")
+    return message_trouve
+
+def infos_cours(cours):
+    taux = get_ennui(cours)
+    msg_ennui = message_ennui(taux)
+    message = get_message(cours)
+    return {'ennui': taux, 'message_ennui': msg_ennui, 'message': message}

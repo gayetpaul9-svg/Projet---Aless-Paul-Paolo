@@ -1,6 +1,7 @@
 #
 # from pydoc import text
-import pygame 
+import pygame
+from pygame.draw import rect 
 from pytmx.util_pygame import load_pygame
 import classes 
 import fonctions
@@ -79,6 +80,11 @@ menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "B311","B312","B313","B314","B315","B316","B317","B318","B319","B320",
     "B321","B322","B323","B324","B325",""
 ])
+menu_matiere= classes.Dropdown(320,50,250,40, [
+    "maths","physique-chimie","francais", "histoire-geo", "hggsp", "hlp",
+    "ses", "nsi", "sport", "italien", "anglais", "allemand", "espagnol",
+    "russe", "fls", "cdm", "histoire-geo si", "chinois", ""
+],titre="Cours ?")
 bouton_options_x = screen.get_width() - 250
 bouton_options_y = 50
 bouton_options_largeur = 200
@@ -152,10 +158,11 @@ while running:
                 etage = max(etage - 1, 1)
             if e.key == pygame.K_BACKSPACE and saisie_active:
                 texte_saisi = texte_saisi[:-1]
-            if e.key == pygame.K_RETURN and saisie_active and infos_cours_result:
+            if e.key == pygame.K_RETURN and saisie_active and texte_saisi != "":
+                infos_cours_result = fonctions.infos_cours(texte_saisi)
+                saisie_active = False
                 print("Salle sélectionnée :", texte_saisi)
                 classes.départ_salle = texte_saisi
-                saisie_active = False
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             mx, my = e.pos
 
@@ -184,6 +191,8 @@ while running:
             
             elif etat == "itinéraire":
                 menu_deroulant.handle_click(e.pos)
+                if saisie_active:
+                    menu_matiere.handle_click(e.pos)
                 if etage_sup.is_clicked(e.pos):
                     etage = min(etage + 1, 5)
                     son_clic.play()
@@ -213,10 +222,6 @@ while running:
                     options_ouvert = False
                     son_clic.play()
                     print("Retour cliqué")
-    
-        elif e.type == pygame.TEXTINPUT:
-            if saisie_active:
-                texte_saisi += e.text
 
     # Affichage de l'itinéraire et du menu déroulant
     if etat == "itinéraire":
@@ -256,11 +261,16 @@ while running:
 
         menu_deroulant.draw(screen, font)
         menu_deroulant.survol(pygame.mouse.get_pos())
+        if menu_matiere.action == True:
+            infos_cours_result = fonctions.infos_cours(classes.matiere_choisie)
+            saisie_active = False
+            menu_matiere.action = False
         
         if menu_deroulant.opening==True:
             #chemins = [tmx_data.layers[6]]
             menu_deroulant.opening=False
         if menu_deroulant.action==True:
+            infos_cours_result = None
             print("ok")
             #print(gps(depart_salle, arrivée_salle))
             _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e, layers_2, layers_3, layers_1, layers_cdi,layers_1B,mode_long)
@@ -273,6 +283,11 @@ while running:
         fonctions_ = str("calories : " + fonc['calories']) + "  " +str("temps : " + fonc["temps"]+" min")
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=10, bottom_right=10, text=fonctions_)
+        if infos_cours_result is not None and not saisie_active:
+            texte_ennui = "Ennui : " + infos_cours_result['message_ennui']
+            texte_message = infos_cours_result['message']
+            screen.blit(font.render(texte_ennui, True, (0, 0, 0)), (50, 150))
+            screen.blit(font.render(texte_message, True, (0, 0, 0)), (50, 190)) 
     # Affichage du menu d'options
     if options_ouvert:
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
@@ -290,5 +305,9 @@ while running:
     
     coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} Y: {pygame.mouse.get_pos()[1]}")
     
+    if saisie_active:
+        menu_matiere.draw(screen, font)
+        menu_matiere.survol(pygame.mouse.get_pos())
+
     pygame.display.flip()
 pygame.quit()
