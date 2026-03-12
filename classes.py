@@ -2,6 +2,7 @@ import pygame
 import math
 pygame.init()
 
+matiere_choisie = ""
 screen = pygame.display.set_mode()
 
 icone = pygame.image.load("assets/verifier.png").convert_alpha()
@@ -42,8 +43,8 @@ class Button:
 
 
 class Dropdown:
-    def __init__(self, x, y, width, height, options, Validation=False):
-        self.main=Button(x, y, width, height, "salles disponibles")
+    def __init__(self, x, y, width, height, options, Validation=False, titre="salles disponibles"):
+        self.main=Button(x, y, width, height, titre)
         self.open = False
         self.options = []
         self.type = "start"
@@ -126,6 +127,7 @@ class Dropdown:
     def handle_click(self, pos):
         global départ_salle
         global arrivée_salle
+        global matiere_choisie
         if self.main.is_clicked(pos):
             self.open = not self.open
             self.opening=True
@@ -138,6 +140,7 @@ class Dropdown:
                     if self.type == "start":
                         opt.color = (150, 255, 150)
                         départ_salle = opt.text
+                        matiere_choisie = opt.text
                         self.type = "stop"
                         opt.is_clickedv = not opt.is_clickedv
                     elif self.type == "stop":
