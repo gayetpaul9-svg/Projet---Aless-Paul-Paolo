@@ -85,8 +85,11 @@ bouton_options_y = 50
 bouton_options_largeur = 200
 bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
+couleur_bouton_options_a = (240, 240, 240)
+couleur_bouton_options_b = (240, 240, 240)
 bat_a=classes.Button(info.current_w-447, info.current_h-145, 200, 80)
 bat_b=classes.Button(info.current_w-447+200+5, info.current_h-145, 200, 80)
+batiment_selectionne = "A"
 
 
 _,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B)
@@ -156,6 +159,14 @@ while running:
                 saisie_active = False
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             mx, my = e.pos
+
+            if bat_a.is_clicked(e.pos):
+                batiment_selectionne = "A"
+                son_clic.play()
+
+            if bat_b.is_clicked(e.pos):
+                batiment_selectionne = "B"
+                son_clic.play()
     
             if etat == "accueil":
                 # Clic sur ITINÉRAIRE
@@ -185,6 +196,7 @@ while running:
                 if e.pos[0] >= 1386 and e.pos[0] <= 1426 and e.pos[1] >= 934 and e.pos[1] <= 974:
                     son_clic.play()
 
+                
                 # Bouton Options du gps
                 if bouton_options_x <= mx <= bouton_options_x + bouton_options_largeur and bouton_options_y <= my <= bouton_options_y + bouton_options_hauteur:
                     options_ouvert = not options_ouvert
@@ -209,12 +221,35 @@ while running:
 
     # Affichage de l'itinéraire et du menu déroulant
     if etat == "itinéraire":
-        if etage == 2:
-            bat_a.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Bâtiment : A",color=(240, 240, 240))
-            bat_b.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Bâtiment : B",color=(240, 240, 240))
-        else:
-            bat_a.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Bâtiment : A",color=(200, 200, 200))
-            bat_b.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Bâtiment : B",color=(200, 200, 200))
+        if etage == 1 :
+            couleur_bouton_options_a = (240,240,240)
+            couleur_bouton_options_b = (200,200,200)
+        elif etage == 2 :
+            couleur_bouton_options_a = (200,200,200)
+            couleur_bouton_options_b = (240,240,240)
+        elif etage == 3 :
+            couleur_bouton_options_a = (240,240,240)
+            couleur_bouton_options_b = (200,200,200)
+        elif etage == 4 :
+            couleur_bouton_options_a = (240,240,240)
+            couleur_bouton_options_b = (240,240,240)
+        elif etage == 5 :
+            couleur_bouton_options_a = (240,240,240)
+            couleur_bouton_options_b = (240,240,240)
+
+        if batiment_selectionne == "A":
+            couleur_bouton_options_a = (150,255,150)
+            couleur_bouton_options_b = (240,240,240)
+
+        elif batiment_selectionne == "B":
+            couleur_bouton_options_a = (240,240,240)
+            couleur_bouton_options_b = (150,255,150)
+
+        bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
+           top_left=10, top_right=10, bottom_right=10, bottom_left=10)
+
+        bat_b.draw(screen, text="Bâtiment : B", color=couleur_bouton_options_b,
+           top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
         etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
         
