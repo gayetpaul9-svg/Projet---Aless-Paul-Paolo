@@ -143,8 +143,13 @@ while running:
         elif e.type == pygame.MOUSEWHEEL:
             menu_deroulant.offset_y += e.y *20
             menu_deroulant.offset_y = min(-189, menu_deroulant.offset_y)
-            menu_deroulant.offset_y = max(-2429, menu_deroulant.offset_y)
+            menu_deroulant.offset_y = max(-2669, menu_deroulant.offset_y)
             menu_deroulant.scroll_options()
+            menu_matiere.offset_y += e.y *20
+            menu_matiere.offset_y = min(-189, menu_matiere.offset_y)
+            menu_matiere.offset_y = max(-429, menu_matiere.offset_y)
+            menu_matiere.scroll_options()
+
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:       
                 if etat == "itinéraire":
