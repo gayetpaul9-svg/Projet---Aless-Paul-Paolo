@@ -5,7 +5,7 @@ from pygame.draw import rect
 from pytmx.util_pygame import load_pygame
 import classes 
 import fonctions
-from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B, noms_etages
+from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B, noms_etages, dico_etage, layers
 #initialisation pygame
 pygame.init()
 pygame.mixer.init()
@@ -298,13 +298,23 @@ while running:
             #print(gps(depart_salle, arrivée_salle))
             _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e, layers_2, layers_3, layers_1, layers_cdi,layers_1B,mode_long)
             fonc=fonctions.fonctionnalitees(classes.départ_salle, classes.arrivée_salle)
+            for layer in layers:
+                if classes.départ_salle in layer:
+                    print("depart trouvé dans layer ",layer)
+                    break 
+
+            for cle, v in dico_etage.items():
+                if v == layer:
+                    etage = cle
+                    break
             menu_deroulant.action=False
             menu_deroulant.open=False
             saisie_active = True
             texte_saisi = ""
             infos_cours_result = None
-        fonctions_ = str("calories : " + fonc['calories']) + "  " +str("temps : " + fonc["temps"]+" min")
+        fonctions_ = str("calories : " + fonc['calories']+" Kcal")
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
+        fonctions_= "  " +str("temps : " + fonc["temps"]+" min")
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=10, bottom_right=10, text=fonctions_)
         if infos_cours_result is not None and not saisie_active:
             texte_ennui = "Ennui : " + infos_cours_result['message_ennui']
