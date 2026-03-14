@@ -5,7 +5,7 @@ from pygame.draw import rect
 from pytmx.util_pygame import load_pygame
 import classes 
 import fonctions
-from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B
+from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B, noms_etages
 #initialisation pygame
 pygame.init()
 pygame.mixer.init()
@@ -84,6 +84,7 @@ menu_matiere= classes.Dropdown(320,50,250,40, [
     "ses", "nsi", "sport", "italien", "anglais", "allemand", "espagnol",
     "russe", "fls", "cdm", "histoire-geo si", "chinois", ""
 ],titre="Cours ?")
+nom_etage=classes.Button(info.current_w//2-125, 13, 250, 30)
 bouton_options_x = screen.get_width() - 250
 bouton_options_y = 50
 bouton_options_largeur = 200
@@ -232,10 +233,10 @@ while running:
         if etage == 1 :
             couleur_bouton_options_a = (240,240,240)
             couleur_bouton_options_b = (200,200,200)
-        elif etage == 2 :
+        elif etage == 3 :
             couleur_bouton_options_a = (200,200,200)
             couleur_bouton_options_b = (240,240,240)
-        elif etage == 3 :
+        elif etage == 2 :
             couleur_bouton_options_a = (240,240,240)
             couleur_bouton_options_b = (200,200,200)
         elif etage == 4 :
@@ -260,6 +261,7 @@ while running:
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
         etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
+        nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         
        
 

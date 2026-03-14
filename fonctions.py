@@ -167,7 +167,7 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e
     chemins2.append(tmx_data_b.layers[17])
     chemins3.append(tmx_data.layers[12])
     chemins1B.append(tmx_data_e.layers[10])
-    chemins = [chemins_cdi,chemins1B,chemins1, chemins2, chemins3]
+    chemins = [chemins_cdi,chemins1,chemins1B, chemins2, chemins3]
     print(chemins)
     return resultat, chemins
 

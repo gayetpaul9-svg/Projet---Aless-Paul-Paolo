@@ -162,3 +162,10 @@ dico_etage={
     4: layers_2,
     5: layers_3
 }
+noms_etages={
+    1: "CDI",
+    2: "B100",
+    3: "A100",
+    4: "B200-A200",
+    5: "A300-B300"
+}
