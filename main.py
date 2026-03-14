@@ -60,7 +60,7 @@ offset_y = (screen.get_height() - map_height) // 2
 menu_ouvert = False
 coodonnées_souris=classes.Button(10,10,200,40,)
 etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-etage_inf=classes.Button(1386, info.current_h-95, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+etage_inf=classes.Button(1386, info.current_h-105, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 bouton_mode_long = classes.Button(info.current_w//2-160,info.current_h//2-25, 320, 50, 
@@ -94,7 +94,7 @@ couleur_bouton_options_a = (240, 240, 240)
 couleur_bouton_options_b = (240, 240, 240)
 bat_a=classes.Button(info.current_w-447, info.current_h-145, 200, 80)
 bat_b=classes.Button(info.current_w-447+200+5, info.current_h-145, 200, 80)
-batiment_selectionne = "A"
+batiment_selectionne = None
 
 
 _,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B)
@@ -173,10 +173,14 @@ while running:
 
             if bat_a.is_clicked(e.pos):
                 batiment_selectionne = "A"
+                if etage == 2:
+                    etage = 3
                 son_clic.play()
 
             if bat_b.is_clicked(e.pos):
                 batiment_selectionne = "B"
+                if etage == 3:
+                    etage = 2
                 son_clic.play()
     
             if etat == "accueil":
@@ -230,29 +234,38 @@ while running:
 
     # Affichage de l'itinéraire et du menu déroulant
     if etat == "itinéraire":
+        vert=(150,255,150)
+        gris=(200,200,200)
+        normale=(240,240,240)
         if etage == 1 :
-            couleur_bouton_options_a = (240,240,240)
-            couleur_bouton_options_b = (200,200,200)
+            couleur_bouton_options_a = gris
+            couleur_bouton_options_b = gris
         elif etage == 3 :
-            couleur_bouton_options_a = (200,200,200)
-            couleur_bouton_options_b = (240,240,240)
+            couleur_bouton_options_a = normale
+            couleur_bouton_options_b = normale
         elif etage == 2 :
-            couleur_bouton_options_a = (240,240,240)
-            couleur_bouton_options_b = (200,200,200)
+            couleur_bouton_options_a = normale
+            couleur_bouton_options_b = normale
         elif etage == 4 :
-            couleur_bouton_options_a = (240,240,240)
-            couleur_bouton_options_b = (240,240,240)
+            couleur_bouton_options_a = gris
+            couleur_bouton_options_b = gris
         elif etage == 5 :
-            couleur_bouton_options_a = (240,240,240)
-            couleur_bouton_options_b = (240,240,240)
-
-        if batiment_selectionne == "A":
-            couleur_bouton_options_a = (150,255,150)
-            couleur_bouton_options_b = (240,240,240)
-
-        elif batiment_selectionne == "B":
-            couleur_bouton_options_a = (240,240,240)
-            couleur_bouton_options_b = (150,255,150)
+            couleur_bouton_options_a = gris
+            couleur_bouton_options_b = gris
+        
+        if batiment_selectionne == "A" and etage in [2, 3]:
+            couleur_bouton_options_a = vert
+            couleur_bouton_options_b = normale
+            #chemins_affichés = list(chemins)
+            #del chemins_affichés[2]
+        elif batiment_selectionne == "B" and etage in [2, 3]:
+            couleur_bouton_options_a = normale
+            couleur_bouton_options_b = vert
+            #chemins_affichés = list(chemins)
+            #del chemins_affichés[1]
+        else:
+            batiment_selectionne = None
+        
 
         bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
@@ -263,7 +276,11 @@ while running:
         etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
         nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         
-       
+    #if etage == 2 and batiment_selectionne == "A":
+     #   etage=3
+    #elif etage == 3 and batiment_selectionne == "B":
+     #   etage=2"""
+
 
         menu_deroulant.draw(screen, font)
         menu_deroulant.survol(pygame.mouse.get_pos())
