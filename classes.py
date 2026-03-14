@@ -53,6 +53,7 @@ class Dropdown:
         self.offset_y=-189
         self.index_y=7
         self.y = y
+        print(len(options)-1)
         
 
         for i, opt in enumerate(options):
@@ -66,20 +67,17 @@ class Dropdown:
                 )
         self.options_affichées = list(self.options[0:8])
         self.options_affichées.append(self.options[-1])  
+        print(self.options[70-7:70+1])
 
     def scroll_options(self):
         self.index_y=7 + ( (-189 - self.offset_y) / 40 )
-        #print(self.index_y,self.offset_y)
-        if self.index_y % 1 == 0.5 or self.index_y==63.0:
+        if self.index_y % 1 == 0.5 or self.index_y==len(self.options)-1:
             self.index_y = math.floor(self.index_y)
-            self.index_y= max(7, min(self.index_y, len(self.options)-7))  
+            self.index_y= max(7, min(self.index_y, len(self.options)-2))  
             self.options_affichées = list(self.options[self.index_y-7:self.index_y+2]+[self.options[-1]])
         else:  
-            print(self.index_y,self.offset_y)
             self.index_y = math.floor(self.index_y)
-        #self.index_y= min(self.index_y, self.index_y-0.5)
-        #self.index_y= int(self.index_y)
-            self.index_y= max(7, min(self.index_y, len(self.options)-7))
+            self.index_y= max(7, min(self.index_y, len(self.options)-2))
             self.options_affichées = list(self.options[self.index_y-7:self.index_y+1]+[self.options[-1]])
         
     
