@@ -127,11 +127,6 @@ while running:
                 for x, y, image in layer.tiles():
                     screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
         
-        for obj in tmx_data_b.objects0:
-            if obj.text:
-                texte=font.render(obj.text, True,(255,255,255))
-                screen.blit(texte, (obj.x, obj.y))
-        
         pygame.draw.rect(screen, couleur_bouton_options, (bouton_options_x, bouton_options_y, bouton_options_largeur, bouton_options_hauteur))
         texte_options = font.render("Options", True, (0, 0, 0))
         screen.blit(texte_options, (bouton_options_x + 60, bouton_options_y + 8))
@@ -205,6 +200,8 @@ while running:
             
             elif etat == "itinéraire":
                 menu_deroulant.handle_click(e.pos)
+                if menu_deroulant.open:
+                    infos_cours_result = None
                 if saisie_active:
                     menu_matiere.handle_click(e.pos)
                 if etage_sup.is_clicked(e.pos):
@@ -297,6 +294,7 @@ while running:
         if menu_deroulant.opening==True:
             #chemins = [tmx_data.layers[6]]
             menu_deroulant.opening=False
+            infos_cours_result = None
         if menu_deroulant.action==True:
             infos_cours_result = None
             print("ok")
@@ -319,7 +317,7 @@ while running:
             infos_cours_result = None
         fonctions_ = str("calories : " + fonc['calories']+" Kcal")
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
-        fonctions_= "  " +str("temps : " + fonc["temps"]+" min")
+        fonctions_= "  " +str("temps : " + fonc["temps"]+" s")
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=10, bottom_right=10, text=fonctions_)
         if infos_cours_result is not None and not saisie_active:
             texte_ennui = "Ennui : " + infos_cours_result['message_ennui']
