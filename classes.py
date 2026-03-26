@@ -43,7 +43,8 @@ class Button:
 
 
 class Dropdown:
-    def __init__(self, x, y, width, height, options, Validation=False, titre="salles disponibles"):
+    def __init__(self, x, y, width, height, options, Validation=False, titre="salles disponibles", single=False):
+        self.single = single
         self.main=Button(x, y, width, height, titre)
         self.open = False
         self.options = []
@@ -139,8 +140,13 @@ class Dropdown:
                         opt.color = (150, 255, 150)
                         départ_salle = opt.text
                         matiere_choisie = opt.text
-                        self.type = "stop"
                         opt.is_clickedv = not opt.is_clickedv
+                        if self.single:
+                            self.action = True
+                            self.open = False
+                            self.reset_colors()
+                            return
+                        self.type = "stop"
                     elif self.type == "stop":
                         opt.color = (255, 150, 150)
                         arrivée_salle = opt.text
