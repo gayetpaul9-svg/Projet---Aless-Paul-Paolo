@@ -182,7 +182,7 @@ def fonctionnalitees(depart, arrivee):
 
     return {
         "calories": str(distance * 0.9),
-        "temps": str(distance * 9 // 60) + " : " + str(distance * 9 % 60)
+        "temps": str(distance * 9 // 60) + " min " + str(distance * 9 % 60)
     }
 
 
