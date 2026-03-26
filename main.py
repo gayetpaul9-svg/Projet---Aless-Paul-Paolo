@@ -323,13 +323,18 @@ while running:
             texte_ennui = "Ennui : " + infos_cours_result['message_ennui']
             texte_message = infos_cours_result['message']
             screen.blit(font.render(texte_ennui, True, (0, 0, 0)), (50, 150))
-            screen.blit(font.render(texte_message, True, (0, 0, 0)), (50, 190)) 
+
+            lignes_message = texte_message.split("\n")
+            for i, ligne in enumerate(lignes_message):
+                screen.blit(font.render(ligne.strip(), True, (0, 0, 0)), (50, 190 + i * 40))
+                
     # Affichage du menu d'options
     if options_ouvert:
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
         
-        texte = font.render("Menu Options", True, (255, 255, 255))
-        screen.blit(texte, (screen.get_width()//2 - 80, screen.get_height()//2 - 50))
+        font_menu_ = pygame.font.Font(None, 72)
+        texte = font_menu_.render("Menu Options", True, (255, 255, 255))
+        screen.blit(texte, (screen.get_width()//2 - 175, screen.get_height()//2 - 450))
            
         retour_x = screen.get_width()//2 - 80
         retour_y = screen.get_height()//2 + 40
