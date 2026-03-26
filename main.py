@@ -83,7 +83,7 @@ menu_matiere= classes.Dropdown(320,50,250,40, [
     "maths","physique-chimie","francais", "histoire-geo", "hggsp", "hlp",
     "ses", "nsi", "sport", "italien", "anglais", "allemand", "espagnol",
     "russe", "fls", "cdm", "histoire-geo si", "chinois", ""
-],titre="Cours ?")
+],titre="Cours ?", single=True)
 nom_etage=classes.Button(info.current_w//2-125, 13, 250, 30)
 bouton_options_x = screen.get_width() - 250
 bouton_options_y = 50
@@ -202,7 +202,7 @@ while running:
                 menu_deroulant.handle_click(e.pos)
                 if menu_deroulant.open:
                     infos_cours_result = None
-                if saisie_active:
+                if saisie_active and not menu_deroulant.open:
                     menu_matiere.handle_click(e.pos)
                 if etage_sup.is_clicked(e.pos):
                     etage = min(etage + 1, 5)
@@ -327,7 +327,7 @@ while running:
             lignes_message = texte_message.split("\n")
             for i, ligne in enumerate(lignes_message):
                 screen.blit(font.render(ligne.strip(), True, (0, 0, 0)), (50, 190 + i * 40))
-                
+
     # Affichage du menu d'options
     if options_ouvert:
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
