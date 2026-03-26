@@ -21,21 +21,21 @@ ennui_par_cours = {
 
 messages_par_cours = {
     "maths": "C'est pas mal mais force à toi",
-    "physique-chimie": "La seule réaction chimique ici c'est ton cerveau qui fond",
+    "physique-chimie": "La seule réaction chimique ici\n c'est ton cerveau qui fond",
     "francais": "Même Molière se serait endormi",
-    "histoire-geo": "Des dates, des dates, encore des dates... et toi t'as même pas de rendez-vous",
-    "hggsp": "La géopolitique mondiale et toi vous avez un point commun : personne comprend rien",
+    "histoire-geo": "Des dates, des dates, encore des dates...\n et toi t'as même pas de rendez-vous",
+    "hggsp": "La géopolitique mondiale et toi vous avez un point commun :\n personne comprend rien",
     "hlp": "Philosopher c'est bien, dormir c'est mieux",
-    "ses": "L'offre de sommeil est supérieure à la demande de concentration",
-    "nsi": "print('je veux rentrer chez moi') sauf si c'est M.Barthelemy",
-    "sport": "Enfin une heure où rigoler est socialement acceptable",
+    "ses": "L'offre de sommeil est supérieure à\n la demande de concentration",
+    "nsi": "print('je veux rentrer chez moi')\n sauf si c'est M.Barthelemy",
+    "sport": "Enfin une heure où rigoler est\n socialement acceptable",
     "italien": "Mamma mia que c'est long",
     "anglais": "Oh my god... are we done yet ?",
     "allemand": "Schlafen... das ist gut",
     "espagnol": "Ay dios mio por favor termina ya",
     "russe": "даже гугл переводчик сдался",
     "fls": "Lire pour lire pour lire pour lire...",
-    "cdm": "Connaître le monde c'est bien, pouvoir en sortir c'est mieux",
-    "histoire-geo si": "99/100 de taux d'ennui. Le pourcent restant c'est quand tu regardes l'heure",
-    "chinois": "连中国人都说你的发音很有趣"
+    "cdm": "Connaître le monde c'est bien,\n pouvoir en sortir c'est mieux",
+    "histoire-geo si": "99/100 de taux d'ennui.\n Le pourcent restant c'est quand tu regardes l'heure",
+    "chinois": "六十七"
 }
