@@ -200,6 +200,8 @@ while running:
             
             elif etat == "itinéraire":
                 menu_deroulant.handle_click(e.pos)
+                if menu_deroulant.open:
+                    infos_cours_result = None
                 if saisie_active:
                     menu_matiere.handle_click(e.pos)
                 if etage_sup.is_clicked(e.pos):
@@ -292,6 +294,7 @@ while running:
         if menu_deroulant.opening==True:
             #chemins = [tmx_data.layers[6]]
             menu_deroulant.opening=False
+            infos_cours_result = None
         if menu_deroulant.action==True:
             infos_cours_result = None
             print("ok")
