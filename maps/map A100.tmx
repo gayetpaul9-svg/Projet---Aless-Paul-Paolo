@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="144" height="242" tilewidth="4" tileheight="4" infinite="0" nextlayerid="41" nextobjectid="8">
+<map version="1.10" tiledversion="2025.12.08" orientation="orthogonal" renderorder="right-down" width="144" height="242" tilewidth="4" tileheight="4" infinite="0" nextlayerid="51" nextobjectid="19">
  <tileset firstgid="1" source="4X12.tsx"/>
  <layer id="13" name="Sol" width="144" height="242" locked="1">
   <data encoding="csv">
@@ -3691,7 +3691,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="37" name="A108" width="144" height="242">
+ <layer id="37" name="A108" width="144" height="242" locked="1">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -3937,4 +3937,54 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="41" name="SA102">
+  <object id="17" x="287.356" y="191.801" width="108" height="19">
+   <text wrap="1" halign="center">A102</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="42" name="SA103">
+  <object id="16" x="192.538" y="193.063" width="108" height="19">
+   <text wrap="1" halign="center">A103</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="44" name="SA104">
+  <object id="15" x="93.5416" y="192.063" width="108" height="19">
+   <text wrap="1" halign="center">A104</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="43" name="SA105">
+  <object id="14" x="-0.740084" y="191.932" width="108" height="19">
+   <text wrap="1" halign="center">A105</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="48" name="SA106">
+  <object id="13" x="104.112" y="601.69" width="108" height="19">
+   <text wrap="1" halign="center">A106</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="47" name="SA107">
+  <object id="12" x="-0.47827" y="602.69" width="108" height="19">
+   <text wrap="1" halign="center">A107</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="46" name="SA108">
+  <object id="11" x="0.783545" y="735.399" width="108" height="19">
+   <text wrap="1" halign="center">A108</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="45" name="ESC6" class="Escalier">
+  <object id="10" x="223.465" y="752.553" width="108" height="19">
+   <text wrap="1" halign="center">ESC</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="50" name="ESC7" class="Escalier">
+  <object id="9" x="352.234" y="183.731" width="108" height="19">
+   <text wrap="1" halign="center">ESC</text>
+  </object>
+ </objectgroup>
+ <objectgroup id="49" name="ESC9" class="Escalier">
+  <object id="8" x="66.3525" y="292.321" width="108" height="19">
+   <text wrap="1" halign="center">ESC</text>
+  </object>
+ </objectgroup>
 </map>
