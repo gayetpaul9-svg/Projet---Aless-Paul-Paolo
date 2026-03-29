@@ -41,6 +41,12 @@ class Button:
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
 
+    def survol(self, pos):
+        if self.is_clicked(pos):
+            self.color = (200, 200, 200)
+        else:
+            self.color = (240, 240, 240)
+
 
 class Dropdown:
     def __init__(self, x, y, width, height, options, Validation=False, titre="salles disponibles", single=False):

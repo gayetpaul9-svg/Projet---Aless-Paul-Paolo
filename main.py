@@ -286,6 +286,8 @@ while running:
 
         menu_deroulant.draw(screen, font)
         menu_deroulant.survol(pygame.mouse.get_pos())
+        etage_sup.survol(pygame.mouse.get_pos())
+        etage_inf.survol(pygame.mouse.get_pos())
         if menu_matiere.action == True:
             infos_cours_result = fonctions.infos_cours(classes.matiere_choisie)
             saisie_active = False
@@ -330,6 +332,7 @@ while running:
 
     # Affichage du menu d'options
     if options_ouvert:
+        
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
         
         font_menu_ = pygame.font.Font(None, 72)
@@ -342,8 +345,8 @@ while running:
             
         texte_retour = font.render("Retour", True, (0, 0, 0))
         screen.blit(texte_retour, (retour_x + 40, retour_y + 12))
-        bouton_mode_long.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Itinéraire le plus long",color=(200, 200, 200))
-    
+        bouton_mode_long.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Itinéraire le plus long")
+        bouton_mode_long.survol(pygame.mouse.get_pos())
     coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} Y: {pygame.mouse.get_pos()[1]}")
     
     if saisie_active:
