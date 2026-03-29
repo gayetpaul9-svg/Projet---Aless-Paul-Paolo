@@ -63,6 +63,12 @@ class Button:
         """Retourne True si un point (pos) est à l'intérieur du bouton."""
         return self.rect.collidepoint(pos)
 
+    def survol(self, pos):
+        if self.is_clicked(pos):
+            self.color = (200, 200, 200)
+        else:
+            self.color = (240, 240, 240)
+
 
 class Dropdown:
     """Menu déroulant de sélection avec défilement pour les salles et matières."""

@@ -341,6 +341,26 @@ while running:
         else:
             batiment_selectionne = None
         
+
+        bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
+           top_left=10, top_right=10, bottom_right=10, bottom_left=10)
+
+        bat_b.draw(screen, text="Bâtiment : B", color=couleur_bouton_options_b,
+           top_left=10, top_right=10, bottom_right=10, bottom_left=10)
+        etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
+        etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
+        nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
+        
+    #if etage == 2 and batiment_selectionne == "A":
+     #   etage=3
+    #elif etage == 3 and batiment_selectionne == "B":
+     #   etage=2"""
+
+
+        menu_deroulant.draw(screen, font)
+        menu_deroulant.survol(pygame.mouse.get_pos())
+        etage_sup.survol(pygame.mouse.get_pos())
+        etage_inf.survol(pygame.mouse.get_pos())
         if menu_matiere.action == True:
             infos_cours_result = fonctions.infos_cours(classes.matiere_choisie)
             saisie_active = False
@@ -392,6 +412,7 @@ while running:
     #    Ce bloc couvre l'overlay semi-transparent, le bouton de retour et le
     #    bouton 'Itinéraire le plus long'.
     if options_ouvert:
+        
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
         
         font_menu_ = pygame.font.Font(None, 72)
@@ -404,8 +425,8 @@ while running:
             
         texte_retour = font.render("Retour", True, (0, 0, 0))
         screen.blit(texte_retour, (retour_x + 40, retour_y + 12))
-        bouton_mode_long.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Itinéraire le plus long",color=(200, 200, 200))
-    
+        bouton_mode_long.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Itinéraire le plus long")
+        bouton_mode_long.survol(pygame.mouse.get_pos())
     coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} Y: {pygame.mouse.get_pos()[1]}")
     
     if saisie_active:
