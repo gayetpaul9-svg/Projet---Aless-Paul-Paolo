@@ -1,12 +1,11 @@
 #
 # from pydoc import text
-import pygame 
+import pygame
+from pygame.draw import rect 
 from pytmx.util_pygame import load_pygame
 import classes 
 import fonctions
-import algo_long
-from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B
-
+from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B, noms_etages, dico_etage, layers
 #initialisation pygame
 pygame.init()
 pygame.mixer.init()
@@ -24,6 +23,7 @@ info = pygame.display.Info()
 
 
 # Variables globales
+afficher = False
 long=False
 etat = "accueil"
 running = True
@@ -57,11 +57,147 @@ offset_x = (screen.get_width() - map_width) // 2
 offset_y = (screen.get_height() - map_height) // 2
 
 
+# Photos des couloirs pour les boutons loupe
+show_image = False
+current_image = None
+images = {
+    'civ': pygame.image.load("assets/civ.png").convert(),
+    'marque': pygame.image.load("assets/marque.png").convert(),
+    'verifier': pygame.image.load("assets/verifier.png").convert(),
+}
+# map_buttons_info: on associe des coordonnées, un étage et une image à chaque bouton
+map_buttons_info = [
+    {
+        #P1
+        'button': classes.Button(offset_x + 180, offset_y + 650, 20, 20),
+        'floors': [1],
+        'image': 'civ'
+    },
+    {
+        #P2
+        'button': classes.Button(offset_x + 220, offset_y + 320, 20, 20),
+        'floors': [1],
+        'image': 'marque'
+    },
+    {
+        #P3
+        'button': classes.Button(offset_x + 370, offset_y + 270, 20, 20),
+        'floors': [1],
+        'image': 'verifier'
+    },
+    {
+        #P4
+        'button': classes.Button(offset_x + 500, offset_y + 145, 20, 20),
+        'floors': [2],
+        'image': 'civ'
+    },
+    {
+        #P5
+        'button': classes.Button(offset_x + 220, offset_y + 405, 20, 20),
+        'floors': [2],
+        'image': 'marque'
+    },
+    {
+        #P6
+        'button': classes.Button(offset_x + 250, offset_y + 665, 20, 20),
+        'floors': [2],
+        'image': 'verifier'
+    },
+    {
+        #P7
+        'button': classes.Button(offset_x + 400, offset_y + 260, 20, 20),
+        'floors': [3],
+        'image': 'civ'
+    },
+    {
+        #P8
+        'button': classes.Button(offset_x + 215, offset_y + 670, 20, 20),
+        'floors': [3],
+        'image': 'marque'
+    },
+    {
+        #P9
+        'button': classes.Button(offset_x + 300, offset_y + 100, 20, 20),
+        'floors': [4],
+        'image': 'verifier'
+    },
+    {
+        #P10
+        'button': classes.Button(offset_x + 170, offset_y + 318, 20, 20),
+        'floors': [4],
+        'image': 'civ'
+    },
+    {
+        #P11
+        'button': classes.Button(offset_x + 330, offset_y + 330, 20, 20),
+        'floors': [4],
+        'image': 'marque'
+    },
+    {
+        #P12
+        'button': classes.Button(offset_x + 370, offset_y + 530, 20, 20),
+        'floors': [4],
+        'image': 'verifier'
+    },
+    {
+        #P13
+        'button': classes.Button(offset_x + 350, offset_y + 690, 20, 20),
+        'floors': [4],
+        'image': 'marque'
+    },
+    {
+        #P14
+        'button': classes.Button(offset_x + 415, offset_y + 750, 20, 20),
+        'floors': [4],
+        'image': 'verifier'
+    },
+    {
+        #P15
+        'button': classes.Button(offset_x + 320, offset_y + 895, 20, 20),
+        'floors': [4],
+        'image': 'civ'
+    },
+    {
+        #P16
+        'button': classes.Button(offset_x + 165, offset_y + 130, 20, 20),
+        'floors': [5],
+        'image': 'marque'
+    },
+    {
+        #P17
+        'button': classes.Button(offset_x + 185, offset_y + 350, 20, 20),
+        'floors': [5],
+        'image': 'verifier'
+    },
+    {
+        #P18
+        'button': classes.Button(offset_x + 70, offset_y + 592, 20, 20),
+        'floors': [5],
+        'image': 'civ'
+    },
+    {
+        #P19
+        'button': classes.Button(offset_x + 300, offset_y + 620, 20, 20),
+        'floors': [5],
+        'image': 'civ'
+    },
+    {
+        #P20
+        'button': classes.Button(offset_x + 345, offset_y + 872, 20, 20),
+        'floors': [5],
+        'image': 'marque'
+    },
+]
+
+# Fermer bouton image
+close_button = classes.Button(screen.get_width() - 50, 10, 40, 40, "X", font=pygame.font.Font("assets/DejaVuSans.ttf", 20))
+
+
 #bouttons
 menu_ouvert = False
 coodonnées_souris=classes.Button(10,10,200,40,)
 etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-etage_inf=classes.Button(1386, info.current_h-95, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+etage_inf=classes.Button(1386, info.current_h-105, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 bouton_mode_long = classes.Button(info.current_w//2-160,info.current_h//2-25, 320, 50, 
@@ -80,6 +216,13 @@ menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "B311","B312","B313","B314","B315","B316","B317","B318","B319","B320",
     "B321","B322","B323","B324","B325",""
 ])
+afficher_loupe = classes.Button(info.current_w-447+200,info.current_h-735, 200, 50)
+menu_matiere= classes.Dropdown(320,50,250,40, [
+    "maths","physique-chimie","francais", "histoire-geo", "hggsp", "hlp",
+    "ses", "nsi", "sport", "italien", "anglais", "allemand", "espagnol",
+    "russe", "fls", "cdm", "histoire-geo si", "chinois", ""
+],titre="Cours ?")
+nom_etage=classes.Button(info.current_w//2-125, 13, 250, 30)
 bouton_options_x = screen.get_width() - 250
 bouton_options_y = 50
 bouton_options_largeur = 200
@@ -89,7 +232,7 @@ couleur_bouton_options_a = (240, 240, 240)
 couleur_bouton_options_b = (240, 240, 240)
 bat_a=classes.Button(info.current_w-447, info.current_h-145, 200, 80)
 bat_b=classes.Button(info.current_w-447+200+5, info.current_h-145, 200, 80)
-batiment_selectionne = "A"
+batiment_selectionne = None
 
 
 _,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B)
@@ -122,6 +265,8 @@ while running:
                 for x, y, image in layer.tiles():
                     screen.blit(image, (offset_x + x * TILE_SIZE, offset_y + y * TILE_SIZE))
         
+        
+        
         pygame.draw.rect(screen, couleur_bouton_options, (bouton_options_x, bouton_options_y, bouton_options_largeur, bouton_options_hauteur))
         texte_options = font.render("Options", True, (0, 0, 0))
         screen.blit(texte_options, (bouton_options_x + 60, bouton_options_y + 8))
@@ -139,8 +284,13 @@ while running:
         elif e.type == pygame.MOUSEWHEEL:
             menu_deroulant.offset_y += e.y *20
             menu_deroulant.offset_y = min(-189, menu_deroulant.offset_y)
-            menu_deroulant.offset_y = max(-2429, menu_deroulant.offset_y)
+            menu_deroulant.offset_y = max(-2669, menu_deroulant.offset_y)
             menu_deroulant.scroll_options()
+            menu_matiere.offset_y += e.y *20
+            menu_matiere.offset_y = min(-189, menu_matiere.offset_y)
+            menu_matiere.offset_y = max(-429, menu_matiere.offset_y)
+            menu_matiere.scroll_options()
+
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:       
                 if etat == "itinéraire":
@@ -153,19 +303,29 @@ while running:
                 etage = max(etage - 1, 1)
             if e.key == pygame.K_BACKSPACE and saisie_active:
                 texte_saisi = texte_saisi[:-1]
-            if e.key == pygame.K_RETURN and saisie_active and infos_cours_result:
+            if e.key == pygame.K_RETURN and saisie_active and texte_saisi != "":
+                infos_cours_result = fonctions.infos_cours(texte_saisi)
+                saisie_active = False
                 print("Salle sélectionnée :", texte_saisi)
                 classes.départ_salle = texte_saisi
-                saisie_active = False
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             mx, my = e.pos
 
+            # Réinitialiser les boutons loupe
+            if afficher == True:
+                for info_btn in map_buttons_info:
+                    info_btn['button'].clicked = False
+
             if bat_a.is_clicked(e.pos):
                 batiment_selectionne = "A"
+                if etage == 2:
+                    etage = 3
                 son_clic.play()
 
             if bat_b.is_clicked(e.pos):
                 batiment_selectionne = "B"
+                if etage == 3:
+                    etage = 2
                 son_clic.play()
     
             if etat == "accueil":
@@ -185,6 +345,10 @@ while running:
             
             elif etat == "itinéraire":
                 menu_deroulant.handle_click(e.pos)
+                if menu_deroulant.open:
+                    infos_cours_result = None
+                if saisie_active:
+                    menu_matiere.handle_click(e.pos)
                 if etage_sup.is_clicked(e.pos):
                     etage = min(etage + 1, 5)
                     son_clic.play()
@@ -196,12 +360,30 @@ while running:
                 if e.pos[0] >= 1386 and e.pos[0] <= 1426 and e.pos[1] >= 934 and e.pos[1] <= 974:
                     son_clic.play()
 
+                # Afficher boutons loupe filtrés par étage
+                if afficher_loupe.is_clicked(e.pos):
+                    afficher = not afficher
+                    son_clic.play()
                 
                 # Bouton Options du gps
                 if bouton_options_x <= mx <= bouton_options_x + bouton_options_largeur and bouton_options_y <= my <= bouton_options_y + bouton_options_hauteur:
                     options_ouvert = not options_ouvert
                     print("Options du gps cliqué")
                 
+                # Boutons loupe sur la carte
+                if afficher == True:
+                    for info_btn in map_buttons_info:
+                        btn = info_btn['button']
+                        if etage not in info_btn['floors']:
+                            continue
+                        if btn.is_clicked(e.pos):
+                            btn.clicked = True
+                            show_image = True
+                            current_image = images[info_btn['image']]
+                            son_clic.play()
+                            break
+
+
             if options_ouvert:
                 retour_x = screen.get_width()//2 - 80
                 retour_y = screen.get_height()//2 + 40
@@ -214,36 +396,46 @@ while running:
                     options_ouvert = False
                     son_clic.play()
                     print("Retour cliqué")
-    
-        elif e.type == pygame.TEXTINPUT:
-            if saisie_active:
-                texte_saisi += e.text
+
+            # Fermer l'image si le bouton X est cliqué
+            if show_image and close_button.is_clicked(e.pos):
+                show_image = False
+                son_clic.play()
 
     # Affichage de l'itinéraire et du menu déroulant
     if etat == "itinéraire":
+        vert=(150,255,150)
+        gris=(200,200,200)
+        normale=(240,240,240)
         if etage == 1 :
-            couleur_bouton_options_a = (240,240,240)
-            couleur_bouton_options_b = (200,200,200)
-        elif etage == 2 :
-            couleur_bouton_options_a = (200,200,200)
-            couleur_bouton_options_b = (240,240,240)
+            couleur_bouton_options_a = gris
+            couleur_bouton_options_b = gris
         elif etage == 3 :
-            couleur_bouton_options_a = (240,240,240)
-            couleur_bouton_options_b = (200,200,200)
+            couleur_bouton_options_a = normale
+            couleur_bouton_options_b = normale
+        elif etage == 2 :
+            couleur_bouton_options_a = normale
+            couleur_bouton_options_b = normale
         elif etage == 4 :
-            couleur_bouton_options_a = (240,240,240)
-            couleur_bouton_options_b = (240,240,240)
+            couleur_bouton_options_a = gris
+            couleur_bouton_options_b = gris
         elif etage == 5 :
-            couleur_bouton_options_a = (240,240,240)
-            couleur_bouton_options_b = (240,240,240)
-
-        if batiment_selectionne == "A":
-            couleur_bouton_options_a = (150,255,150)
-            couleur_bouton_options_b = (240,240,240)
-
-        elif batiment_selectionne == "B":
-            couleur_bouton_options_a = (240,240,240)
-            couleur_bouton_options_b = (150,255,150)
+            couleur_bouton_options_a = gris
+            couleur_bouton_options_b = gris
+        
+        if batiment_selectionne == "A" and etage in [2, 3]:
+            couleur_bouton_options_a = vert
+            couleur_bouton_options_b = normale
+            #chemins_affichés = list(chemins)
+            #del chemins_affichés[2]
+        elif batiment_selectionne == "B" and etage in [2, 3]:
+            couleur_bouton_options_a = normale
+            couleur_bouton_options_b = vert
+            #chemins_affichés = list(chemins)
+            #del chemins_affichés[1]
+        else:
+            batiment_selectionne = None
+        
 
         bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
@@ -252,28 +444,62 @@ while running:
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
         etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
+        nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
+        afficher_loupe.draw(screen, text="Afficher loupes", top_left=10, top_right=10, bottom_right=10, bottom_left=10)
+        if afficher == True:
+                        for info_btn in map_buttons_info:
+                            btn = info_btn['button']
+                            if etage not in info_btn['floors']:
+                                continue
+                            color = (0, 255, 0) if btn.clicked else (255, 0, 0)
+                            btn.draw(screen, top_left=0, top_right=0, bottom_right=0, bottom_left=0, color=color)
         
-       
+    #if etage == 2 and batiment_selectionne == "A":
+     #   etage=3
+    #elif etage == 3 and batiment_selectionne == "B":
+     #   etage=2"""
+
 
         menu_deroulant.draw(screen, font)
         menu_deroulant.survol(pygame.mouse.get_pos())
+        if menu_matiere.action == True:
+            infos_cours_result = fonctions.infos_cours(classes.matiere_choisie)
+            saisie_active = False
+            menu_matiere.action = False
         
         if menu_deroulant.opening==True:
             #chemins = [tmx_data.layers[6]]
             menu_deroulant.opening=False
+            infos_cours_result = None
         if menu_deroulant.action==True:
+            infos_cours_result = None
             print("ok")
             #print(gps(depart_salle, arrivée_salle))
-            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e, layers_2, layers_3, layers_1, layers_cdi,layers_1B)
+            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e, layers_2, layers_3, layers_1, layers_cdi,layers_1B,mode_long)
             fonc=fonctions.fonctionnalitees(classes.départ_salle, classes.arrivée_salle)
+            for layer in layers:
+                if classes.départ_salle in layer:
+                    print("depart trouvé dans layer ",layer)
+                    break 
+
+            for cle, v in dico_etage.items():
+                if v == layer:
+                    etage = cle
+                    break
             menu_deroulant.action=False
             menu_deroulant.open=False
             saisie_active = True
             texte_saisi = ""
             infos_cours_result = None
-        fonctions_ = str("calories : " + fonc['calories']) + "  " +str("temps : " + fonc["temps"]+" min")
+        fonctions_ = str("calories : " + fonc['calories']+" Kcal")
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
+        fonctions_= "  " +str("temps : " + fonc["temps"]+" s")
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=10, bottom_right=10, text=fonctions_)
+        if infos_cours_result is not None and not saisie_active:
+            texte_ennui = "Ennui : " + infos_cours_result['message_ennui']
+            texte_message = infos_cours_result['message']
+            screen.blit(font.render(texte_ennui, True, (0, 0, 0)), (50, 150))
+            screen.blit(font.render(texte_message, True, (0, 0, 0)), (50, 190)) 
     # Affichage du menu d'options
     if options_ouvert:
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
@@ -291,5 +517,30 @@ while running:
     
     coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} Y: {pygame.mouse.get_pos()[1]}")
     
+    if saisie_active:
+        menu_matiere.draw(screen, font)
+        menu_matiere.survol(pygame.mouse.get_pos())
+
+    # Afficher image si bouton loupe cliqué
+    if show_image:
+        max_w, max_h = 500, 400
+        img_w, img_h = current_image.get_size()
+        scale = min(max_w / img_w, max_h / img_h, 1)
+        new_w = int(img_w * scale)
+        new_h = int(img_h * scale)
+
+        scaled_image = pygame.transform.smoothscale(current_image, (new_w, new_h))
+        screen_rect = screen.get_rect()
+        img_rect = scaled_image.get_rect(center=screen_rect.center)
+
+        overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 120))
+        screen.blit(overlay, (0, 0))
+
+        pygame.draw.rect(screen, (255, 255, 255), img_rect.inflate(10, 10), 3)
+        screen.blit(scaled_image, img_rect)
+
+        close_button.draw(screen, top_left=5, top_right=5, bottom_right=5, bottom_left=5, color=(200, 200, 200))
+
     pygame.display.flip()
 pygame.quit()
