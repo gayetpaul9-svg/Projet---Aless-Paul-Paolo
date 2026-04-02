@@ -74,14 +74,14 @@ class Button:
 class Dropdown:
     """Menu déroulant de sélection avec défilement pour les salles et matières."""
 
-    def __init__(self, x, y, width, height, options, Validation=False, titre="salles disponibles", single=False):
+    def __init__(self, x, y, width, height, options, Validation=False, titre="salles disponibles", single=False, sous_options=None):
         """Initialise un Dropdown.
 
         options: liste de libellés à afficher.
         Validation: booléen de mode validation (à usage spécifique du projet).
         single: si True, sélection unique puis fermeture automatique.
+        sous_options: dictionnaire {option: [sous_options]} pour menus imbriqués.
         """
-    def __init__(self, x, y, width, height, options, Validation=False, titre="salles disponibles", single=False, sous_options=None):
         self.single = single
         self.options = options
         self.main = Button(x, y, width, height, titre)
