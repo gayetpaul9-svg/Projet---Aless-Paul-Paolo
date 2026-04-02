@@ -58,6 +58,7 @@ class Button:
         text_surf = self.font.render(self.text, True, (0, 0, 0))
         text_rect = text_surf.get_rect(center=self.rect.center)
         screen.blit(text_surf, text_rect)
+        
     
     def is_clicked(self, pos):
         """Retourne True si un point (pos) est à l'intérieur du bouton."""
@@ -80,7 +81,9 @@ class Dropdown:
         Validation: booléen de mode validation (à usage spécifique du projet).
         single: si True, sélection unique puis fermeture automatique.
         """
+    def __init__(self, x, y, width, height, options, Validation=False, titre="salles disponibles", single=False, sous_options=None):
         self.single = single
+        self.options = options
         self.main = Button(x, y, width, height, titre)
         self.open = False
         self.options = []
@@ -90,6 +93,16 @@ class Dropdown:
         self.offset_y=-189
         self.index_y=7
         self.y = y
+        self.sous_menu_ouvert = None
+        self.sous_menus = {}
+        if sous_options is not None:
+            for option in options:
+                if option == "":
+                    continue
+                salles = sous_options[option]
+                self.sous_menus[option] = Dropdown(x, y, width, height, salles)
+        print(len(options)-1)
+        
 
         for i, opt in enumerate(options):
             if Validation==False:
@@ -135,6 +148,8 @@ class Dropdown:
             self.main.draw(screen, top_left=10, top_right=10, bottom_right=0, bottom_left=0)
         else:
             self.main.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10)
+        if self.sous_menu_ouvert is not None:
+            self.sous_menus[self.sous_menu_ouvert].draw(screen, font)
 
     def survol(self, pos):
         """Change visuellement les options au survol de la souris."""
@@ -166,14 +181,19 @@ class Dropdown:
         global matiere_choisie
         if self.main.is_clicked(pos):
             self.open = not self.open
-            self.opening=True
             # Réinitialiser quand on ferme le menu
             if not self.open:
                 self.reset_colors()
         elif self.open:
             for opt in self.options_affichées:
                 if opt.is_clicked(pos) and opt.text != "":
-                    if self.type == "start":
+                    if self.sous_menus:
+                        self.sous_menus[opt.text].open = True
+                        self.sous_menu_ouvert = opt.text
+                        self.open = False
+                        if opt.text == "":
+                            return
+                    elif self.type == "start":
                         opt.color = (150, 255, 150)
                         départ_salle = opt.text
                         matiere_choisie = opt.text
@@ -197,6 +217,8 @@ class Dropdown:
                         opt.color = (240, 240, 240)
                     self.type = "start"
                 if opt.is_clicked(pos) and opt.text == "":
-                    self.action = True
-                    self.open = False
-                    self.reset_colors()
+                    self.action = True        
+                    matiere_choisie = "coché"
+                    départ_salle = "coché"
+                    opt.is_clickedv = True
+                    return
