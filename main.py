@@ -1,16 +1,12 @@
-"""
-Point d'entrée principal du projet GPS du lycée.
-Gère la boucle Pygame, les interfaces, et les interactions utilisateur.
-Ce module contient la boucle principale de jeu et le rendu des écrans.
-"""
-import pygame
-import math
-from pygame.draw import rect 
+#
+# from pydoc import text
+import pygame 
 from pytmx.util_pygame import load_pygame
 import classes 
 import fonctions
-from fonctions import liste_etage
-from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B, noms_etages, dico_etage, layers
+import algo_long
+from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B
+
 #initialisation pygame
 pygame.init()
 pygame.mixer.init()
@@ -27,31 +23,7 @@ clock.tick(60)
 info = pygame.display.Info()
 
 
-
-
-
-time = 0
-base_color = (100, 150, 255)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Variables globales
-# Ces variables contrôlent principalement l'apparence et l'état de l'interface.
-vert=(150,255,150)
-gris=(200,200,200)
-normale=(240,240,240)
 long=False
 etat = "accueil"
 running = True
@@ -89,7 +61,7 @@ offset_y = (screen.get_height() - map_height) // 2
 menu_ouvert = False
 coodonnées_souris=classes.Button(10,10,200,40,)
 etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-etage_inf=classes.Button(1386, info.current_h-105, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+etage_inf=classes.Button(1386, info.current_h-95, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 bouton_mode_long = classes.Button(info.current_w//2-160,info.current_h//2-25, 320, 50, 
@@ -108,12 +80,6 @@ menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "B311","B312","B313","B314","B315","B316","B317","B318","B319","B320",
     "B321","B322","B323","B324","B325",""
 ])
-menu_matiere= classes.Dropdown(320,50,250,40, [
-    "maths","physique-chimie","francais", "histoire-geo", "hggsp", "hlp",
-    "ses", "nsi", "sport", "italien", "anglais", "allemand", "espagnol",
-    "russe", "fls", "cdm", "histoire-geo si", "chinois", ""
-],titre="Cours ?", single=True)
-nom_etage=classes.Button(info.current_w//2-125, 13, 250, 30)
 bouton_options_x = screen.get_width() - 250
 bouton_options_y = 50
 bouton_options_largeur = 200
@@ -123,41 +89,14 @@ couleur_bouton_options_a = (240, 240, 240)
 couleur_bouton_options_b = (240, 240, 240)
 bat_a=classes.Button(info.current_w-447, info.current_h-145, 200, 80)
 bat_b=classes.Button(info.current_w-447+200+5, info.current_h-145, 200, 80)
-batiment_selectionne = None
+batiment_selectionne = "A"
 
 
 _,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B)
 
-# boucle principale
-# La boucle principale tourne tant que la variable 'running' est True.
-# Elle gère l'état de l'application : "accueil" ou "itinéraire",
-# l'affichage des éléments, et le traitement des événements utilisateur.
+#boucle principale
 while running:
-
-    dt = clock.tick(60) / 1000
-    time += dt
-
-    pulse = (math.sin(time * 2) + 1) / 2
-
-    color = (
-        int(base_color[0] + (255 - base_color[0]) * pulse * 0.5),
-        int(base_color[1] + (255 - base_color[1]) * pulse * 0.5),
-        int(base_color[2] + (255 - base_color[2]) * pulse * 0.5),
-    )   
-
-
-
-
-
-
-
-
-
-
-
-
-    # 1) Affichage selon l'état courant : accueil ou itinéraire
-    # pages d'accueil et d'itinéraire
+    #pages d'accueil et d'itinéraire
     if etat == "accueil":
         pygame.mixer.music.stop()
         pygame.mixer.music.play(-1)
@@ -193,25 +132,15 @@ while running:
         else:
             couleur_bouton_options = (240, 240, 240)
 
-    # 2) Gestion des événements de Pygame
-    #    - fermeture de la fenêtre
-    #    - défilement souris pour les menus déroulants
-    #    - navigation clavier
-    #    - clics souris sur boutons et éléments interactifs
+    # Gérer les événements
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
-            # l'utilisateur ferme la fenêtre, on arrête la boucle
             running = False
         elif e.type == pygame.MOUSEWHEEL:
             menu_deroulant.offset_y += e.y *20
             menu_deroulant.offset_y = min(-189, menu_deroulant.offset_y)
-            menu_deroulant.offset_y = max(-2669, menu_deroulant.offset_y)
+            menu_deroulant.offset_y = max(-2429, menu_deroulant.offset_y)
             menu_deroulant.scroll_options()
-            menu_matiere.offset_y += e.y *20
-            menu_matiere.offset_y = min(-189, menu_matiere.offset_y)
-            menu_matiere.offset_y = max(-429, menu_matiere.offset_y)
-            menu_matiere.scroll_options()
-
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:       
                 if etat == "itinéraire":
@@ -224,23 +153,19 @@ while running:
                 etage = max(etage - 1, 1)
             if e.key == pygame.K_BACKSPACE and saisie_active:
                 texte_saisi = texte_saisi[:-1]
-            if e.key == pygame.K_RETURN and saisie_active and texte_saisi != "":
-                infos_cours_result = fonctions.infos_cours(texte_saisi)
-                saisie_active = False
+            if e.key == pygame.K_RETURN and saisie_active and infos_cours_result:
+                print("Salle sélectionnée :", texte_saisi)
                 classes.départ_salle = texte_saisi
+                saisie_active = False
         elif e.type == pygame.MOUSEBUTTONDOWN and e.button == 1:
             mx, my = e.pos
 
             if bat_a.is_clicked(e.pos):
                 batiment_selectionne = "A"
-                if etage == 2:
-                    etage = 3
                 son_clic.play()
 
             if bat_b.is_clicked(e.pos):
                 batiment_selectionne = "B"
-                if etage == 3:
-                    etage = 2
                 son_clic.play()
     
             if etat == "accueil":
@@ -249,19 +174,17 @@ while running:
                     350 <= my <= 430):
                     son_clic.play()
                     etat = "itinéraire"
+                    print("ITINÉRAIRE cliqué: passage à l'itinéraire")
                 
     
                 # option de puis accueil
                 if (screen.get_width()//2 - 200 <= mx <= screen.get_width()//2 + 200 and
                     450 <= my <= 530):
                     options_ouvert = True
+                    print("OPTIONS cliqué depuis l'accueil !")
             
             elif etat == "itinéraire":
                 menu_deroulant.handle_click(e.pos)
-                if menu_deroulant.open:
-                    infos_cours_result = None
-                if saisie_active and not menu_deroulant.open:
-                    menu_matiere.handle_click(e.pos)
                 if etage_sup.is_clicked(e.pos):
                     etage = min(etage + 1, 5)
                     son_clic.play()
@@ -277,6 +200,7 @@ while running:
                 # Bouton Options du gps
                 if bouton_options_x <= mx <= bouton_options_x + bouton_options_largeur and bouton_options_y <= my <= bouton_options_y + bouton_options_hauteur:
                     options_ouvert = not options_ouvert
+                    print("Options du gps cliqué")
                 
             if options_ouvert:
                 retour_x = screen.get_width()//2 - 80
@@ -289,58 +213,37 @@ while running:
                 if retour_x <= mx <= retour_x + 160 and retour_y <= my <= retour_y + 50:
                     options_ouvert = False
                     son_clic.play()
+                    print("Retour cliqué")
+    
+        elif e.type == pygame.TEXTINPUT:
+            if saisie_active:
+                texte_saisi += e.text
 
-    # 3) Mise à jour de l'affichage de l'itinéraire et du menu déroulant
-    #    Cette section se charge de :
-    #      - mettre en surbrillance les boutons d'étage et de bâtiment
-    #      - calculer et afficher les informations de cours / itinéraire
-    #      - afficher les contrôles et menus interactifs
+    # Affichage de l'itinéraire et du menu déroulant
     if etat == "itinéraire":
-        # fonctionnement boutons étages
-        for elem in liste_etage:
-            if elem == etage:
-                index=liste_etage.index(elem)
-                if index!=len(liste_etage)-1:
-                    if liste_etage[index+1]>elem:
-                        etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=color)
-                        etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
-                    elif liste_etage[index+1]<elem: 
-                        etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=color)
-                        etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
-                    else:
-                        etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
-                        etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
-                else:
-                    etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
-                    etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
-            else:
-                couleur_bouton_options_a = normale
-                couleur_bouton_options_b = normale
         if etage == 1 :
-            couleur_bouton_options_a = gris
-            couleur_bouton_options_b = gris
-        elif etage == 3 :
-            couleur_bouton_options_a = normale
-            couleur_bouton_options_b = normale
+            couleur_bouton_options_a = (240,240,240)
+            couleur_bouton_options_b = (200,200,200)
         elif etage == 2 :
-            couleur_bouton_options_a = normale
-            couleur_bouton_options_b = normale
+            couleur_bouton_options_a = (200,200,200)
+            couleur_bouton_options_b = (240,240,240)
+        elif etage == 3 :
+            couleur_bouton_options_a = (240,240,240)
+            couleur_bouton_options_b = (200,200,200)
         elif etage == 4 :
-            couleur_bouton_options_a = gris
-            couleur_bouton_options_b = gris
+            couleur_bouton_options_a = (240,240,240)
+            couleur_bouton_options_b = (240,240,240)
         elif etage == 5 :
-            couleur_bouton_options_a = gris
-            couleur_bouton_options_b = gris
-        
-        if batiment_selectionne == "A" and etage in [2, 3]:
-            couleur_bouton_options_a = vert
-            couleur_bouton_options_b = normale
-        elif batiment_selectionne == "B" and etage in [2, 3]:
-            couleur_bouton_options_a = normale
-            couleur_bouton_options_b = vert
-        else:
-            batiment_selectionne = None
-        
+            couleur_bouton_options_a = (240,240,240)
+            couleur_bouton_options_b = (240,240,240)
+
+        if batiment_selectionne == "A":
+            couleur_bouton_options_a = (150,255,150)
+            couleur_bouton_options_b = (240,240,240)
+
+        elif batiment_selectionne == "B":
+            couleur_bouton_options_a = (240,240,240)
+            couleur_bouton_options_b = (150,255,150)
 
         bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
@@ -349,75 +252,34 @@ while running:
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
         etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
-        nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         
-    #if etage == 2 and batiment_selectionne == "A":
-     #   etage=3
-    #elif etage == 3 and batiment_selectionne == "B":
-     #   etage=2"""
-
+       
 
         menu_deroulant.draw(screen, font)
         menu_deroulant.survol(pygame.mouse.get_pos())
-        etage_sup.survol(pygame.mouse.get_pos())
-        etage_inf.survol(pygame.mouse.get_pos())
-        if menu_matiere.action == True:
-            infos_cours_result = fonctions.infos_cours(classes.matiere_choisie)
-            saisie_active = False
-            menu_matiere.action = False
+        
         if menu_deroulant.opening==True:
+            #chemins = [tmx_data.layers[6]]
             menu_deroulant.opening=False
-            infos_cours_result = None
         if menu_deroulant.action==True:
-            infos_cours_result = None
-            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e, layers_2, layers_3, layers_1, layers_cdi,layers_1B,mode_long)
+            print("ok")
+            #print(gps(depart_salle, arrivée_salle))
+            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e, layers_2, layers_3, layers_1, layers_cdi,layers_1B)
             fonc=fonctions.fonctionnalitees(classes.départ_salle, classes.arrivée_salle)
-            for layer in layers:
-                if classes.départ_salle in layer:
-                    break 
-
-            for cle, v in dico_etage.items():
-                if v == layer:
-                    etage = cle
-                    break
             menu_deroulant.action=False
             menu_deroulant.open=False
             saisie_active = True
             texte_saisi = ""
             infos_cours_result = None
-        
-        if infos_cours_result is not None and not saisie_active:
-            texte_ennui = "Ennui : " + infos_cours_result['message_ennui']
-            texte_message = infos_cours_result['message']
-            screen.blit(font.render(texte_ennui, True, (0, 0, 0)), (50, 150))
-
-            lignes_message = texte_message.split("\n")
-            for i, ligne in enumerate(lignes_message):
-                screen.blit(font.render(ligne.strip(), True, (0, 0, 0)), (50, 190 + i * 40))
-        
-        bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
-           top_left=10, top_right=10, bottom_right=10, bottom_left=10)
-        bat_b.draw(screen, text="Bâtiment : B", color=couleur_bouton_options_b,
-           top_left=10, top_right=10, bottom_right=10, bottom_left=10)
-        #etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
-        #etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
-        nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
-        menu_deroulant.draw(screen, font)
-        menu_deroulant.survol(pygame.mouse.get_pos())
-        fonctions_ = str("calories : " + fonc['calories']+" Kcal")
+        fonctions_ = str("calories : " + fonc['calories']) + "  " +str("temps : " + fonc["temps"]+" min")
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
-        fonctions_= "  " +str("temps : " + fonc["temps"]+" s")
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=10, bottom_right=10, text=fonctions_)
-    # 4) Affichage du menu d'options lorsque l'utilisateur l'a ouvert
-    #    Ce bloc couvre l'overlay semi-transparent, le bouton de retour et le
-    #    bouton 'Itinéraire le plus long'.
+    # Affichage du menu d'options
     if options_ouvert:
-        
         pygame.draw.rect(screen, (80, 80, 80, 180), (0, 0, screen.get_width(), screen.get_height()))
         
-        font_menu_ = pygame.font.Font(None, 72)
-        texte = font_menu_.render("Menu Options", True, (255, 255, 255))
-        screen.blit(texte, (screen.get_width()//2 - 175, screen.get_height()//2 - 450))
+        texte = font.render("Menu Options", True, (255, 255, 255))
+        screen.blit(texte, (screen.get_width()//2 - 80, screen.get_height()//2 - 50))
            
         retour_x = screen.get_width()//2 - 80
         retour_y = screen.get_height()//2 + 40
@@ -425,13 +287,9 @@ while running:
             
         texte_retour = font.render("Retour", True, (0, 0, 0))
         screen.blit(texte_retour, (retour_x + 40, retour_y + 12))
-        bouton_mode_long.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Itinéraire le plus long")
-        bouton_mode_long.survol(pygame.mouse.get_pos())
+        bouton_mode_long.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Itinéraire le plus long",color=(200, 200, 200))
+    
     coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} Y: {pygame.mouse.get_pos()[1]}")
     
-    if saisie_active:
-        menu_matiere.draw(screen, font)
-        menu_matiere.survol(pygame.mouse.get_pos())
-
     pygame.display.flip()
 pygame.quit()
