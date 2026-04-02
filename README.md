@@ -74,14 +74,13 @@ Notre projet consiste à créer une carte en 2D du CIV, permettant aux utilisate
 - - [x] Une interface utilisateur qui permet de choisir la salle de départ et celle d'arrivée
 - - [x] Une ligne indiquant le chemin à suivre
 - - [x] calcul du temps de trajet estimée
-- - [ ] messages personnalisés en fonction des cours ainsi qu'un calcul du taux d'ennuie en fonction du cours.
+- - [x] messages personnalisés en fonction des cours ainsi qu'un calcul du taux d'ennuie en fonction du cours.
 - - [x] Des choix de types de trajet
     - [x] Plus court ou plus long
-    - [x] Energie minimum
     - [x] calcul des calories
 - - [ ] Aspect graphique
     - [ ] Graphisme simple, épuré et moderne
-    - [ ] Utilisable avec le clavier
+    - [x] Utilisable avec le clavier
     - [ ] Couleur principale de l'interface personnalisable
     - [x] format pc
     - [x] clavié et souris
