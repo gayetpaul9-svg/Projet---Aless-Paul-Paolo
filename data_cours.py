@@ -1,3 +1,9 @@
+"""
+Dictionnaires de métadonnées des cours.
+- ennui_par_cours: niveau d'ennui estimé (0-100).
+- messages_par_cours: message associé au cours.
+"""
+
 ennui_par_cours = {
     "maths": 65,
     "physique-chimie": 55,

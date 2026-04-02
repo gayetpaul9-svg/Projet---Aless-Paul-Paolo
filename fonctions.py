@@ -1,13 +1,26 @@
+"""
+Fonctions utilitaires du GPS du lycée.
+Contient:
+- calculs de chemin (gps), dijkstra par algo module.
+- métriques ennui et messages pédagogiques.
+- modes long, calories, temps.
+"""
+
 import algo
 from algo import graphe
 from layers import *
 import random
 from data_cours import ennui_par_cours, messages_par_cours
 import unicodedata
+liste_etage = []
 # =========================
 # SELECTION ETAPE INTERMEDIAIRE LOINTAINE
 # =========================
 def trouver_nombre_eloigne(debut, fin):
+    """Retourne un étage éloigné de l'intervalle [debut, fin] parmi 1..5.
+
+    Utilisé par le mode long pour choisir une étape intermédiaire.
+    """
     # Création de la liste de nombres de 1 à 5
     nombres = [1, 2, 3, 4, 5]
     
@@ -37,7 +50,19 @@ def trouver_nombre_eloigne(debut, fin):
 # FONCTION GPS
 # =========================
 
-def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B,long=False):
+def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B, long=False):
+    """Calcule l'itinéraire entre départ et arrivée.
+
+    Args:
+        depart (str): identifiant de la salle de départ.
+        arrivee (str): identifiant de la salle d'arrivée.
+        tmx_data...: données de carte pour chaque niveau.
+        layers_* : couches de cartes par étage.
+        long (bool): mode itinéraire le plus long via étape intermédiaire.
+
+    Retourne:
+        tuple(resultat, chemins)
+    """
 
     chemins1 = []
     chemins_cdi = []
@@ -47,14 +72,12 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e
 
 
     if not depart or not arrivee:
-        print("Départ ou arrivée non défini.")
         chemins1.append(tmx_data_d.layers[8])
         chemins_cdi.append(tmx_data_c.layers[9])
         chemins3.append(tmx_data.layers[12])
         chemins2.append(tmx_data_b.layers[17])
         chemins1B.append(tmx_data_e.layers[10])
         chemins = [chemins_cdi,chemins1B, chemins1, chemins2, chemins3]        
-        print("chemins :", chemins)
         return None, chemins
     if long == False:
         resultat, _ = algo.dijkstra(depart, arrivee)
@@ -73,26 +96,17 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e
                 b=cle
             if val == a:
                 a=cle
-        print("b = ",b)
-        print("a = ",a)
-        
         c=dico_etage[trouver_nombre_eloigne(a,b)]
         e=list(c.values())
         d=e[random.randint(len(e)-7,len(e)-1)]
         for cle, val in c.items():
             if val==d:
                 d=cle
-        print("etape intermediare = ",d)
-        print("d = ",d)
         resultata, _ = algo.dijkstra(depart, d)
         resultatb, _ = algo.dijkstra(d, arrivee)
         resultat=resultata+resultatb
-        print("mode long")
-
-    print("Chemin trouvé :", resultat)
 
     if resultat is None:
-        print("Aucun chemin trouvé par l'algorithme.")
         return None, None
 
     for s in resultat:
@@ -109,7 +123,6 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e
         # Couloir F à M
         elif 'F' <= last <= 'M':
             chemins2.append(layers_2[s])
-            print("Chemin ajouté à chemins2 :", layers_2[s])
 
         elif 'O' <= last <= 'R':
             chemins1.append(layers_1[s])
@@ -168,7 +181,14 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e
     chemins3.append(tmx_data.layers[12])
     chemins1B.append(tmx_data_e.layers[10])
     chemins = [chemins_cdi,chemins1,chemins1B, chemins2, chemins3]
-    print(chemins)
+    liste_etage.clear()
+    for element in resultat:
+        for layer in layers:
+            if element in layer.keys():
+                for cle, v in dico_etage.items():
+                    if v == layer:
+                         if cle not in liste_etage:
+                            liste_etage.append(cle)
     return resultat, chemins
 
 
@@ -177,6 +197,7 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e
 # =========================
 
 def fonctionnalitees(depart, arrivee):
+    """Retourne un dictionnaire de calories et temps pour l'itinéraire trouvé."""
 
     _, distance = algo.dijkstra(depart, arrivee)
 
@@ -187,14 +208,20 @@ def fonctionnalitees(depart, arrivee):
 
 
 def enlever_accents(texte):
+    """Supprime les accents d'une chaîne pour normaliser les clés de cours."""
     return ''.join(c for c in unicodedata.normalize('NFD', texte) if unicodedata.category(c) != 'Mn')
 
 def get_ennui(cours):
+    """Retourne un niveau d'ennui pour une matière.
+
+    Si la matière n'est pas enregistrée, valeur par défaut 50.
+    """
     cours_nettoye = enlever_accents(cours).lower()
     resultat = ennui_par_cours.get(cours_nettoye, 50)
     return resultat
 
 def message_ennui(taux):
+    """Retourne un message court en fonction du taux d'ennui."""
     if taux > 75:
         return "Bonne chance"
     elif taux >= 40:
@@ -203,12 +230,33 @@ def message_ennui(taux):
         return "Ba incroyable"
 
 def get_message(cours):
+    """Retourne un message d'encouragement selon le cours."""
     cours_nettoyee = enlever_accents(cours).lower()
     message_trouve = messages_par_cours.get(cours_nettoyee, "Bonne route !")
     return message_trouve
 
 def infos_cours(cours):
+    """Retourne un dictionnaire d'informations sur le cours.
+
+    Clé:
+    - ennui: score de 0 à 100.
+    - message_ennui: commentaire court.
+    - message: message détaillé.
+    """
     taux = get_ennui(cours)
     msg_ennui = message_ennui(taux)
     message = get_message(cours)
     return {'ennui': taux, 'message_ennui': msg_ennui, 'message': message}
+
+def trouver_etages(resultat):
+    """Retourne la liste des étages traversés d'après le résultat du chemin."""
+    pass
+                          
+
+    
+
+
+def suggestion(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B):
+    """(À compléter) Suggestion d'itinéraire selon les étages et la distance."""
+    # fait la liste dans l'ordre des étages empruntés.
+    pass

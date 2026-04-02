@@ -1,3 +1,8 @@
+"""
+Module de configuration des couches (layers) de chaque carte TMX.
+Contient les dictionnaires de correspondance salle->layer par étage.
+"""
+
 from pytmx.util_pygame import load_pygame
 tmx_data = load_pygame("maps/map B300 x4.tmx")
 tmx_data_b = load_pygame("maps/map B200-A200 x4.tmx")
