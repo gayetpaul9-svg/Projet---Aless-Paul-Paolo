@@ -40,8 +40,6 @@ class Button:
         screen.blit(text_surf, text_rect)
         
     
-        
-    
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
 
@@ -58,6 +56,7 @@ class Dropdown:
         """
     
         self.single = single
+        self.options = options
         self.main=Button(x, y, width, height, titre)
         self.open = False
         self.options = []
@@ -70,15 +69,15 @@ class Dropdown:
         self.sous_menu_ouvert = None
         self.sous_menus = {}
         if sous_options is not None:
-            for option in liste_options:
+            for option in options:
                 if option == "":
                     continue
                 salles = sous_options[option]
                 self.sous_menus[option] = Dropdown(x, y, width, height, salles)
-        print(len(liste_options)-1)
+        print(len(options)-1)
         
 
-        for i, opt in enumerate(liste_options):
+        for i, opt in enumerate(options):
             if Validation==False:
                 self.options.append(
                     Button(x, self.y + (i + 1) * height, width, height, opt)
@@ -200,3 +199,9 @@ class Dropdown:
                         opt.is_clickedv = False
                         opt.color = (240, 240, 240)
                     self.type = "start"
+                if opt.is_clicked(pos) and opt.text == "":
+                    self.action = True        
+                    matiere_choisie = "coché"
+                    départ_salle = "coché"
+                    opt.is_clickedv = True
+                    return
