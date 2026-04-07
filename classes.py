@@ -199,9 +199,3 @@ class Dropdown:
                         opt.is_clickedv = False
                         opt.color = (240, 240, 240)
                     self.type = "start"
-                if opt.is_clicked(pos) and opt.text == "":
-                    self.action = True        
-                    matiere_choisie = "coché"
-                    départ_salle = "coché"
-                    opt.is_clickedv = True
-                    return
