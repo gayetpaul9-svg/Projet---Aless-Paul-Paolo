@@ -1,13 +1,8 @@
-"""
-Module d'interface graphique du GPS du lycée.
-Contient les classes de bouton et menu déroulant en Pygame.
-Toutes les descriptions sont en français pour faciliter la compréhension.
-"""
-
 import pygame
 import math
 pygame.init()
-
+départ_salle = ""
+arrivée_salle = ""
 matiere_choisie = ""
 screen = pygame.display.set_mode()
 
@@ -15,31 +10,16 @@ icone = pygame.image.load("assets/verifier.png").convert_alpha()
 icone = pygame.transform.scale(icone, (50, 50))
 
 class Button:
-    """Représente un bouton cliquable en interface graphique."""
-
-    def __init__(self, x, y, width, height, text=None, font=None):
-        """Initialise un bouton.
-
-        x, y: position en pixels.
-        width, height: taille du bouton.
-        text: texte affiché sur le bouton.
-        font: police Pygame (optionnel).
-        """
+    def __init__(self, x, y, width, height, text=None,font =None):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.color = (240, 240, 240)
-        self.is_clickedv = False
+        self.is_clickedv=False
         if font is None:
             self.font = pygame.font.SysFont(None, 36)
         else:
-            self.font = font
-    def draw(self, screen, top_left, top_right, bottom_right, bottom_left, text=None, font=None, color=None):
-        """Dessine le bouton à l'écran.
-
-        screen: surface Pygame.
-        top_left/top_right/bottom_right/bottom_left: arrondis de coins.
-        text/font/color: options de rendu pour le bouton.
-        """
+            self.font=font
+    def draw(self, screen, top_left, top_right, bottom_right, bottom_left, text=None,font=None, color=None):
         if text is not None:
             self.text = text
         if font is not None:
@@ -63,14 +43,7 @@ class Button:
         
     
     def is_clicked(self, pos):
-        """Retourne True si un point (pos) est à l'intérieur du bouton."""
         return self.rect.collidepoint(pos)
-
-    def survol(self, pos):
-        if self.is_clicked(pos):
-            self.color = (200, 200, 200)
-        else:
-            self.color = (240, 240, 240)
 
 
 class Dropdown:
@@ -85,8 +58,7 @@ class Dropdown:
         """
     
         self.single = single
-        self.options = options
-        self.main = Button(x, y, width, height, titre)
+        self.main=Button(x, y, width, height, titre)
         self.open = False
         self.options = []
         self.type = "start"
@@ -98,15 +70,15 @@ class Dropdown:
         self.sous_menu_ouvert = None
         self.sous_menus = {}
         if sous_options is not None:
-            for option in options:
+            for option in liste_options:
                 if option == "":
                     continue
                 salles = sous_options[option]
                 self.sous_menus[option] = Dropdown(x, y, width, height, salles)
-        print(len(options)-1)
+        print(len(liste_options)-1)
         
 
-        for i, opt in enumerate(options):
+        for i, opt in enumerate(liste_options):
             if Validation==False:
                 self.options.append(
                     Button(x, self.y + (i + 1) * height, width, height, opt)
@@ -117,10 +89,10 @@ class Dropdown:
                 )
         self.options_affichées = list(self.options[0:8])
         self.options_affichées.append(self.options[-1])  
+        print(self.options[70-7:70+1])
 
     def scroll_options(self):
-        """Met à jour les options visibles après défilement."""
-        self.index_y = 7 + ((-189 - self.offset_y) / 40)
+        self.index_y=7 + ( (-189 - self.offset_y) / 40 )
         if self.index_y % 1 == 0.5 or self.index_y==len(self.options)-1:
             self.index_y = math.floor(self.index_y)
             self.index_y= max(7, min(self.index_y, len(self.options)-2))  
@@ -132,7 +104,6 @@ class Dropdown:
         
     
     def draw(self, screen,  font):
-        """Affiche le menu déroulant et ses options à l'écran."""
         global icone
         if self.open:
             #self.main.draw(screen, top_left=10, top_right=10, bottom_right=0, bottom_left=0)
@@ -154,7 +125,6 @@ class Dropdown:
             self.sous_menus[self.sous_menu_ouvert].draw(screen, font)
 
     def survol(self, pos):
-        """Change visuellement les options au survol de la souris."""
         if self.main.is_clicked(pos):
             self.main.color = (200, 200, 200)
             #return True
@@ -170,14 +140,13 @@ class Dropdown:
         #return False
 
     def reset_colors(self):
-        """Réinitialise les couleurs et états des options."""
+        """Réinitialise les couleurs et états des options"""
         for opt in self.options_affichées:
             opt.is_clickedv = False
             opt.color = (240, 240, 240)
         self.type = "start"
 
     def handle_click(self, pos):
-        """Gère la sélection par clic sur le menu déroulant."""
         global départ_salle
         global arrivée_salle
         global matiere_choisie
@@ -188,6 +157,19 @@ class Dropdown:
                 self.reset_colors()
         elif self.open:
             for opt in self.options_affichées:
+                if opt.is_clicked(pos) and opt.text == "":
+                    self.action = True
+                    #print(self.action)
+                    self.open = False
+                    self.reset_colors()
+                    return
+                if opt.is_clicked(pos) and opt.text == "Retour":
+                    self.open = False
+                    self.reset_colors()
+                    self.action = False
+                    if départ_salle != "":
+                        self.type = "stop"
+                    return
                 if opt.is_clicked(pos) and opt.text != "":
                     if self.sous_menus:
                         self.sous_menus[opt.text].open = True
@@ -218,9 +200,3 @@ class Dropdown:
                         opt.is_clickedv = False
                         opt.color = (240, 240, 240)
                     self.type = "start"
-                if opt.is_clicked(pos) and opt.text == "":
-                    self.action = True        
-                    matiere_choisie = "coché"
-                    départ_salle = "coché"
-                    opt.is_clickedv = True
-                    return
