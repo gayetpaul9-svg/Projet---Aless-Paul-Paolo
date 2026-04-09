@@ -232,8 +232,8 @@ def message_ennui(taux):
 def get_message(cours):
     """Retourne un message d'encouragement selon le cours."""
     cours_nettoyee = enlever_accents(cours).lower()
-    message_trouve = messages_par_cours.get(cours_nettoyee, "Bonne route !")
-    return message_trouve
+    messages = messages_par_cours.get(cours_nettoyee, ["Bonne route !"])
+    return random.choice(messages)
 
 def infos_cours(cours):
     """Retourne un dictionnaire d'informations sur le cours.
