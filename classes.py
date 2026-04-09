@@ -8,6 +8,8 @@ import pygame
 import math
 pygame.init()
 
+départ_salle = ""
+arrivée_salle = ""
 matiere_choisie = ""
 screen = pygame.display.set_mode()
 
@@ -83,7 +85,6 @@ class Dropdown:
         sous_options: dictionnaire {option: [sous_options]} pour menus imbriqués.
         """
         self.single = single
-        self.options = options
         self.main = Button(x, y, width, height, titre)
         self.open = False
         self.options = []
@@ -96,15 +97,15 @@ class Dropdown:
         self.sous_menu_ouvert = None
         self.sous_menus = {}
         if sous_options is not None:
-            for option in options:
+            for option in liste_options:
                 if option == "":
                     continue
                 salles = sous_options[option]
                 self.sous_menus[option] = Dropdown(x, y, width, height, salles)
-        print(len(options)-1)
+        print(len(liste_options)-1)
         
 
-        for i, opt in enumerate(options):
+        for i, opt in enumerate(liste_options):
             if Validation==False:
                 self.options.append(
                     Button(x, self.y + (i + 1) * height, width, height, opt)
@@ -186,6 +187,18 @@ class Dropdown:
                 self.reset_colors()
         elif self.open:
             for opt in self.options_affichées:
+                if opt.is_clicked(pos) and opt.text == "":
+                    self.action = True
+                    self.open = False
+                    self.reset_colors()
+                    return
+                if opt.is_clicked(pos) and opt.text == "Retour":
+                    self.open = False
+                    self.reset_colors()
+                    self.action = False
+                    if départ_salle != "":
+                        self.type = "stop"
+                    return
                 if opt.is_clicked(pos) and opt.text != "":
                     if self.sous_menus:
                         self.sous_menus[opt.text].open = True
@@ -216,9 +229,3 @@ class Dropdown:
                         opt.is_clickedv = False
                         opt.color = (240, 240, 240)
                     self.type = "start"
-                if opt.is_clicked(pos) and opt.text == "":
-                    self.action = True        
-                    matiere_choisie = "coché"
-                    départ_salle = "coché"
-                    opt.is_clickedv = True
-                    return
