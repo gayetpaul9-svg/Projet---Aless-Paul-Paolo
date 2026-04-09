@@ -37,8 +37,6 @@ fonc={
     'temps' : "0"
 }
 etage = 5
-departure_room = None
-arrival_room = None
 chemins1B = []
 chemins1 = []
 chemins_cdi = []
@@ -800,44 +798,6 @@ while running:
                             son_clic.play()
                             break
 
-                if afficher_s == True:
-                    for info_btn in boutons_salles:
-                        btn = info_btn['button']
-                        if etage not in info_btn['floors']:
-                            continue
-                        if btn.is_clicked(e.pos):
-                            if departure_room is None:
-                                departure_room = info_btn['label']
-                                classes.départ_salle = departure_room
-                                print(f"Départ sélectionné : {departure_room}")
-                            elif arrival_room is None:
-                                arrival_room = info_btn['label']
-                                classes.arrivée_salle = arrival_room
-                                print(f"Arrivée sélectionnée : {arrival_room}")
-                                # Trigger GPS calculation
-                                _, chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B, mode_long)
-                                fonc = fonctions.fonctionnalitees(classes.départ_salle, classes.arrivée_salle)
-                                # Find etage for departure
-                                for layer in layers:
-                                    if classes.départ_salle in layer:
-                                        for cle, v in dico_etage.items():
-                                            if v == layer:
-                                                etage = cle
-                                                break
-                                        break
-                                saisie_active = False
-                                texte_saisi = ""
-                                infos_cours_result = None
-                            else:
-                                # Reset if both are selected and clicked again
-                                departure_room = None
-                                arrival_room = None
-                                classes.départ_salle = None
-                                classes.arrivée_salle = None
-                                chemins = [chemins1, chemins2, chemins3]  # Reset paths
-                            son_clic.play()
-                            break
-
 
             if options_ouvert:
                 retour_x = screen.get_width()//2 - 80
@@ -914,12 +874,7 @@ while running:
                             btn = info_btn['button']
                             if etage not in info_btn['floors']:
                                 continue
-                            if info_btn['label'] == departure_room:
-                                color = (0, 255, 0)  # Green for departure
-                            elif info_btn['label'] == arrival_room:
-                                color = (255, 0, 0)  # Red for arrival
-                            else:
-                                color = (200, 200, 200)  # Default light gray
+                            color = (200, 200, 200)
                             btn.draw(screen, top_left=5, top_right=5, bottom_right=5, bottom_left=5, color=color)
         
     #if etage == 2 and batiment_selectionne == "A":
@@ -942,13 +897,6 @@ while running:
         if menu_deroulant.action==True:
             infos_cours_result = None
             print("ok")
-            #print(gps(depart_salle, arrivée_salle))
-            _,chemins = fonctions.gps(classes.départ_salle, classes.arrivée_salle, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c,tmx_data_e, layers_2, layers_3, layers_1, layers_cdi,layers_1B,mode_long)
-            fonc=fonctions.fonctionnalitees(classes.départ_salle, classes.arrivée_salle)
-            for layer in layers:
-                if classes.départ_salle in layer:
-                    print("depart trouvé dans layer ",layer)
-                    break 
 
             for cle, v in dico_etage.items():
                 if v == layer:
