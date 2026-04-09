@@ -65,6 +65,26 @@ images = {
     'civ': pygame.image.load("assets/civ.png").convert(),
     'marque': pygame.image.load("assets/marque.png").convert(),
     'verifier': pygame.image.load("assets/verifier.png").convert(),
+    'P1': pygame.image.load('photos/P1.jpg').convert(),
+    'P2': pygame.image.load('photos/P2.jpg').convert(),
+    'P3': pygame.image.load('photos/P3.jpg').convert(),
+    'P4': pygame.image.load('photos/P4.jpg').convert(),
+    'P5': pygame.image.load('photos/P5.jpg').convert(),
+    'P6': pygame.image.load('photos/P6.jpg').convert(),
+    'P7': pygame.image.load('photos/P7.jpg').convert(),
+    'P8': pygame.image.load('photos/P8.jpg').convert(),
+    'P9': pygame.image.load('photos/P9.jpg').convert(),
+    'P10': pygame.image.load('photos/P10.jpg').convert(),
+    'P11': pygame.image.load('photos/P11.jpg').convert(),
+    'P12': pygame.image.load('photos/P12.jpg').convert(),
+    'P13': pygame.image.load('photos/P13.jpg').convert(),
+    'P14': pygame.image.load('photos/P14.jpg').convert(),
+    'P15': pygame.image.load('photos/P15.jpg').convert(),
+    'P16': pygame.image.load('photos/P16.jpg').convert(),
+    'P17': pygame.image.load('photos/P17.jpg').convert(),
+    'P18': pygame.image.load('photos/P18.jpg').convert(),
+    'P19': pygame.image.load('photos/P19.jpg').convert(),
+    'P20': pygame.image.load('photos/P20.jpg').convert(),
 }
 # map_buttons_info: on associe des coordonnées, un étage et une image à chaque bouton
 map_buttons_info = [
@@ -72,121 +92,121 @@ map_buttons_info = [
         #P1
         'button': classes.Button(offset_x + 180, offset_y + 650, 20, 20),
         'floors': [1],
-        'image': 'civ'
+        'image': 'P1'
     },
     {
         #P2
         'button': classes.Button(offset_x + 220, offset_y + 320, 20, 20),
         'floors': [1],
-        'image': 'marque'
+        'image': 'P2'
     },
     {
         #P3
         'button': classes.Button(offset_x + 370, offset_y + 270, 20, 20),
         'floors': [1],
-        'image': 'verifier'
+        'image': 'P3'
     },
     {
         #P4
         'button': classes.Button(offset_x + 500, offset_y + 145, 20, 20),
         'floors': [2],
-        'image': 'civ'
+        'image': 'P4'
     },
     {
         #P5
         'button': classes.Button(offset_x + 220, offset_y + 405, 20, 20),
         'floors': [2],
-        'image': 'marque'
+        'image': 'P5'
     },
     {
         #P6
         'button': classes.Button(offset_x + 250, offset_y + 665, 20, 20),
         'floors': [2],
-        'image': 'verifier'
+        'image': 'P6'
     },
     {
         #P7
         'button': classes.Button(offset_x + 400, offset_y + 260, 20, 20),
         'floors': [3],
-        'image': 'civ'
+        'image': 'P7'
     },
     {
         #P8
         'button': classes.Button(offset_x + 215, offset_y + 670, 20, 20),
         'floors': [3],
-        'image': 'marque'
+        'image': 'P8'
     },
     {
         #P9
         'button': classes.Button(offset_x + 300, offset_y + 100, 20, 20),
         'floors': [4],
-        'image': 'verifier'
+        'image': 'P9'
     },
     {
         #P10
         'button': classes.Button(offset_x + 170, offset_y + 318, 20, 20),
         'floors': [4],
-        'image': 'civ'
+        'image': 'P10'
     },
     {
         #P11
         'button': classes.Button(offset_x + 330, offset_y + 330, 20, 20),
         'floors': [4],
-        'image': 'marque'
+        'image': 'P11'
     },
     {
         #P12
         'button': classes.Button(offset_x + 370, offset_y + 530, 20, 20),
         'floors': [4],
-        'image': 'verifier'
+        'image': 'P12'
     },
     {
         #P13
         'button': classes.Button(offset_x + 350, offset_y + 690, 20, 20),
         'floors': [4],
-        'image': 'marque'
+        'image': 'P13'
     },
     {
         #P14
         'button': classes.Button(offset_x + 415, offset_y + 750, 20, 20),
         'floors': [4],
-        'image': 'verifier'
+        'image': 'P14'
     },
     {
         #P15
         'button': classes.Button(offset_x + 320, offset_y + 895, 20, 20),
         'floors': [4],
-        'image': 'civ'
+        'image': 'P15'
     },
     {
         #P16
         'button': classes.Button(offset_x + 165, offset_y + 130, 20, 20),
         'floors': [5],
-        'image': 'marque'
+        'image': 'P16'
     },
     {
         #P17
         'button': classes.Button(offset_x + 185, offset_y + 350, 20, 20),
         'floors': [5],
-        'image': 'verifier'
+        'image': 'P17'
     },
     {
         #P18
         'button': classes.Button(offset_x + 70, offset_y + 592, 20, 20),
         'floors': [5],
-        'image': 'civ'
+        'image': 'P18'
     },
     {
         #P19
         'button': classes.Button(offset_x + 300, offset_y + 620, 20, 20),
         'floors': [5],
-        'image': 'civ'
+        'image': 'P19'
     },
     {
         #P20
         'button': classes.Button(offset_x + 345, offset_y + 872, 20, 20),
         'floors': [5],
-        'image': 'marque'
+        'image': 'P20'
     },
 ]
 # boutons_salles: on associe des coordonnée et un étage à chaque bouton
