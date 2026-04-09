@@ -25,7 +25,7 @@ font = pygame.font.SysFont(None, 36)
 clock = pygame.time.Clock()
 clock.tick(60)
 info = pygame.display.Info()
-
+selection_type = "start"
 
 
 
@@ -96,13 +96,13 @@ bouton_mode_long = classes.Button(info.current_w//2-160,info.current_h//2-25, 32
                                   "Itinéraire le plus long")
 
 salles_par_etage = {
-    "Bâtiment A - 3ème": ["A301","A302","A303","A304","A305","A306","A307","A308",""],
-    "Bâtiment A - 2ème": ["A201","A202","A203","A204","A205","A206","A207","A208","A209","A210","A211",""],
-    "Bâtiment A - 1er": ["A102","A103","A104","A105","A106"],
-    "Bâtiment A - RDC": ["A001","A002","A003","A004","A005","A006","A007","A008","A010","A011","A012","A013","A014",""],
-    "Bâtiment B - 3ème": ["B311","B312","B313","B314","B315","B316","B317","B318","B319","B320","B321","B322","B323","B324","B325",""],
-    "Bâtiment B - 2ème": ["B214","B215","B216","B217","B218","B219","B220","B221","B222","B223",""],
-    "Bâtiment B - 1er": ["B111","B112","B113","B114","B115","B116","B117","B118",""]
+    "Bâtiment A - 3ème": ["Retour","A301","A302","A303","A304","A305","A306","A307","A308",""],
+    "Bâtiment A - 2ème": ["Retour","A201","A202","A203","A204","A205","A206","A207","A208","A209","A210","A211",""],
+    "Bâtiment A - 1er": ["Retour","A102","A103","A104","A105","A106",""],
+    "Bâtiment A - RDC": ["Retour","A001","A002","A003","A004","A005","A006","A007","A008","A010","A011","A012","A013","A014",""],
+    "Bâtiment B - 3ème": ["Retour","B311","B312","B313","B314","B315","B316","B317","B318","B319","B320","B321","B322","B323","B324","B325",""],
+    "Bâtiment B - 2ème": ["Retour","B214","B215","B216","B217","B218","B219","B220","B221","B222","B223",""],
+    "Bâtiment B - 1er": ["Retour","B111","B112","B113","B114","B115","B116","B117","B118",""]
 }
 menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
     "Bâtiment A - 3ème","Bâtiment A - 2ème","Bâtiment A - 1er","Bâtiment A - RDC",
@@ -206,8 +206,8 @@ while running:
             if menu_deroulant.sous_menu_ouvert is not None:
                 sous_menu = menu_deroulant.sous_menus[menu_deroulant.sous_menu_ouvert]
                 sous_menu.offset_y += e.y * 20
-                sous_menu.offset_y = min(-189, menu_deroulant.offset_y)
-                sous_menu.offset_y = max(-189, menu_deroulant.offset_y)
+                sous_menu.offset_y = min(-189, sous_menu.offset_y)
+                sous_menu.offset_y = max(-189 - (len(sous_menu.options) - 9) * 40, sous_menu.offset_y)
                 sous_menu.scroll_options()
             else:
                 menu_deroulant.offset_y += e.y * 20
@@ -265,7 +265,20 @@ while running:
             
             elif etat == "itinéraire":
                 if menu_deroulant.sous_menu_ouvert is not None:
-                    menu_deroulant.sous_menus[menu_deroulant.sous_menu_ouvert].handle_click(e.pos)
+                    sous_menu = menu_deroulant.sous_menus[menu_deroulant.sous_menu_ouvert]
+                    sous_menu.type = selection_type
+                    sous_menu.handle_click(e.pos)
+                    selection_type = sous_menu.type
+                    if sous_menu.action:
+                        menu_deroulant.action = True
+                        sous_menu.action = False
+                        sous_menu.open = False
+                        sous_menu.reset_colors()
+                        menu_deroulant.sous_menu_ouvert = None
+                        selection_type = "start"
+                    if not sous_menu.open:
+                        menu_deroulant.sous_menu_ouvert = None
+                        menu_deroulant.open = True
                 else:
                     menu_deroulant.handle_click(e.pos)
                 if menu_deroulant.open:
@@ -439,7 +452,7 @@ while running:
         bouton_mode_long.survol(pygame.mouse.get_pos())
     coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} Y: {pygame.mouse.get_pos()[1]}")
     
-    if saisie_active:
+    if saisie_active and not options_ouvert:
         menu_matiere.draw(screen, font)
         menu_matiere.survol(pygame.mouse.get_pos())
 
