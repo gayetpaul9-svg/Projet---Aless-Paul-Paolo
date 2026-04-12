@@ -20,7 +20,7 @@ font = pygame.font.SysFont(None, 36)
 clock = pygame.time.Clock()
 clock.tick(60)
 info = pygame.display.Info()
-
+selection_type = "start"
 
 # Variables globales
 afficher = False
@@ -628,22 +628,20 @@ ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.
 ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 bouton_mode_long = classes.Button(info.current_w//2-160,info.current_h//2-25, 320, 50, 
                                   "Itinéraire le plus long")
+
+salles_par_etage = {
+    "Bâtiment A - 3ème": ["Retour","A301","A302","A303","A304","A305","A306","A307","A308",""],
+    "Bâtiment A - 2ème": ["Retour","A201","A202","A203","A204","A205","A206","A207","A208","A209","A210","A211",""],
+    "Bâtiment A - 1er": ["Retour","A102","A103","A104","A105","A106",""],
+    "Bâtiment A - RDC": ["Retour","A001","A002","A003","A004","A005","A006","A007","A008","A010","A011","A012","A013","A014",""],
+    "Bâtiment B - 3ème": ["Retour","B311","B312","B313","B314","B315","B316","B317","B318","B319","B320","B321","B322","B323","B324","B325",""],
+    "Bâtiment B - 2ème": ["Retour","B214","B215","B216","B217","B218","B219","B220","B221","B222","B223",""],
+    "Bâtiment B - 1er": ["Retour","B111","B112","B113","B114","B115","B116","B117","B118",""]
+}
 menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
-    "A301","A302","A303","A304","A305","A306","A307","A308",
-
-    "A201","A202","A203","A204","A205","A206","A207","A208","A209","A210",
-    "A211","A102","A103", "A104","A105","A106","A001","A002","A003","A004",
-    "A005","A006","A007","A008","A010","A011","A012","A013","A014",
-
-    "B111","B112","B113","B114","B115","B116","B117","B118",
-
-    "B214","B215","B216","B217","B218","B219","B220","B221","B222","B223",
-
-    "B311","B312","B313","B314","B315","B316","B317","B318","B319","B320",
-    "B321","B322","B323","B324","B325",""
-])
-afficher_loupe = classes.Button(info.current_w-447+200,info.current_h-735, 200, 50)
-afficher_salles = classes.Button(info.current_w-447+200,info.current_h-535, 200, 50)
+    "Bâtiment A - 3ème","Bâtiment A - 2ème","Bâtiment A - 1er","Bâtiment A - RDC",
+    "Bâtiment B - 3ème","Bâtiment B - 2ème","Bâtiment B - 1er",""
+],sous_options=salles_par_etage)
 menu_matiere= classes.Dropdown(320,50,250,40, [
     "maths","physique-chimie","francais", "histoire-geo", "hggsp", "hlp",
     "ses", "nsi", "sport", "italien", "anglais", "allemand", "espagnol",
@@ -709,14 +707,21 @@ while running:
         if e.type == pygame.QUIT:
             running = False
         elif e.type == pygame.MOUSEWHEEL:
-            menu_deroulant.offset_y += e.y *20
-            menu_deroulant.offset_y = min(-189, menu_deroulant.offset_y)
-            menu_deroulant.offset_y = max(-2669, menu_deroulant.offset_y)
-            menu_deroulant.scroll_options()
-            menu_matiere.offset_y += e.y *20
-            menu_matiere.offset_y = min(-189, menu_matiere.offset_y)
-            menu_matiere.offset_y = max(-429, menu_matiere.offset_y)
-            menu_matiere.scroll_options()
+            if menu_deroulant.sous_menu_ouvert is not None:
+                sous_menu = menu_deroulant.sous_menus[menu_deroulant.sous_menu_ouvert]
+                sous_menu.offset_y += e.y * 20
+                sous_menu.offset_y = min(-189, sous_menu.offset_y)
+                sous_menu.offset_y = max(-189 - (len(sous_menu.options) - 9) * 40, sous_menu.offset_y)
+                sous_menu.scroll_options()
+            else:
+                menu_deroulant.offset_y += e.y * 20
+                menu_deroulant.offset_y = min(-189, menu_deroulant.offset_y)
+                menu_deroulant.offset_y = max(-189, menu_deroulant.offset_y)
+                menu_deroulant.scroll_options()
+                menu_matiere.offset_y += e.y *20
+                menu_matiere.offset_y = min(-189, menu_matiere.offset_y)
+                menu_matiere.offset_y = max(-429, menu_matiere.offset_y)
+                menu_matiere.scroll_options()
 
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:       
@@ -775,7 +780,23 @@ while running:
                     print("OPTIONS cliqué depuis l'accueil !")
             
             elif etat == "itinéraire":
-                menu_deroulant.handle_click(e.pos)
+                if menu_deroulant.sous_menu_ouvert is not None:
+                    sous_menu = menu_deroulant.sous_menus[menu_deroulant.sous_menu_ouvert]
+                    sous_menu.type = selection_type
+                    sous_menu.handle_click(e.pos)
+                    selection_type = sous_menu.type
+                    if sous_menu.action:
+                        menu_deroulant.action = True
+                        sous_menu.action = False
+                        sous_menu.open = False
+                        sous_menu.reset_colors()
+                        menu_deroulant.sous_menu_ouvert = None
+                        selection_type = "start"
+                    if not sous_menu.open:
+                        menu_deroulant.sous_menu_ouvert = None
+                        menu_deroulant.open = True
+                else:
+                    menu_deroulant.handle_click(e.pos)
                 if menu_deroulant.open:
                     infos_cours_result = None
                 if saisie_active:
@@ -953,7 +974,7 @@ while running:
     
     coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} Y: {pygame.mouse.get_pos()[1]}")
     
-    if saisie_active:
+    if saisie_active and not options_ouvert:
         menu_matiere.draw(screen, font)
         menu_matiere.survol(pygame.mouse.get_pos())
 
