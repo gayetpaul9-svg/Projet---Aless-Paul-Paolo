@@ -908,6 +908,7 @@ while running:
             else:
                 couleur_bouton_options_a = normale
                 couleur_bouton_options_b = normale
+        
         if etage == 1 :
             couleur_bouton_options_a = gris
             couleur_bouton_options_b = gris
@@ -933,12 +934,6 @@ while running:
         else:
             batiment_selectionne = None
 
-
-        bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
-           top_left=10, top_right=10, bottom_right=10, bottom_left=10)
-
-        bat_b.draw(screen, text="Bâtiment : B", color=couleur_bouton_options_b,
-           top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
         etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
         nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
@@ -984,14 +979,8 @@ while running:
                 screen.blit(font.render(ligne.strip(), True, (0, 0, 0)), (50, 190 + i * 40))
 
 
-        etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00)
-        etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5)
+     
         nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
-        afficher_loupe.draw(screen, text="Afficher loupes", top_left=10, top_right=10, bottom_right=10, bottom_left=10)
-        afficher_salles.draw(screen, text="Afficher salles", top_left=10, top_right=10, bottom_right=10, bottom_left=10)
-        menu_deroulant.draw(screen, font)
-        nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
-        menu_deroulant.draw(screen, font)
         menu_deroulant.survol(pygame.mouse.get_pos())
         fonctions_ = str("calories : " + fonc['calories']+" Kcal")
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
