@@ -161,9 +161,9 @@ layers_1B = {
 layers=[layers_2,layers_1,layers_1B,layers_3,layers_cdi]
 
 dico_etage={
-    3: layers_1,
     1: layers_cdi,
     2: layers_1B,
+    3: layers_1,
     4: layers_2,
     5: layers_3
 }

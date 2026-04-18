@@ -84,6 +84,7 @@ ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.fo
 ui_2.font.set_bold(True)
 bouton_mode_long = classes.Button(info.current_w//2-160,info.current_h//2-25, 320, 50,
                                   "Itinéraire le plus long")
+parcour=classes.Button(info.current_w-340-50,236+50+50, 340, 50,text="")
 
 salles_par_etage = {
     "Bâtiment A - 3ème": ["Retour","A301","A302","A303","A304","A305","A306","A307","A308",""],
@@ -894,8 +895,8 @@ while running:
     if etat == "itinéraire":
         # fonctionnement boutons étages
         for elem in liste_etage:
-            if elem == etage:
-                index=liste_etage.index(elem)
+            if etage in liste_etage:
+                index=liste_etage.index(etage)
                 if index!=len(liste_etage)-1:
                     if liste_etage[index+1]>elem:
                         etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=color)
@@ -903,15 +904,17 @@ while running:
                     elif liste_etage[index+1]<elem:
                         etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=color)
                         etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
-                    else:
-                        etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
-                        etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
                 else:
                     etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
                     etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
             else:
-                couleur_bouton_options_a = normale
-                couleur_bouton_options_b = normale
+                if etage>liste_etage[len(liste_etage)-1]:
+                    etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=color)
+                    etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
+                elif etage<liste_etage[len(liste_etage)-1]:
+                    etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=color)
+                    etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
+
         
         if etage == 1 :
             couleur_bouton_options_a = gris
@@ -982,14 +985,15 @@ while running:
             for i, ligne in enumerate(lignes_message):
                 screen.blit(font.render(ligne.strip(), True, (0, 0, 0)), (50, 190 + i * 40))
 
-
-     
+        
+        
         nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         menu_deroulant.survol(pygame.mouse.get_pos())
         fonctions_ = str("calories : " + fonc['calories']+" Kcal")
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
         fonctions_= "  " +str("temps : " + fonc["temps"]+" s")
-        ui_2.draw(screen, top_left=0, top_right=0, bottom_left=10, bottom_right=10, text=fonctions_)
+        ui_2.draw(screen, top_left=0, top_right=0, bottom_left=0, bottom_right=0, text=fonctions_)
+        parcour.draw(screen,text=classes.départ_salle+" -> "+classes.arrivée_salle,top_left=0, top_right=0, bottom_right=10, bottom_left=10)
         bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         bat_b.draw(screen, text="Bâtiment : B", color=couleur_bouton_options_b,
