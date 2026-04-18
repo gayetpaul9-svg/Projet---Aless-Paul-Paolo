@@ -36,6 +36,7 @@ afficher = False
 afficher_s = False
 vert=(150,255,150)
 gris=(200,200,200)
+rouge=(255,150,150)
 normale=(240,240,240)
 long=False
 etat = "accueil"
@@ -71,13 +72,16 @@ offset_y = (screen.get_height() - map_height) // 2
 
 #bouttons
 menu_ouvert = False
-afficher_loupe = classes.Button(1386, info.current_h-195, 40, 40, "🔍",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-afficher_salles = classes.Button(1386, info.current_h-245, 40, 40, "🏫",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-coodonnées_souris=classes.Button(10,10,200,40,)
+afficher_loupe = classes.Button(1386, info.current_h-195, 140, 40, "🔍",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+afficher_loupe.font.set_bold(True)
+afficher_salles = classes.Button(1386, info.current_h-245, 140, 40, "🏫",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+afficher_salles.font.set_bold(True)
 etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 etage_inf=classes.Button(1386, info.current_h-105, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui_1.font.set_bold(True)
 ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui_2.font.set_bold(True)
 bouton_mode_long = classes.Button(info.current_w//2-160,info.current_h//2-25, 320, 50,
                                   "Itinéraire le plus long")
 
@@ -1027,7 +1031,6 @@ while running:
         screen.blit(texte_retour, (retour_x + 40, retour_y + 12))
         bouton_mode_long.draw(screen, top_left=10, top_right=10, bottom_right=10, bottom_left=10, text="Itinéraire le plus long")
         bouton_mode_long.survol(pygame.mouse.get_pos())
-    coodonnées_souris.draw(screen,top_left=10, top_right=10, bottom_right=10, bottom_left=10, text=f"X: {pygame.mouse.get_pos()[0]} Y: {pygame.mouse.get_pos()[1]}")
 
     if saisie_active and not options_ouvert:
         menu_matiere.draw(screen, font)
