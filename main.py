@@ -32,6 +32,7 @@ images = {
     'civ': pygame.image.load("assets/civ.png").convert(),
     'marque': pygame.image.load("assets/marque.png").convert(),
     'verifier': pygame.image.load("assets/verifier.png").convert(),
+    'loupe': pygame.image.load("assets/loupe.png").convert_alpha(),
     'P1': pygame.image.load('assets/P1.jpg').convert(),
     'P2': pygame.image.load('assets/P2.jpg').convert(),
     'P3': pygame.image.load('assets/P3.jpg').convert(),
@@ -499,8 +500,7 @@ while running:
                             btn = info_btn['button']
                             if etage not in info_btn['floors']:
                                 continue
-                            color = (0, 255, 0) if btn.is_clicked else (255, 0, 0)
-                            btn.draw(screen, top_left=0, top_right=0, bottom_right=0, bottom_left=0, color=color)
+                            screen.blit(images['loupe'], btn.rect)
         if afficher_s == True:
                         for info_btn in boutons_salles:
                             btn = info_btn['button']
