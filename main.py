@@ -11,6 +11,8 @@ import classes
 import fonctions
 from fonctions import liste_etage
 from layers import layers_1, layers_2, layers_3, layers_cdi, layers_1B, noms_etages, dico_etage, layers
+
+
 #initialisation pygame
 pygame.init()
 pygame.mixer.init()
@@ -26,98 +28,6 @@ clock = pygame.time.Clock()
 clock.tick(60)
 info = pygame.display.Info()
 selection_type = "start"
-
-time = 0
-base_color = (100, 150, 255)
-
-# Variables globales
-# Ces variables contrôlent principalement l'apparence et l'état de l'interface.
-afficher = False
-afficher_s = False
-vert=(150,255,150)
-gris=(200,200,200)
-rouge=(255,150,150)
-normale=(240,240,240)
-long=False
-etat = "accueil"
-running = True
-saisie_active = False
-texte_saisi = ""
-infos_cours_result = None
-options_ouvert = False
-fonc={
-    'calories' : "0",
-    'temps' : "0"
-}
-etage = 5
-chemins1B = []
-chemins1 = []
-chemins_cdi = []
-chemins2 = []
-chemins3 = []
-chemins = [chemins1, chemins2, chemins3]
-mode_long = False
-
-#importation des données de la carte
-tmx_data = load_pygame("maps/map B300 x4.tmx")
-tmx_data_b = load_pygame("maps/map B200-A200 x4.tmx")
-tmx_data_c = load_pygame("maps/map CDI.tmx")
-tmx_data_d = load_pygame("maps/map A100.tmx")
-tmx_data_e = load_pygame("maps/B100.tmx")
-TILE_SIZE = tmx_data.tileheight
-map_width = tmx_data.width * TILE_SIZE
-map_height = tmx_data.height * TILE_SIZE
-offset_x = (screen.get_width() - map_width) // 2
-offset_y = (screen.get_height() - map_height) // 2
-
-#bouttons
-menu_ouvert = False
-afficher_loupe = classes.Button(1386, info.current_h-195, 140, 40, "🔍",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-afficher_loupe.font.set_bold(True)
-afficher_salles = classes.Button(1386, info.current_h-245, 140, 40, "🏫",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-afficher_salles.font.set_bold(True)
-etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-etage_inf=classes.Button(1386, info.current_h-105, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-ui_1.font.set_bold(True)
-ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
-ui_2.font.set_bold(True)
-bouton_mode_long = classes.Button(info.current_w//2-160,info.current_h//2-25, 320, 50,
-                                  "Itinéraire le plus long")
-parcour=classes.Button(info.current_w-340-50,236+50+50, 340, 50,text="")
-
-salles_par_etage = {
-    "Bâtiment A - 3ème": ["Retour","A301","A302","A303","A304","A305","A306","A307","A308",""],
-    "Bâtiment A - 2ème": ["Retour","A201","A202","A203","A204","A205","A206","A207","A208","A209","A210","A211",""],
-    "Bâtiment A - 1er": ["Retour","A102","A103","A104","A105","A106",""],
-    "Bâtiment A - RDC": ["Retour","A001","A002","A003","A004","A005","A006","A007","A008","A010","A011","A012","A013","A014",""],
-    "Bâtiment B - 3ème": ["Retour","B311","B312","B313","B314","B315","B316","B317","B318","B319","B320","B321","B322","B323","B324","B325",""],
-    "Bâtiment B - 2ème": ["Retour","B214","B215","B216","B217","B218","B219","B220","B221","B222","B223",""],
-    "Bâtiment B - 1er": ["Retour","B111","B112","B113","B114","B115","B116","B117","B118",""]
-}
-menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
-    "Bâtiment A - 3ème","Bâtiment A - 2ème","Bâtiment A - 1er","Bâtiment A - RDC",
-    "Bâtiment B - 3ème","Bâtiment B - 2ème","Bâtiment B - 1er",""
-],sous_options=salles_par_etage)
-menu_matiere= classes.Dropdown(320,50,250,40, [
-    "maths","physique-chimie","francais", "histoire-geo", "hggsp", "hlp",
-    "ses", "nsi", "sport", "italien", "anglais", "allemand", "espagnol",
-    "russe", "fls", "cdm", "histoire-geo si", "chinois", ""
-],titre="Cours ?", single=True)
-nom_etage=classes.Button(info.current_w//2-125, 13, 250, 30)
-bouton_options_x = screen.get_width() - 250
-bouton_options_y = 50
-bouton_options_largeur = 200
-bouton_options_hauteur = 40
-couleur_bouton_options = (240, 240, 240)
-couleur_bouton_options_a = (240, 240, 240)
-couleur_bouton_options_b = (240, 240, 240)
-bat_a=classes.Button(info.current_w-447, info.current_h-145, 200, 80)
-bat_b=classes.Button(info.current_w-447+200+5, info.current_h-145, 200, 80)
-batiment_selectionne = None
-# Photos des couloirs pour les boutons loupe
-show_image = False
-current_image = None
 images = {
     'civ': pygame.image.load("assets/civ.png").convert(),
     'marque': pygame.image.load("assets/marque.png").convert(),
@@ -141,541 +51,172 @@ images = {
     'P17': pygame.image.load('assets/P17.jpg').convert(),
     'P18': pygame.image.load('assets/P18.jpg').convert(),
     'P19': pygame.image.load('assets/P19.jpg').convert(),
-    'P20': pygame.image.load('assets/P20.jpg').convert(),
-}
+    'P20': pygame.image.load('assets/P20.jpg').convert(),}
+
+# Variables globales
+# Ces variables contrôlent principalement l'apparence et l'état de l'interface.
+afficher = False
+afficher_s = False
+vert=(150,255,150)
+gris=(200,200,200)
+rouge=(255,150,150)
+normale=(240,240,240)
+long=False
+etat = "accueil"
+running = True
+saisie_active = False
+texte_saisi = ""
+infos_cours_result = None
+options_ouvert = False
+fonc={'calories' : "0", 'temps' : "0"}
+etage = 5
+chemins1B = []
+chemins1 = []
+chemins_cdi = []
+chemins2 = []
+chemins3 = []
+chemins = [chemins1, chemins2, chemins3]
+mode_long = False
+time = 0
+base_color = (100, 150, 255)
+batiment_selectionne = None
+show_image = False
+current_image = None
+
+#importation des données de la carte 
+tmx_data = load_pygame("maps/map B300 x4.tmx")
+tmx_data_b = load_pygame("maps/map B200-A200 x4.tmx")
+tmx_data_c = load_pygame("maps/map CDI.tmx")
+tmx_data_d = load_pygame("maps/map A100.tmx")
+tmx_data_e = load_pygame("maps/B100.tmx")
+TILE_SIZE = tmx_data.tileheight
+map_width = tmx_data.width * TILE_SIZE
+map_height = tmx_data.height * TILE_SIZE
+offset_x = (screen.get_width() - map_width) // 2
+offset_y = (screen.get_height() - map_height) // 2
+
+
+#bouttons
+menu_ouvert = False
+afficher_loupe = classes.Button(1386, info.current_h-195, 140, 40, "🔍",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+afficher_loupe.font.set_bold(True)
+afficher_salles = classes.Button(1386, info.current_h-245, 140, 40, "🏫",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+afficher_salles.font.set_bold(True)
+etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+etage_inf=classes.Button(1386, info.current_h-105, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+bouton_mode_long = classes.Button(info.current_w//2-160,info.current_h//2-25, 320, 50,"Itinéraire le plus long")
+parcour=classes.Button(info.current_w-340-50,236+50+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+bat_a=classes.Button(info.current_w-447, info.current_h-145, 200, 80)
+bat_b=classes.Button(info.current_w-447+200+5, info.current_h-145, 200, 80)
+salles_par_etage = {
+    "Bâtiment A - 3ème": ["Retour","A301","A302","A303","A304","A305","A306","A307","A308",""],
+    "Bâtiment A - 2ème": ["Retour","A201","A202","A203","A204","A205","A206","A207","A208","A209","A210","A211",""],
+    "Bâtiment A - 1er": ["Retour","A102","A103","A104","A105","A106",""],
+    "Bâtiment A - RDC": ["Retour","A001","A002","A003","A004","A005","A006","A007","A008","A010","A011","A012","A013","A014",""],
+    "Bâtiment B - 3ème": ["Retour","B311","B312","B313","B314","B315","B316","B317","B318","B319","B320","B321","B322","B323","B324","B325",""],
+    "Bâtiment B - 2ème": ["Retour","B214","B215","B216","B217","B218","B219","B220","B221","B222","B223",""],
+    "Bâtiment B - 1er": ["Retour","B111","B112","B113","B114","B115","B116","B117","B118",""]}
+menu_deroulant= classes.Dropdown(50, 50, 250, 40, [
+    "Bâtiment A - 3ème","Bâtiment A - 2ème","Bâtiment A - 1er","Bâtiment A - RDC",
+    "Bâtiment B - 3ème","Bâtiment B - 2ème","Bâtiment B - 1er",""],sous_options=salles_par_etage)
+menu_matiere= classes.Dropdown(320,50,250,40, [
+    "maths","physique-chimie","francais", "histoire-geo", "hggsp", "hlp",
+    "ses", "nsi", "sport", "italien", "anglais", "allemand", "espagnol",
+    "russe", "fls", "cdm", "histoire-geo si", "chinois", ""],titre="Cours ?", single=True)
+nom_etage=classes.Button(info.current_w//2-125, 13, 250, 30)
+bouton_options_x = screen.get_width() - 250
+bouton_options_y = 50
+bouton_options_largeur = 200
+bouton_options_hauteur = 40
+couleur_bouton_options = (240, 240, 240)
+couleur_bouton_options_a = (240, 240, 240)
+couleur_bouton_options_b = (240, 240, 240)
+parcour.font.set_bold(True)
+ui_2.font.set_bold(True)
+ui_1.font.set_bold(True)
 # map_buttons_info: on associe des coordonnées, un étage et une image à chaque bouton
-map_buttons_info = [
-    {
-        #P1
-        'button': classes.Button(offset_x + 180, offset_y + 650, 20, 20),
-        'floors': [1],
-        'image': 'P1'
-    },
-    {
-        #P2
-        'button': classes.Button(offset_x + 220, offset_y + 320, 20, 20),
-        'floors': [1],
-        'image': 'P2'
-    },
-    {
-        #P3
-        'button': classes.Button(offset_x + 370, offset_y + 270, 20, 20),
-        'floors': [1],
-        'image': 'P3'
-    },
-    {
-        #P4
-        'button': classes.Button(offset_x + 500, offset_y + 145, 20, 20),
-        'floors': [2],
-        'image': 'P4'
-    },
-    {
-        #P5
-        'button': classes.Button(offset_x + 220, offset_y + 405, 20, 20),
-        'floors': [2],
-        'image': 'P5'
-    },
-    {
-        #P6
-        'button': classes.Button(offset_x + 250, offset_y + 665, 20, 20),
-        'floors': [2],
-        'image': 'P6'
-    },
-    {
-        #P7
-        'button': classes.Button(offset_x + 400, offset_y + 260, 20, 20),
-        'floors': [3],
-        'image': 'P7'
-    },
-    {
-        #P8
-        'button': classes.Button(offset_x + 215, offset_y + 670, 20, 20),
-        'floors': [3],
-        'image': 'P8'
-    },
-    {
-        #P9
-        'button': classes.Button(offset_x + 300, offset_y + 100, 20, 20),
-        'floors': [4],
-        'image': 'P9'
-    },
-    {
-        #P10
-        'button': classes.Button(offset_x + 170, offset_y + 318, 20, 20),
-        'floors': [4],
-        'image': 'P10'
-    },
-    {
-        #P11
-        'button': classes.Button(offset_x + 330, offset_y + 330, 20, 20),
-        'floors': [4],
-        'image': 'P11'
-    },
-    {
-        #P12
-        'button': classes.Button(offset_x + 370, offset_y + 530, 20, 20),
-        'floors': [4],
-        'image': 'P12'
-    },
-    {
-        #P13
-        'button': classes.Button(offset_x + 350, offset_y + 690, 20, 20),
-        'floors': [4],
-        'image': 'P13'
-    },
-    {
-        #P14
-        'button': classes.Button(offset_x + 415, offset_y + 750, 20, 20),
-        'floors': [4],
-        'image': 'P14'
-    },
-    {
-        #P15
-        'button': classes.Button(offset_x + 320, offset_y + 895, 20, 20),
-        'floors': [4],
-        'image': 'P15'
-    },
-    {
-        #P16
-        'button': classes.Button(offset_x + 165, offset_y + 130, 20, 20),
-        'floors': [5],
-        'image': 'P16'
-    },
-    {
-        #P17
-        'button': classes.Button(offset_x + 185, offset_y + 350, 20, 20),
-        'floors': [5],
-        'image': 'P17'
-    },
-    {
-        #P18
-        'button': classes.Button(offset_x + 70, offset_y + 592, 20, 20),
-        'floors': [5],
-        'image': 'P18'
-    },
-    {
-        #P19
-        'button': classes.Button(offset_x + 300, offset_y + 620, 20, 20),
-        'floors': [5],
-        'image': 'P19'
-    },
-    {
-        #P20
-        'button': classes.Button(offset_x + 345, offset_y + 872, 20, 20),
-        'floors': [5],
-        'image': 'P20'
-    },
-]
+def create_map_button(x, y, floor, image):
+    return {
+        'button': classes.Button(offset_x + x, offset_y + y, 20, 20),
+        'floors': [floor],
+        'image': image}
+map_data = {
+    1: [('P1', 180, 650), ('P2', 220, 320), ('P3', 370, 270)],
+    2: [('P4', 500, 145), ('P5', 220, 405), ('P6', 250, 665)],
+    3: [('P7', 400, 260), ('P8', 215, 670)],
+    4: [
+        ('P9', 300, 100), ('P10', 170, 318), ('P11', 330, 330),
+        ('P12', 370, 530), ('P13', 350, 690), ('P14', 415, 750),
+        ('P15', 320, 895)
+    ],
+    5: [
+        ('P16', 165, 130), ('P17', 185, 350), ('P18', 70, 592),
+        ('P19', 300, 620), ('P20', 345, 872)]}
+map_buttons_info = []
+for floor, points in map_data.items():
+    for image, x, y in points:
+        map_buttons_info.append(create_map_button(x, y, floor, image))
 # boutons_salles: on associe des coordonnée et un étage à chaque bouton
 taille_txt = pygame.font.Font("assets/DejaVuSans.ttf", 18)
-boutons_salles = [
-    {
-        'label': 'A001',
-        'button': classes.Button(offset_x + 402, offset_y + 272, 60, 20, 'A001', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A002',
-        'button': classes.Button(offset_x + 430, offset_y + 722, 60, 20, 'A002', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A003',
-        'button': classes.Button(offset_x + 340, offset_y + 722, 60, 20, 'A003', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A004',
-        'button': classes.Button(offset_x + 340, offset_y + 802, 60, 20, 'A004', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A005',
-        'button': classes.Button(offset_x + 255, offset_y + 722, 60, 20, 'A005', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A006',
-        'button': classes.Button(offset_x + 155, offset_y + 477, 60, 20, 'A006', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A007',
-        'button': classes.Button(offset_x + 155, offset_y + 432, 60, 20, 'A007', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A008',
-        'button': classes.Button(offset_x + 155, offset_y + 332, 60, 20, 'A008', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A009',
-        'button': classes.Button(offset_x + 165, offset_y + 272, 60, 20, 'A009', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A010',
-        'button': classes.Button(offset_x + 15, offset_y + 287, 60, 20, 'A010', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A011',
-        'button': classes.Button(offset_x + 4, offset_y + 352, 60, 20, 'A011', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A012',
-        'button': classes.Button(offset_x + 4, offset_y + 412, 60, 20, 'A012', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A013',
-        'button': classes.Button(offset_x + 4, offset_y + 477, 60, 20, 'A013', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'A014',
-        'button': classes.Button(offset_x + 20, offset_y + 572, 60, 20, 'A014', font=taille_txt),
-        'floors': [1],
-    },
-    {
-        'label': 'B111',
-        'button': classes.Button(offset_x + 206, offset_y + 812, 60, 20, 'B111', font=taille_txt),
-        'floors': [2],
-    },
-    {
-        'label': 'B112',
-        'button': classes.Button(offset_x + 276, offset_y + 717, 60, 20, 'B112', font=taille_txt),
-        'floors': [2],
-    },
-    {
-        'label': 'B113',
-        'button': classes.Button(offset_x + 315, offset_y + 625, 60, 20, 'B113', font=taille_txt),
-        'floors': [2],
-    },
-    {
-        'label': 'B114',
-        'button': classes.Button(offset_x + 166, offset_y + 333, 60, 20, 'B114', font=taille_txt),
-        'floors': [2],
-    },
-    {
-        'label': 'B115',
-        'button': classes.Button(offset_x + 153, offset_y + 192, 60, 20, 'B115', font=taille_txt),
-        'floors': [2],
-    },
-    {
-        'label': 'B116',
-        'button': classes.Button(offset_x + 300, offset_y + 205, 60, 20, 'B116', font=taille_txt),
-        'floors': [2],
-    },
-    {
-        'label': 'B117',
-        'button': classes.Button(offset_x + 407, offset_y + 205, 60, 20, 'B117', font=taille_txt),
-        'floors': [2],
-    },
-    {
-        'label': 'B118',
-        'button': classes.Button(offset_x + 495, offset_y + 205, 60, 20, 'B118', font=taille_txt),
-        'floors': [2],
-    },
-    {
-        'label': 'A101',
-        'button': classes.Button(offset_x + 429, offset_y + 86, 60, 20, 'A101', font=taille_txt),
-        'floors': [3],
-    },
-    {
-        'label': 'A102',
-        'button': classes.Button(offset_x + 312, offset_y + 199, 60, 20, 'A102', font=taille_txt),
-        'floors': [3],
-    },
-    {
-        'label': 'A103',
-        'button': classes.Button(offset_x + 213, offset_y + 199, 60, 20, 'A103', font=taille_txt),
-        'floors': [3],
-    },
-    {
-        'label': 'A104',
-        'button': classes.Button(offset_x + 117, offset_y + 199, 60, 20, 'A104', font=taille_txt),
-        'floors': [3],
-    },
-    {
-        'label': 'A105',
-        'button': classes.Button(offset_x + 20, offset_y + 199, 60, 20, 'A105', font=taille_txt),
-        'floors': [3],
-    },
-    {
-        'label': 'A106',
-        'button': classes.Button(offset_x + 131, offset_y + 607, 60, 20, 'A106', font=taille_txt),
-        'floors': [3],
-    },
-    {
-        'label': 'A107',
-        'button': classes.Button(offset_x + 28, offset_y + 607, 60, 20, 'A107', font=taille_txt),
-        'floors': [3],
-    },
-    {
-        'label': 'A108',
-        'button': classes.Button(offset_x + 28, offset_y + 737, 60, 20, 'A108', font=taille_txt),
-        'floors': [3],
-    },
-    {
-        'label': 'A109',
-        'button': classes.Button(offset_x + 28, offset_y + 808, 60, 20, 'A109', font=taille_txt),
-        'floors': [3],
-    },
-    {
-        'label': 'A110',
-        'button': classes.Button(offset_x + 28, offset_y + 855, 60, 20, 'A110', font=taille_txt),
-        'floors': [3],
-    },
-    {
-        'label': 'A201',
-        'button': classes.Button(offset_x + 113, offset_y + 345, 60, 20, 'A201', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A202',
-        'button': classes.Button(offset_x + 138, offset_y + 302, 60, 20, 'A202', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A203',
-        'button': classes.Button(offset_x + 180, offset_y + 275, 60, 20, 'A203', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A204',
-        'button': classes.Button(offset_x + 218, offset_y + 302, 60, 20, 'A204', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A205',
-        'button': classes.Button(offset_x + 261, offset_y + 246, 60, 20, 'A205', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A206',
-        'button': classes.Button(offset_x + 261, offset_y + 170, 60, 20, 'A206', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A207',
-        'button': classes.Button(offset_x + 261, offset_y + 52, 60, 20, 'A207', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A208',
-        'button': classes.Button(offset_x + 304, offset_y + 368, 60, 20, 'A208', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A209',
-        'button': classes.Button(offset_x + 304, offset_y + 415, 60, 20, 'A209', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A210',
-        'button': classes.Button(offset_x + 304, offset_y + 457, 60, 20, 'A210', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A211',
-        'button': classes.Button(offset_x + 307, offset_y + 506, 60, 20, 'A211', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A212',
-        'button': classes.Button(offset_x + 394, offset_y + 514, 60, 20, 'A212', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B213',
-        'button': classes.Button(offset_x + 389, offset_y + 654, 60, 20, 'B213', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B214',
-        'button': classes.Button(offset_x + 307, offset_y + 647, 60, 20, 'B214', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B215',
-        'button': classes.Button(offset_x + 254, offset_y + 642, 60, 20, 'B215', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B216',
-        'button': classes.Button(offset_x + 203, offset_y + 690, 60, 20, 'B216', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B217',
-        'button': classes.Button(offset_x + 285, offset_y + 731, 60, 20, 'B217', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B218',
-        'button': classes.Button(offset_x + 352, offset_y + 731, 60, 20, 'B218', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B219',
-        'button': classes.Button(offset_x + 362, offset_y + 783, 60, 20, 'B219', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B220',
-        'button': classes.Button(offset_x + 362, offset_y + 826, 60, 20, 'B220', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B221',
-        'button': classes.Button(offset_x + 362, offset_y + 868, 60, 20, 'B221', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B222',
-        'button': classes.Button(offset_x + 440, offset_y + 914, 60, 20, 'B222', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'B223',
-        'button': classes.Button(offset_x + 320, offset_y + 914, 60, 20, 'B223', font=taille_txt),
-        'floors': [4],
-    },
-    {
-        'label': 'A301',
-        'button': classes.Button(offset_x + 33, offset_y + 52, 60, 20, 'A301', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'A302',
-        'button': classes.Button(offset_x + 97, offset_y + 52, 60, 20, 'A302', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'A303',
-        'button': classes.Button(offset_x + 155, offset_y + 52, 60, 20, 'A303', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'A304',
-        'button': classes.Button(offset_x + 98, offset_y + 90, 60, 20, 'A304', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'A305',
-        'button': classes.Button(offset_x + 98, offset_y + 144, 60, 20, 'A305', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'A306',
-        'button': classes.Button(offset_x + 98, offset_y + 204, 60, 20, 'A306', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'A307',
-        'button': classes.Button(offset_x + 98, offset_y + 263, 60, 20, 'A307', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'A308',
-        'button': classes.Button(offset_x + 98, offset_y + 318, 60, 20, 'A308', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'A309',
-        'button': classes.Button(offset_x + 203, offset_y + 158, 60, 20, 'A309', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'A310',
-        'button': classes.Button(offset_x + 203, offset_y + 246, 60, 20, 'A310', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B311',
-        'button': classes.Button(offset_x + 200, offset_y + 427, 60, 20, 'B311', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'A312',
-        'button': classes.Button(offset_x + 149, offset_y + 530, 60, 20, 'A312', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B313',
-        'button': classes.Button(offset_x + 20, offset_y + 530, 60, 20, 'B313', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B314',
-        'button': classes.Button(offset_x + 175, offset_y + 633, 60, 20, 'B314', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B315',
-        'button': classes.Button(offset_x + 280, offset_y + 705, 60, 20, 'B315', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B316',
-        'button': classes.Button(offset_x + 280, offset_y + 763, 60, 20, 'B316', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B317',
-        'button': classes.Button(offset_x + 280, offset_y + 824, 60, 20, 'B317', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B318',
-        'button': classes.Button(offset_x + 296, offset_y + 889, 60, 20, 'B318', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B319',
-        'button': classes.Button(offset_x + 369, offset_y + 882, 60, 20, 'B319', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B320',
-        'button': classes.Button(offset_x + 430, offset_y + 882, 60, 20, 'B320', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B321',
-        'button': classes.Button(offset_x + 501, offset_y + 882, 60, 20, 'B321', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B322',
-        'button': classes.Button(offset_x + 493, offset_y + 842, 60, 20, 'B322', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B323',
-        'button': classes.Button(offset_x + 435, offset_y + 810, 60, 20, 'B323', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B324',
-        'button': classes.Button(offset_x + 393, offset_y + 842, 60, 20, 'B324', font=taille_txt),
-        'floors': [5],
-    },
-    {
-        'label': 'B325',
-        'button': classes.Button(offset_x + 359, offset_y + 810, 60, 20, 'B325', font=taille_txt),
-        'floors': [5],
-    },
-]
-
+def create_button(label, x, y, floor):
+    return {
+        'label': label,
+        'button': classes.Button(offset_x + x, offset_y + y, 60, 20, label, font=taille_txt),
+        'floors': [floor],}
+data = {
+    1: [
+        ('A001', 402, 272), ('A002', 430, 722), ('A003', 340, 722),
+        ('A004', 340, 802), ('A005', 255, 722), ('A006', 155, 477),
+        ('A007', 155, 432), ('A008', 155, 332), ('A009', 165, 272),
+        ('A010', 15, 287), ('A011', 4, 352), ('A012', 4, 412),
+        ('A013', 4, 477), ('A014', 20, 572),
+    ],
+    2: [
+        ('B111', 206, 812), ('B112', 276, 717), ('B113', 315, 625),
+        ('B114', 166, 333), ('B115', 153, 192), ('B116', 300, 205),
+        ('B117', 407, 205), ('B118', 495, 205),
+    ],
+    3: [
+        ('A101', 429, 86), ('A102', 312, 199), ('A103', 213, 199),
+        ('A104', 117, 199), ('A105', 20, 199), ('A106', 131, 607),
+        ('A107', 28, 607), ('A108', 28, 737), ('A109', 28, 808),
+        ('A110', 28, 855),
+    ],
+    4: [
+        ('A201', 113, 345), ('A202', 138, 302), ('A203', 180, 275),
+        ('A204', 218, 302), ('A205', 261, 246), ('A206', 261, 170),
+        ('A207', 261, 52), ('A208', 304, 368), ('A209', 304, 415),
+        ('A210', 304, 457), ('A211', 307, 506), ('A212', 394, 514),
+        ('B213', 389, 654), ('B214', 307, 647), ('B215', 254, 642),
+        ('B216', 203, 690), ('B217', 285, 731), ('B218', 352, 731),
+        ('B219', 362, 783), ('B220', 362, 826), ('B221', 362, 868),
+        ('B222', 440, 914), ('B223', 320, 914),
+    ],
+    5: [
+        ('A301', 33, 52), ('A302', 97, 52), ('A303', 155, 52),
+        ('A304', 98, 90), ('A305', 98, 144), ('A306', 98, 204),
+        ('A307', 98, 263), ('A308', 98, 318), ('A309', 203, 158),
+        ('A310', 203, 246), ('B311', 200, 427), ('A312', 149, 530),
+        ('B313', 20, 530), ('B314', 175, 633), ('B315', 280, 705),
+        ('B316', 280, 763), ('B317', 280, 824), ('B318', 296, 889),
+        ('B319', 369, 882), ('B320', 430, 882), ('B321', 501, 882),
+        ('B322', 493, 842), ('B323', 435, 810), ('B324', 393, 842),
+        ('B325', 359, 810),
+    ]
+}
+boutons_salles = []
+for floor, rooms in data.items():
+    for label, x, y in rooms:
+        boutons_salles.append(create_button(label, x, y, floor))
 # Fermer bouton image
 close_button = classes.Button(screen.get_width() - 50, 10, 40, 40, "X", font=pygame.font.Font("assets/DejaVuSans.ttf", 20))
 
-_,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B)
 
+
+
+_,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B)
 # boucle principale
 # La boucle principale tourne tant que la variable 'running' est True.
 # Elle gère l'état de l'application : "accueil" ou "itinéraire",
