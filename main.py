@@ -6,6 +6,7 @@ Ce module contient la boucle principale de jeu et le rendu des écrans.
 import pygame
 import math
 import os
+import textwrap
 from pygame.draw import rect
 from pytmx.util_pygame import load_pygame
 import classes
@@ -85,6 +86,20 @@ batiment_selectionne = None
 show_image = False
 current_image = None
 
+doc_font = pygame.font.SysFont(None, 24)
+doc_scroll = 0
+documentation_lines = []
+try:
+    with open("DOCUMENTATION.txt", "r", encoding="utf-8") as f:
+        for raw_line in f:
+            stripped = raw_line.rstrip("\n")
+            if stripped == "":
+                documentation_lines.append("")
+            else:
+                documentation_lines.extend(textwrap.wrap(stripped, width=88) or [""])
+except Exception as e:
+    documentation_lines = ["Impossible de charger DOCUMENTATION.txt:", str(e)]
+
 #importation des données de la carte 
 tmx_data = load_pygame("maps/map B300 x4.tmx")
 tmx_data_b = load_pygame("maps/map B200-A200 x4.tmx")
@@ -145,7 +160,7 @@ ui_4.font.set_bold(True)
 # map_buttons_info: on associe des coordonnées, un étage et une image à chaque bouton
 def create_map_button(x, y, floor, image):
     return {
-        'button': classes.Button(offset_x + x, offset_y + y, 20, 20),
+        'button': classes.Button(offset_x + x, offset_y + y, 20, 20, image=images['loupe'], color=None, draw_background=False),
         'floors': [floor],
         'image': image}
 map_data = {
@@ -243,7 +258,22 @@ while running:
         pygame.draw.rect(screen, (220, 220, 255), (screen.get_width()//2 - 200, 450, 400, 80))
         opt_txt = pygame.font.SysFont(None, 60).render("DOCUMENTATION", True, (0, 0, 0))
         screen.blit(opt_txt, (screen.get_width()//2 - opt_txt.get_width()//2, 475))
-    
+    elif etat == "documentation":
+        screen.fill((30, 30, 30))
+        window = pygame.Rect(40, 40, screen.get_width() - 80, screen.get_height() - 80)
+        pygame.draw.rect(screen, (20, 20, 20), window)
+        pygame.draw.rect(screen, (200, 200, 200), window, 2)
+        title = pygame.font.SysFont(None, 48).render("DOCUMENTATION", True, (255, 255, 255))
+        screen.blit(title, (window.x + 20, window.y + 20))
+        hint = doc_font.render("ESC pour revenir, molette pour défiler", True, (170, 170, 170))
+        screen.blit(hint, (window.x + 20, window.y + 70))
+        visible_lines = (window.height - 120) // 30
+        for i in range(visible_lines):
+            idx = doc_scroll + i
+            if idx >= len(documentation_lines):
+                break
+            line_surface = doc_font.render(documentation_lines[idx], True, (235, 235, 235))
+            screen.blit(line_surface, (window.x + 20, window.y + 100 + i * 30))
     elif etat == "itinéraire":
         screen.fill((255, 255, 255))
         # Draw the map tiles
@@ -258,8 +288,6 @@ while running:
             couleur_bouton_options = (240, 240, 240)
 
 
-
-
     # 2) Gestion des événements de Pygame
     #    - fermeture de la fenêtre
     #    - défilement souris pour les menus déroulants
@@ -270,6 +298,10 @@ while running:
             # l'utilisateur ferme la fenêtre, on arrête la boucle
             running = False
         elif e.type == pygame.MOUSEWHEEL:
+            if etat == "documentation":
+                lines_per_page = (screen.get_height() - 120) // 30
+                doc_scroll = min(max(doc_scroll - e.y, 0), max(0, len(documentation_lines) - lines_per_page))
+                continue
             if menu_deroulant.sous_menu_ouvert is not None:
                 sous_menu = menu_deroulant.sous_menus[menu_deroulant.sous_menu_ouvert]
                 sous_menu.offset_y += e.y * 20
@@ -287,10 +319,17 @@ while running:
                 menu_matiere.scroll_options()
         elif e.type == pygame.KEYDOWN:
             if e.key == pygame.K_ESCAPE:
-                if etat == "itinéraire":
+                if etat in ["itinéraire", "documentation"]:
                     etat = "accueil"
                 else:
                     running = False
+            if etat == "documentation":
+                lines_per_page = (screen.get_height() - 120) // 30
+                if e.key == pygame.K_UP:
+                    doc_scroll = max(doc_scroll - 1, 0)
+                elif e.key == pygame.K_DOWN:
+                    doc_scroll = min(doc_scroll + 1, max(0, len(documentation_lines) - lines_per_page))
+                continue
             if e.key == pygame.K_UP and etat == "itinéraire":
                 etage = min(etage + 1, 5)
             if e.key == pygame.K_DOWN and etat == "itinéraire":
@@ -335,8 +374,8 @@ while running:
                 elif (screen.get_width()//2 - 200 <= mx <= screen.get_width()//2 + 200 and
                     450 <= my <= 530):
                     son_clic.play()
-                    # Ouvrir le fichier DOCUMENTATION.txt avec le programme par défaut
-                    os.startfile("DOCUMENTATION.txt")
+                    etat = "documentation"
+                    doc_scroll = 0
 
 
             elif etat == "itinéraire":
@@ -485,7 +524,7 @@ while running:
         fonctions_= "  " +str("temps : " + fonc["temps"]+" s")
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=0, bottom_right=0, text=fonctions_)
         ui_3.draw(screen,text=classes.départ_salle+"→"+classes.arrivée_salle,top_left=0, top_right=0, bottom_right=0, bottom_left=0)
-        ui_4.draw(screen, text="parcoure : " + "→".join(noms_etages[e] for e in liste_etage), top_left=0, top_right=0, bottom_left=10, bottom_right=10)
+        ui_4.draw(screen, text="parcours : " + "→".join(noms_etages[e] for e in liste_etage), top_left=0, top_right=0, bottom_left=10, bottom_right=10)
         bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         bat_b.draw(screen, text="Bâtiment : B", color=couleur_bouton_options_b,
