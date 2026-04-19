@@ -160,7 +160,7 @@ ui_4.font.set_bold(True)
 # map_buttons_info: on associe des coordonnées, un étage et une image à chaque bouton
 def create_map_button(x, y, floor, image):
     return {
-        'button': classes.Button(offset_x + x, offset_y + y, 20, 20, image=images['loupe'], color=None, draw_background=False),
+        'button': classes.Button(offset_x + x, offset_y + y, 20, 20),
         'floors': [floor],
         'image': image}
 map_data = {
@@ -263,17 +263,19 @@ while running:
         window = pygame.Rect(40, 40, screen.get_width() - 80, screen.get_height() - 80)
         pygame.draw.rect(screen, (20, 20, 20), window)
         pygame.draw.rect(screen, (200, 200, 200), window, 2)
-        title = pygame.font.SysFont(None, 48).render("DOCUMENTATION", True, (255, 255, 255))
-        screen.blit(title, (window.x + 20, window.y + 20))
+        title = pygame.font.SysFont(None, 36).render("DOCUMENTATION", True, (255, 255, 255))
+        screen.blit(title, (window.x + 20, window.y + 10))
         hint = doc_font.render("ESC pour revenir, molette pour défiler", True, (170, 170, 170))
-        screen.blit(hint, (window.x + 20, window.y + 70))
-        visible_lines = (window.height - 120) // 30
+        screen.blit(hint, (window.x + 20, window.y + 45))
+        # Use smaller line height to show more text
+        line_height = 20
+        visible_lines = (window.height - 55) // line_height
         for i in range(visible_lines):
             idx = doc_scroll + i
             if idx >= len(documentation_lines):
                 break
             line_surface = doc_font.render(documentation_lines[idx], True, (235, 235, 235))
-            screen.blit(line_surface, (window.x + 20, window.y + 100 + i * 30))
+            screen.blit(line_surface, (window.x + 20, window.y + 65 + i * line_height))
     elif etat == "itinéraire":
         screen.fill((255, 255, 255))
         # Draw the map tiles
@@ -299,7 +301,8 @@ while running:
             running = False
         elif e.type == pygame.MOUSEWHEEL:
             if etat == "documentation":
-                lines_per_page = (screen.get_height() - 120) // 30
+                line_height = 20
+                lines_per_page = (window.height - 55) // line_height
                 doc_scroll = min(max(doc_scroll - e.y, 0), max(0, len(documentation_lines) - lines_per_page))
                 continue
             if menu_deroulant.sous_menu_ouvert is not None:
@@ -324,7 +327,8 @@ while running:
                 else:
                     running = False
             if etat == "documentation":
-                lines_per_page = (screen.get_height() - 120) // 30
+                line_height = 20
+                lines_per_page = (window.height - 55) // line_height
                 if e.key == pygame.K_UP:
                     doc_scroll = max(doc_scroll - 1, 0)
                 elif e.key == pygame.K_DOWN:
@@ -534,8 +538,7 @@ while running:
                             btn = info_btn['button']
                             if etage not in info_btn['floors']:
                                 continue
-                            color = (0, 255, 0) if btn.is_clicked else (255, 0, 0)
-                            btn.draw(screen, top_left=0, top_right=0, bottom_right=0, bottom_left=0, color=color)
+                            screen.blit(images['loupe'], btn.rect)
         if afficher_s == True:
                         for info_btn in boutons_salles:
                             btn = info_btn['button']

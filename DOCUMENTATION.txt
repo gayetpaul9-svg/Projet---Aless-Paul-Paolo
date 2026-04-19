@@ -4,7 +4,6 @@ Introduction:
 Ce programme est un système de navigation intérieure pour le lycée. Il permet aux utilisateurs de se repérer dans les différents bâtiments (A et B) et de trouver leur chemin vers les salles de classe. Le programme utilise Pygame pour l'interface graphique et implémente l'algorithme de Dijkstra pour le calcul des itinéraires.
 
 
-
 Écrans du Programme
 
 1. Écran d'Accueil
@@ -26,8 +25,8 @@ Boutons et Fonctionnalités
 Navigation entre les étages :
 - ↑ (Flèche haut): Monter d'un étage 
 - ↓ (Flèche bas) : Descendre d'un étage 
-- -> (Suivant) : Passer à l'étage suivant dans le menu 
-- <- (Précédent) : Revenir à l'étage précédent dans le menu 
+- -> (Suivant) : Passer à l'étage suivant dans le parcour suivi
+- <- (Précédent) : Revenir à l'étage précédent dans le parcour suivi
 
 - Raccourci clavier : Touches ↑/↓ pour changer d'étage.
 
@@ -55,20 +54,16 @@ Bâtiment B :
 - 2ème étage : B214 à B223
 - 1er étage : B111 à B118
 
-
 Menu des matières :
 Le menu déroulant en haut au centre permet de sélectionner une matière pour afficher les informations de cours
-
 
 Boutons d'Information :
 Loupe : Affiche les points d'intérêt sur la carte
 Salles : Affiche les boutons de toutes les salles sur la carte
 
-
 Modes de calcul :
 Le programme propose plusieurs modes de calcul d'itinéraire :
 - Mode normal : Calcul du chemin le plus court
-- Mode long : Calcul d'un chemin passant par un étage éloigné
 - Mode calories : Estimation des calories brûlées
 - Mode temps : Estimation du temps de trajet
 
@@ -79,3 +74,7 @@ Les cartes sont organisées par étage :
 - Étage 3 : 1er étage du bâtiment A
 - Étage 4 : 2ème étage bâtiments A et B
 - Étage 5 : 3ème étage bâtiments A et B
+
+Légende :
+- Vert foncé : chemin à suivre
+- Jaune : salles de départ/arrivée et escaliers (les escaliers sont reconnaissables car ils n’ont pas de nom lorsqu’on affiche le nom des salles)

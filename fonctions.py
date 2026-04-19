@@ -263,15 +263,3 @@ def infos_cours(cours):
     message = get_message(cours)
     return {'ennui': taux, 'message_ennui': msg_ennui, 'message': message}
 
-def trouver_etages(resultat):
-    """Retourne la liste des étages traversés d'après le résultat du chemin."""
-    pass
-                          
-
-    
-
-
-def suggestion(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_e, layers_2, layers_3, layers_1, layers_cdi, layers_1B):
-    """(À compléter) Suggestion d'itinéraire selon les étages et la distance."""
-    # fait la liste dans l'ordre des étages empruntés.
-    pass
