@@ -105,6 +105,8 @@ afficher_salles = classes.Button(1386, info.current_h-245, 140, 40, "🏫",font=
 afficher_salles.font.set_bold(True)
 etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 etage_inf=classes.Button(1386, info.current_h-105, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+etage_suivant=classes.Button(1286+40, info.current_h-105, 40, 40, "->",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+etage_precedent=classes.Button(1286, info.current_h-105, 40, 40, "<-",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_3=classes.Button(info.current_w-340-50,236+50+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
@@ -225,16 +227,6 @@ _,chemins = fonctions.gps(None,None,tmx_data, tmx_data_b, tmx_data_d, tmx_data_c
 # Elle gère l'état de l'application : "accueil" ou "itinéraire",
 # l'affichage des éléments, et le traitement des événements utilisateur.
 while running:
-    dt = clock.tick(60) / 1000
-    time += dt
-    pulse = (math.sin(time * 2) + 1) / 2
-    color = (
-        int(base_color[0] + (255 - base_color[0]) * pulse * 0.5),
-        int(base_color[1] + (255 - base_color[1]) * pulse * 0.5),
-        int(base_color[2] + (255 - base_color[2]) * pulse * 0.5),)
-    
-    
-    
     # 1) Affichage selon l'état courant : accueil ou itinéraire
     # pages d'accueil et d'itinéraire
     if etat == "accueil":
@@ -368,6 +360,18 @@ while running:
                 if etage_inf.is_clicked(e.pos):
                     etage = max(etage - 1, 1)
                     son_clic.play()
+                if etage_precedent.is_clicked(e.pos):
+                    for x in liste_etage:
+                        if x==etage and liste_etage.index(x)>0:
+                            etage = liste_etage[liste_etage.index(etage)-1]
+                            break
+                    son_clic.play() 
+                if etage_suivant.is_clicked(e.pos):
+                    for x in liste_etage:
+                        if x==etage and liste_etage.index(x)<len(liste_etage)-1:
+                            etage = liste_etage[liste_etage.index(etage)+1]
+                            break
+                    son_clic.play()
                 if e.pos[0] >= 1386 and e.pos[0] <= 1426 and e.pos[1] >= 934 and e.pos[1] <= 974:
                     son_clic.play()
                 # Afficher boutons loupe filtrés par étage
@@ -399,28 +403,7 @@ while running:
     #      - calculer et afficher les informations de cours / itinéraire
     #      - afficher les contrôles et menus interactifs
     if etat == "itinéraire":
-        # fonctionnement boutons étages
-
-        if etage in liste_etage:
-            index=liste_etage.index(etage)
-            if index!=len(liste_etage)-1:
-                if liste_etage[index+1]>etage:
-                    etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=color)
-                    etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
-                elif liste_etage[index+1]<etage:
-                    etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=color)
-                    etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
-            else:
-                etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
-                etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
-        elif liste_etage:
-            if etage>liste_etage[len(liste_etage)-1]:
-                etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=color)
-                etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
-            elif etage<liste_etage[len(liste_etage)-1]:
-                etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=color)
-                etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
-
+        # fonctionnement boutons étages et bâtiments
         if etage == 1 :
             couleur_bouton_options_a = gris
             couleur_bouton_options_b = gris
@@ -485,7 +468,9 @@ while running:
             lignes_message = texte_message.split("\n")
             for i, ligne in enumerate(lignes_message):
                 screen.blit(font.render(ligne.strip(), True, (0, 0, 0)), (50, 190 + i * 40))
-
+        if liste_etage:
+            etage_suivant.draw(screen, text="->", top_left=0, top_right=5, bottom_right=5, bottom_left=0)
+            etage_precedent.draw(screen, text="<-", top_left=5, top_right=0, bottom_right=0, bottom_left=5)
         nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         menu_deroulant.survol(pygame.mouse.get_pos())
         fonctions_ = str("calories : " + fonc['calories']+" Kcal")

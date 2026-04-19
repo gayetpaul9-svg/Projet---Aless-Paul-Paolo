@@ -1,0 +1,241 @@
+# Documentation du Programme GPS du Lycée
+
+## Introduction
+
+Ce programme est un système de navigation intérieure pour le lycée. Il permet aux utilisateurs de se repérer dans les différents bâtiments (A et B) et de trouver leur chemin vers les salles de classe. Le programme utilise Pygame pour l'interface graphique et implémente l'algorithme de Dijkstra pour le calcul des itinéraires.
+
+---
+
+## Structure du Programme
+
+Le programme est composé de plusieurs modules :
+
+| Fichier | Fonction |
+|---------|----------|
+| `main.py` | Point d'entrée principal, boucle Pygame, gestion des événements |
+| `algo.py` | Algorithme de Dijkstra et graphe du lycée |
+| `classes.py` | Classes d'interface (Button, Dropdown) |
+| `fonctions.py` | Fonctions utilitaires (GPS, infos cours, calculs) |
+| `layers.py` | Gestion des calques de cartes |
+| `data_cours.py` | Données des cours et messages pédagogiques |
+
+---
+
+## Écrans du Programme
+
+### 1. Écran d'Accueil
+
+L'écran d'accueil affiche :
+- **Titre "GPS CIV"** : Le nom de l'application en grand
+- **Bouton "ITINÉRAIRE"** : Permet d'accéder à la carte de navigation
+- **Bouton "DOCUMENTATION"** : Affiche cette documentation
+
+> **Note** : La musique de fond joue en boucle sur cet écran.
+
+### 2. Écran Itinéraire
+
+C'est l'écran principal de navigation contenant :
+- La carte interactive du lycée
+- Les menus de sélection
+- Les boutons de navigation
+- Les informations sur les salles
+
+---
+
+## Boutons et Fonctionnalités
+
+### Navigation entre les Étages
+
+| Bouton | Position | Fonction |
+|--------|----------|-----------|
+| **↑ (Flèche haut)** | Coin inférieur droit | Monter d'un étage |
+| **↓ (Flèche bas)** | Coin inférieur droit | Descendre d'un étage |
+| **-> (Suivant)** | Coin inférieur droit | Passer à l'étage suivant dans le menu |
+| **<- (Précédent)** | Coin inférieur droit | Revenir à l'étage précédent dans le menu |
+
+> **Raccourci clavier** : Touches ↑/↓ pour changer d'étage.
+
+### Sélection des Bâtiments
+
+| Bouton | Position | Fonction |
+|--------|----------|-----------|
+| **Bâtiment A** | Coin inférieur droit | Affiche le bâtiment A |
+| **Bâtiment B** | Coin inférieur droit | Affiche le bâtiment B |
+
+Ces boutons permettent de basculer entre les deux bâtiments du lycée.
+
+### Menu Déroulant des Salles
+
+Le menu déroulant en haut à gauche permet de sélectionner :
+- **L'étage** : Bâtiment A (3ème, 2ème, 1er, RDC) ou Bâtiment B (3ème, 2ème, 1er)
+- **La salle de destination** : Liste des salles disponibles sur l'étage sélectionné
+
+#### Sous-options par étage :
+
+**Bâtiment A :**
+- 3ème étage : A301 à A310
+- 2ème étage : A201 à A211
+- 1er étage : A102 à A106
+- RDC : A001 à A014
+
+**Bâtiment B :**
+- 3ème étage : B311 à B325
+- 2ème étage : B214 à B223
+- 1er étage : B111 à B118
+
+### Menu des Matières
+
+Le menu déroulant en haut au centre permet de sélectionner une matière pour afficher les informations de cours :
+
+| Matière | Description |
+|---------|-------------|
+| maths | Mathématiques |
+| physique-chimie | Physique-Chimie |
+| francais | Français |
+| histoire-geo | Histoire-Géographie |
+| hggsp | Histoire-Géo SP |
+| hlp | Histoire des Arts |
+| ses | Sciences Économiques |
+| nsi | Numérique et Sciences |
+| sport | Éducation Physique |
+| italien | Italien |
+| anglais | Anglais |
+| allemand | Allemand |
+| espagnol | Espagnol |
+| russe | Russe |
+| fls | Français Langue Étrangère |
+| cdm | Cinéma |
+| chinois | Chinois |
+
+### Boutons d'Information
+
+| Bouton | Icône | Fonction |
+|--------|-------|-----------|
+| **Loupe** | 🔍 | Affiche les points d'intérêt sur la carte (Points P1 à P20) |
+| **Salles** | 🏫 | Affiche les boutons de toutes les salles sur la carte |
+
+### Bouton Options
+
+Le bouton "OPTIONS" en haut à droite permet d'accéder aux paramètres supplémentaires.
+
+---
+
+## Saisie de Texte
+
+### Recherche de Salle
+
+Pour rechercher une salle spécifique :
+1. Cliquer sur le champ de saisie
+2. Taper le nom de la salle (ex: "A301")
+3. Appuyer sur **Entrée** pour valider
+
+> **Fonction** : La fonction `infos_cours` retourne les informations sur les cours pour la salle recherchée.
+
+### Navigation au Clavier
+
+| Touche | Fonction |
+|--------|----------|
+| **Échap** | Retour à l'écran d'accueil ou quitter |
+| **↑** | Monter d'un étage |
+| **↓** | Descendre d'un étage |
+| **Retour arrière** | Supprimer le dernier caractère lors de la saisie |
+| **Entrée** | Valider la saisie de texte |
+
+---
+
+## Fonctionnalités Avancées
+
+### Algorithme de Dijkstra
+
+Le programme utilise l'algorithme de Dijkstra pour calculer le chemin le plus court entre deux salles. Le graphe est défini dans `algo.py` avec :
+- **Sommets** : Les salles et couloirs du lycée
+- **Arêtes** : Les déplacements possibles entre les pièces
+- **Poids** : Le temps de déplacement (1 pour chaque déplacement)
+
+### Modes de Calcul
+
+Le programme propose plusieurs modes de calcul d'itinéraire :
+- **Mode normal** : Calcul du chemin le plus court
+- **Mode long** : Calcul d'un chemin passant par un étage éloigné
+- **Mode calories** : Estimation des calories brûlées
+- **Mode temps** : Estimation du temps de trajet
+
+### Affichage des Étages
+
+Les cartes sont organisées par étage :
+- **Étage 1** : RDC du bâtiment A
+- **Étage 2** : 1er étage du bâtiment B
+- **Étage 3** : 1er étage du bâtiment A
+- **Étage 4** : 2ème étage bâtiments A et B
+- **Étage 5** : 3ème étage bâtiments A et B
+
+---
+
+## Cartes du Lycée
+
+Le programme charge plusieurs cartes TMX :
+
+| Fichier | Description |
+|---------|-------------|
+| `map B300 x4.tmx` | Bâtiment B 3ème étage |
+| `map B200-A200 x4.tmx` | Bâtiments A et B 2ème étage |
+| `map CDI.tmx` | Centre de Documentation et d'Information |
+| `map A100.tmx` | Bâtiment A 1er étage |
+| `B100.tmx` | Bâtiment B 1er étage |
+
+---
+
+## Sons et Musiques
+
+| Fichier | Utilisation |
+|---------|-------------|
+| `sons_fond.mp3` | Musique d'ambiance en boucle |
+| `effet_sonore.mp3` | Son joué lors d'un clic sur un bouton |
+
+> **Note** : La musique s'arrête quand on quitte l'écran d'accueil.
+
+---
+
+## Variables d'État Principales
+
+Le programme utilise les variables suivantes pour gérer son état :
+
+| Variable | Description |
+|----------|-------------|
+| `etat` | "accueil" ou "itinéraire" |
+| `etage` | Étage actuel (1 à 5) |
+| `batiment_selectionne` | "A" ou "B" |
+| `afficher` | Affiche/masque la loupe |
+| `afficher_s` | Affiche/masque les salles |
+| `menu_ouvert` | Menu déroulant ouvert/fermé |
+| `saisie_active` | Mode saisie texte actif |
+
+---
+
+## Contrôle de la Souris
+
+- **Molette** : Faire défiler les menus déroulants
+- **Clic gauche** : Sélectionner un élément, valider un choix
+- **Survol** : Les boutons changent de couleur au survol (gris plus foncé)
+
+---
+
+## Messages Pédagogiques
+
+Le programme affiche des messages pédagogiques en fonction de la matière sélectionnée. Ces messages sont définis dans `data_cours.py` et varient selon les cours.
+
+---
+
+## Résumé des Interactions
+
+1. **Démarrage** → Écran d'accueil avec musique
+2. **Clic sur "ITINÉRAIRE"** → Accès à la carte de navigation
+3. **Sélection d'un étage** → La carte correspondante s'affiche
+4. **Sélection d'une salle** → Calcul et affichage du chemin
+5. **Utilisation de la loupe** → Affichage des points d'intérêt
+6. **Sélection d'une matière** → Affichage des infos de cours
+7. **Clic sur Échap** → Retour à l'accueil ou quitter
+
+---
+
+*Document généré pour le projet NSI - GPS du Lycée*
