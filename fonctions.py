@@ -63,13 +63,13 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_
     Retourne:
         tuple(resultat, chemins)
     """
-
     chemins1 = []
     chemins_cdi = []
     chemins2 = []
     chemins3 = []
     chemins1B = []
 
+    all_layers = [layers_1, layers_2, layers_3, layers_cdi, layers_1B]
 
     if not depart or not arrivee:
         chemins1.append(tmx_data_d.layers[8])
@@ -77,50 +77,57 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_
         chemins3.append(tmx_data.layers[12])
         chemins2.append(tmx_data_b.layers[17])
         chemins1B.append(tmx_data_e.layers[10])
-        chemins = [chemins_cdi,chemins1B, chemins1, chemins2, chemins3]        
+        chemins = [chemins_cdi, chemins1B, chemins1, chemins2, chemins3]
         return None, chemins
+
     if long == False:
         resultat, _ = algo.dijkstra(depart, arrivee)
     else:
-        #recherche etage depart
-        for layer in layers:
+        # recherche étage depart/arrivee
+        for layer in all_layers:
             for cle in layer.keys():
-                 if cle == arrivee:
-                    b=layer
-        for layer in layers:
-            for cle in layer.keys():
+                if cle == arrivee:
+                    b = layer
                 if cle == depart:
-                    a=layer
+                    a = layer
+
         for cle, val in dico_etage.items():
             if val == b:
-                b=cle
+                b = cle
             if val == a:
-                a=cle
-        c=dico_etage[trouver_nombre_eloigne(a,b)]
-        e=list(c.values())
-        d=e[random.randint(len(e)-7,len(e)-1)]
+                a = cle
+
+        c = dico_etage[trouver_nombre_eloigne(a, b)]
+        e = list(c.values())
+
+        if len(e) >= 7:
+            d = e[random.randint(len(e)-7, len(e)-1)]
+        else:
+            d = random.choice(e)
+
         for cle, val in c.items():
-            if val==d:
-                d=cle
+            if val == d:
+                d = cle
+
         resultata, _ = algo.dijkstra(depart, d)
         resultatb, _ = algo.dijkstra(d, arrivee)
-        resultat=resultata+resultatb
+        resultat = resultata + resultatb
 
     if resultat is None:
         return None, None
 
+    # =========================
+    # CREATION DES CHEMINS (inchangé)
+    # =========================
     for s in resultat:
         if not s:
             continue
 
         last = s[-1]
 
-        # Couloir A à E + N
         if ('A' <= last <= 'E') or last == 'N':
             chemins3.append(layers_3[s])
-            
 
-        # Couloir F à M
         elif 'F' <= last <= 'M':
             chemins2.append(layers_2[s])
 
@@ -133,7 +140,6 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_
         elif 'Y' <= last <= 'Z' or s.endswith(("A1","B1","C1","D1","E1")):
             chemins1B.append(layers_1B[s])
 
-        # Si c'est un chiffre
         elif last.isdigit():
             layer2 = layers_2.get(s)
             layer3 = layers_3.get(s)
@@ -151,8 +157,8 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_
                 chemins_cdi.append(layer_cdi)
             if layer_1B:
                 chemins1B.append(layer_1B)
-    
-    # Rendre salle de départ et d'arrivée visibles
+
+    # afficher depart/arrivee
     if depart in layers_3:
         chemins3.append(layers_3[depart])
     elif depart in layers_2:
@@ -163,7 +169,7 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_
         chemins_cdi.append(layers_cdi[depart])
     elif depart in layers_1B:
         chemins1B.append(layers_1B[depart])
-    
+
     if arrivee in layers_3:
         chemins3.append(layers_3[arrivee])
     elif arrivee in layers_2:
@@ -174,21 +180,31 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_
         chemins_cdi.append(layers_cdi[arrivee])
     elif arrivee in layers_1B:
         chemins1B.append(layers_1B[arrivee])
-    
+
     chemins_cdi.append(tmx_data_c.layers[9])
     chemins1.append(tmx_data_d.layers[8])
     chemins2.append(tmx_data_b.layers[17])
     chemins3.append(tmx_data.layers[12])
     chemins1B.append(tmx_data_e.layers[10])
+    if len(chemins_cdi) <= 2:
+        chemins_cdi.pop(0)
+
     chemins = [chemins_cdi, chemins1B, chemins1, chemins2, chemins3]
-    liste_etage.clear()
+    liste_etage.clear() 
     for element in resultat:
-        for layer in layers:
-            if element in layer.keys():
-                for cle, v in dico_etage.items():
+        if element[-1].isdigit():
+            resultat.remove(element)
+    for element in resultat: 
+        for layer in layers: 
+            if element in layer.keys() : 
+                for cle, v in dico_etage.items(): 
                     if v == layer:
-                         if cle not in liste_etage:
+                        if liste_etage:
+                            if cle != liste_etage[-1]:
+                                liste_etage.append(cle)
+                        else:
                             liste_etage.append(cle)
+    print("Étages traversés :", liste_etage)
     return resultat, chemins
 
 

@@ -107,8 +107,9 @@ etage_sup=classes.Button(1386, info.current_h-145, 40, 40, "↑",font=pygame.fon
 etage_inf=classes.Button(1386, info.current_h-105, 40, 40, "↓",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_1=classes.Button(info.current_w-340-50,236, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 ui_2=classes.Button(info.current_w-340-50,236+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui_3=classes.Button(info.current_w-340-50,236+50+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
+ui_4=classes.Button(info.current_w-340-50,236+50+50+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 bouton_mode_long = None  # disabled
-parcour=classes.Button(info.current_w-340-50,236+50+50, 340, 50,text="",font=pygame.font.Font("assets/DejaVuSans.ttf", 15))
 bat_a=classes.Button(info.current_w-447, info.current_h-145, 200, 80)
 bat_b=classes.Button(info.current_w-447+200+5, info.current_h-145, 200, 80)
 salles_par_etage = {
@@ -134,9 +135,10 @@ bouton_options_hauteur = 40
 couleur_bouton_options = (240, 240, 240)
 couleur_bouton_options_a = (240, 240, 240)
 couleur_bouton_options_b = (240, 240, 240)
-parcour.font.set_bold(True)
+ui_3.font.set_bold(True)
 ui_2.font.set_bold(True)
 ui_1.font.set_bold(True)
+ui_4.font.set_bold(True)
 # map_buttons_info: on associe des coordonnées, un étage et une image à chaque bouton
 def create_map_button(x, y, floor, image):
     return {
@@ -398,26 +400,26 @@ while running:
     #      - afficher les contrôles et menus interactifs
     if etat == "itinéraire":
         # fonctionnement boutons étages
-        for elem in liste_etage:
-            if etage in liste_etage:
-                index=liste_etage.index(etage)
-                if index!=len(liste_etage)-1:
-                    if liste_etage[index+1]>elem:
-                        etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=color)
-                        etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
-                    elif liste_etage[index+1]<elem:
-                        etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=color)
-                        etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
-                else:
-                    etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
-                    etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
-            else:
-                if etage>liste_etage[len(liste_etage)-1]:
-                    etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=color)
-                    etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
-                elif etage<liste_etage[len(liste_etage)-1]:
+
+        if etage in liste_etage:
+            index=liste_etage.index(etage)
+            if index!=len(liste_etage)-1:
+                if liste_etage[index+1]>etage:
                     etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=color)
                     etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
+                elif liste_etage[index+1]<etage:
+                    etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=color)
+                    etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
+            else:
+                etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
+                etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
+        elif liste_etage:
+            if etage>liste_etage[len(liste_etage)-1]:
+                etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=color)
+                etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=normale)
+            elif etage<liste_etage[len(liste_etage)-1]:
+                etage_sup.draw(screen, top_left=5, top_right=5, bottom_right=0, bottom_left=00,color=color)
+                etage_inf.draw(screen, top_left=0, top_right=0, bottom_right=5, bottom_left=5,color=normale)
 
         if etage == 1 :
             couleur_bouton_options_a = gris
@@ -490,7 +492,8 @@ while running:
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
         fonctions_= "  " +str("temps : " + fonc["temps"]+" s")
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=0, bottom_right=0, text=fonctions_)
-        parcour.draw(screen,text=classes.départ_salle+" -> "+classes.arrivée_salle,top_left=0, top_right=0, bottom_right=10, bottom_left=10)
+        ui_3.draw(screen,text=classes.départ_salle+" -> "+classes.arrivée_salle,top_left=0, top_right=0, bottom_right=10, bottom_left=10)
+        ui_4.draw(screen, text="parcoure : " + ", ".join(noms_etages[e] for e in liste_etage), top_left=10, top_right=10, bottom_left=10, bottom_right=10)
         bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         bat_b.draw(screen, text="Bâtiment : B", color=couleur_bouton_options_b,
