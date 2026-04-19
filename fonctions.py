@@ -204,7 +204,6 @@ def gps(depart, arrivee, tmx_data, tmx_data_b, tmx_data_d, tmx_data_c, tmx_data_
                                 liste_etage.append(cle)
                         else:
                             liste_etage.append(cle)
-    print("Étages traversés :", liste_etage)
     return resultat, chemins
 
 

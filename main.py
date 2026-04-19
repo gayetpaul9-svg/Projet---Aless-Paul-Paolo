@@ -5,6 +5,7 @@ Ce module contient la boucle principale de jeu et le rendu des écrans.
 """
 import pygame
 import math
+import os
 from pygame.draw import rect
 from pytmx.util_pygame import load_pygame
 import classes
@@ -330,6 +331,12 @@ while running:
                     350 <= my <= 430):
                     son_clic.play()
                     etat = "itinéraire"
+                # Clic sur DOCUMENTATION
+                elif (screen.get_width()//2 - 200 <= mx <= screen.get_width()//2 + 200 and
+                    450 <= my <= 530):
+                    son_clic.play()
+                    # Ouvrir le fichier DOCUMENTATION.txt avec le programme par défaut
+                    os.startfile("DOCUMENTATION.txt")
 
 
             elif etat == "itinéraire":
@@ -469,16 +476,16 @@ while running:
             for i, ligne in enumerate(lignes_message):
                 screen.blit(font.render(ligne.strip(), True, (0, 0, 0)), (50, 190 + i * 40))
         if liste_etage:
-            etage_suivant.draw(screen, text="->", top_left=0, top_right=5, bottom_right=5, bottom_left=0)
-            etage_precedent.draw(screen, text="<-", top_left=5, top_right=0, bottom_right=0, bottom_left=5)
+            etage_suivant.draw(screen, text="→", top_left=0, top_right=5, bottom_right=5, bottom_left=0)
+            etage_precedent.draw(screen, text="←", top_left=5, top_right=0, bottom_right=0, bottom_left=5)
         nom_etage.draw(screen, text=noms_etages[etage], top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         menu_deroulant.survol(pygame.mouse.get_pos())
         fonctions_ = str("calories : " + fonc['calories']+" Kcal")
         ui_1.draw(screen, top_left=10, top_right=10, bottom_left=0, bottom_right=0, text=fonctions_)
         fonctions_= "  " +str("temps : " + fonc["temps"]+" s")
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=0, bottom_right=0, text=fonctions_)
-        ui_3.draw(screen,text=classes.départ_salle+" -> "+classes.arrivée_salle,top_left=0, top_right=0, bottom_right=10, bottom_left=10)
-        ui_4.draw(screen, text="parcoure : " + ", ".join(noms_etages[e] for e in liste_etage), top_left=10, top_right=10, bottom_left=10, bottom_right=10)
+        ui_3.draw(screen,text=classes.départ_salle+"→"+classes.arrivée_salle,top_left=0, top_right=0, bottom_right=0, bottom_left=0)
+        ui_4.draw(screen, text="parcoure : " + "→".join(noms_etages[e] for e in liste_etage), top_left=0, top_right=0, bottom_left=10, bottom_right=10)
         bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         bat_b.draw(screen, text="Bâtiment : B", color=couleur_bouton_options_b,

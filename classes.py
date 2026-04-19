@@ -102,7 +102,7 @@ class Dropdown:
                     continue
                 salles = sous_options[option]
                 self.sous_menus[option] = Dropdown(x, y, width, height, salles)
-        print(len(options)-1)
+   
         
 
         for i, opt in enumerate(options):
