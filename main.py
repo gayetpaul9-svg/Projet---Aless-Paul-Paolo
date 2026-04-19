@@ -528,7 +528,7 @@ while running:
         fonctions_= "  " +str("temps : " + fonc["temps"]+" s")
         ui_2.draw(screen, top_left=0, top_right=0, bottom_left=0, bottom_right=0, text=fonctions_)
         ui_3.draw(screen,text=classes.départ_salle+"→"+classes.arrivée_salle,top_left=0, top_right=0, bottom_right=0, bottom_left=0)
-        ui_4.draw(screen, text="parcours : " + "→".join(noms_etages[e] for e in liste_etage), top_left=0, top_right=0, bottom_left=10, bottom_right=10)
+        ui_4.draw(screen, text= "→".join(noms_etages[e] for e in liste_etage), top_left=0, top_right=0, bottom_left=10, bottom_right=10)
         bat_a.draw(screen, text="Bâtiment : A", color=couleur_bouton_options_a,
            top_left=10, top_right=10, bottom_right=10, bottom_left=10)
         bat_b.draw(screen, text="Bâtiment : B", color=couleur_bouton_options_b,
